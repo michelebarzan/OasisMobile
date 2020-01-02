@@ -1,0 +1,98 @@
+.logo-container
+{
+    box-sizing: border-box;
+    padding-top:40px;
+    padding-bottom:40px;
+    width:100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+.logo-container img
+{
+    height: 120px;
+    width: 120px;
+}
+.homepageLinkContainer
+{
+	width:100%;
+	height:auto;
+	box-sizing:border-box;
+    padding-left:20px;
+    padding-right:20px;
+    display: flex;
+    flex-direction: column;
+}
+.homepageSectionOuterContainer
+{
+    width:100%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin-bottom:20px;
+}
+.homepageSectionContainer
+{
+	width:100%;
+	box-sizing: border-box;
+	padding:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.homepageSectionTitle
+{
+	height:30px;
+	width:100%;
+	line-height: 30px;
+	font-family: 'Quicksand', sans-serif;
+	font-size:13px;
+	box-sizing: border-box;
+	padding-left:10px;
+	padding-right:10px;
+	color:#EBEBEB;
+	background-color:#404040 ;
+	font-weight:bold;
+	text-transform: uppercase;
+}
+.homepageLink
+{
+	width:100px;
+	height:100px;
+	text-align:center;
+	margin:10px;
+	box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+	background-color:#4C91CB;
+	background: -webkit-linear-gradient(to left, #00B4DB, #0083b0); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to left, #00B4DB, #0083b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color:#fff;
+}
+.homepageLink i
+{
+	float:center;
+	height:35px;
+	margin-top:15px;
+	
+	font-size:180%;
+	width:100%;
+	cursor:pointer;
+}
+.homepageLink div
+{
+	width:100%;
+	height:35px;
+	margin-bottom:15px;
+	/*font-family:'Montserrat',sans-serif;*/
+	/*font-family: 'Raleway', sans-serif;*/
+	font-family: 'Quicksand', sans-serif;
+	/*font-family: 'Nunito', sans-serif;*/
+	font-weight:bold;
+	text-align:center;
+	box-sizing:border-box;
+	font-size:12px;
+	
+	cursor:pointer;
+	padding:5px;
+	overflow:hidden;
+	word-wrap:break-word;
+}
