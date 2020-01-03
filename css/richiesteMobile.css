@@ -1,3 +1,4 @@
+/*Control bar*/
 .top-control-bar
 {
     position: absolute;
@@ -21,7 +22,7 @@
     margin:10px;
     background-color: transparent;
     border:none;
-    border-radius: none;
+    border-radius: 2px;
     font-family: 'Montserrat',sans-serif;
     font-size:13px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -43,6 +44,7 @@
 {
     display: none;
 }
+/*Anteprima richieste nella pagina*/
 .richieste-container
 {
     position: absolute;
@@ -144,4 +146,77 @@
     color:black;
     font-weight: normal;
     overflow: hidden;
+}
+/*Popup dettagli richiesta*/
+.popup-dettagli-richiesta-outer-container
+{
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-bottom:10px;
+}
+.popup-dettagli-richiesta-outer-container .row-container
+{
+    display: flex;
+    box-sizing: border-box;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+}
+.popup-dettagli-richiesta-outer-container .row-container[stato="Presa in carico"]
+{
+    background-color: #4C91CB;
+}
+.popup-dettagli-richiesta-outer-container .row-container[stato="Aperta"]
+{
+    background-color: #DA6969;
+}
+.popup-dettagli-richiesta-outer-container .row-container[stato="In attesa di chiusura"]
+{
+    background-color: #E9A93A;
+}
+.popup-dettagli-richiesta-outer-container .row-container[stato="Chiusa"]
+{
+    background-color: #70B085;
+}
+.popup-dettagli-richiesta-outer-container .row-container .simple-text-container
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    color:black;
+    font-weight: normal;
+    overflow: hidden;
+    text-align: left;
+}
+.popup-dettagli-richiesta-outer-container .row-container .user-image
+{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+.popup-dettagli-richiesta-outer-container .container-bottoni-dettagli-risposte
+{
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    background-color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#popupDettagliRichiestaBtnDettagli,#popupDettagliRichiestaBtnRisposte
+{
+    width:50%;
+    border:none;
+    height:35px;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color:black;
+    outline: none;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }

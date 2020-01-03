@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Richieste</title>
-    <script src="js/richiesteMobile.js"></script>
-    <link rel="stylesheet" href="css/richiesteMobile.css" />
-    <script src="js/structure.js"></script>
+	<title>Richieste</title>
+
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script src="js/structure.js"></script>
     <script src="js/global.js"></script>
 	<link rel="stylesheet" href="css/global.css" />
 	<link rel="stylesheet" href="css/structure.css" />
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="css/materialComponents.css" />
+
+    <script src="js/richiesteMobile.js"></script>
+    <link rel="stylesheet" href="css/richiesteMobile.css" />
 
 	<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
 	<meta name="apple-mobile-web-app-title" content="Oasis mobile" />
@@ -24,31 +27,9 @@
 	<link rel="apple-touch-startup-image" href="images/logo-black-bg.png">
 
 </head>
-<body onload="document.getElementById('btnTutteLeRichieste').click()">
-    <header class="structure-header">
-        <button id="main-nav-bar-open-button" onclick="mainNavBarOpen()" style="color:#EBEBEB"><i id="main-nav-bar-open-button-icon" class="fal fa-list fa-2x"></i></button>
-        <button style="margin-left: auto;" onclick="settingsMenuOpen()"><i class="fad fa-cog fa-2x"></i></button>
-        <button onclick="logout()"><i class="fad fa-sign-out-alt fa-2x"></i></button>
-    </header>
-    <div class="main-nav-bar">
-		<div class="main-nav-bar-close-button-container main-nav-bar-hidden-elements">
-			<button class="main-nav-bar-close-button" title="Chiudi" onclick="mainNavBarClose()"><i class="fal fa-list fa-2x"></i></button>
-			<div class="main-nav-bar-close-button-text">MENU</div>
-			<img class="main-nav-bar-close-button-logo" src="images/logo-white.png"/>
-		</div>
-		<div class="main-nav-bar-user-info-container main-nav-bar-hidden-elements">
-			<div class="main-nav-bar-user-info-menu">
-				<div class="main-nav-bar-user-info-user-image"></div>
-				<div class="main-nav-bar-user-info-username">Admin</div>
-				<div class="main-nav-bar-user-info-arrow"><i class="fas fa-sort-down" onclick="$('.main-nav-bar-user-info-hidden-menu').toggle()"></i></div>
-			</div>
-		</div>
-		<div class="main-nav-bar-user-info-hidden-menu main-nav-bar-hidden-elements">
-			<div class="main-nav-bar-user-info-hidden-menu-row"><a href="#" onclick="logout()">Logout</a></div>
-			<div class="main-nav-bar-user-info-hidden-menu-row"><a href="cambiapassword.html">Cambia password</a></div>
-		</div>
-		<div id="main-nav-bar-sections-outer-container" class="main-nav-bar-hidden-elements"></div>
-	</div>
+<body>
+    <header class="structure-header"></header>
+    <div class="main-nav-bar"></div>
 	<div class="top-control-bar">
 		<button class="top-control-bar-button" id="btnEspandiControlliRichieste" style="box-shadow: none;margin:0px;margin-top:10px;margin-top:10px" onclick="toggleTopControlBar(this)">
 			<i class="fad fa-caret-circle-down fa-2x" ></i>
@@ -61,8 +42,8 @@
 			<i class="fad fa-reply-all fa-2x"></i>
 			<span>Gestione richieste</span>
 		</button>
-		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnImpostazioni" onclick="">
-			<i class="fad fa-cog fa-2x"></i>
+		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnImpostazioni" onclick="getPopupImpostazioni()">
+			<i class="fad fa-sliders-v fa-2x"></i>
 			<span>Impostazioni</span>
 		</button>
 		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnFiltri" onclick="">
@@ -71,14 +52,5 @@
 		</button>
 	</div>
 	<div class="richieste-container" id="richieste-container"></div>
-	<button onclick="goToTop()" id="btnGoToTop" ><i class="fal fa-arrow-alt-to-top"></i></button>
-	<script>
-		var tcbHeight=$(".top-control-bar").height();
-		rcDeafaultTop=50+10+tcbHeight;
-		
-		setRcTop(rcDeafaultTop);
-
-		window.onscroll = function() {scrollFunction()};
-	</script>
 </body>
 </html>

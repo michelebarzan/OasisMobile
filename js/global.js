@@ -43,6 +43,17 @@ function setSessionValue(name,value)
 {
 
 }
+function addTopButton()
+{
+    var button=document.createElement("button");
+    button.setAttribute("id","btnGoToTop");
+    button.setAttribute("onclick","goToTop()");
+    button.innerHTML='<i class="fal fa-arrow-alt-to-top"></i>';
+
+    document.body.appendChild(button);
+
+    window.onscroll = function() {scrollFunction()};
+}
 function scrollFunction() 
 {
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -52,9 +63,16 @@ function scrollFunction()
     $("#btnGoToTop").hide("fast","swing");
   }
 }
-// When the user clicks on the button, scroll to the top of the document
 function goToTop() 
 {
-  document.body.scrollTop = 0; // For Safari
-  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
+window.addEventListener("load", function(event)
+{
+    var alert=document.createElement("div");
+    alert.setAttribute("id","alertOrientation");
+    alert.innerHTML="Dispositivo o modalità di visualizzazione non supportata<br>Contatta l' amministratore";
+
+    document.documentElement.appendChild(alert);
+});

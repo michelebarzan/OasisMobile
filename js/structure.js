@@ -1,3 +1,8 @@
+$(function()
+{
+    $(".structure-header").load("structure-header.html");
+    $(".main-nav-bar").load("main-nav-bar.html"); 
+});
 window.addEventListener("load", function(event)
 {
     // iOS web app full screen hacks.
