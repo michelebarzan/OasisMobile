@@ -1,4 +1,5 @@
 /*Control bar*/
+
 .top-control-bar
 {
     position: absolute;
@@ -55,6 +56,17 @@
     flex-direction: column;
     margin-bottom:10px;
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.richieste-error-message-container
+{
+    width:100%;
+    text-align: left;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    text-decoration: underline;
+    font-weight: bold;
 }
 .richiesta-outer-container
 {
@@ -150,7 +162,7 @@
 /*Popup dettagli richiesta*/
 .popup-dettagli-richiesta-outer-container
 {
-    display: flex;
+    display: none;
     flex-direction: column;
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     width: 100%;
@@ -158,6 +170,24 @@
     border-radius: 4px;
     box-sizing: border-box;
     padding-bottom:10px;
+}
+.button-cambia-stato-richiesta
+{
+    margin-top:10px;
+    margin-right: 10px;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    height: 30px;
+    background-color: transparent;
+    border:none;
+    transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+    outline:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    width:150px;
+}
+.button-cambia-stato-richiesta:active
+{
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 .popup-dettagli-richiesta-outer-container .row-container
 {
@@ -219,4 +249,209 @@
     outline: none;
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.popup-dettagli-richiesta-outer-container .row-container .simple-list
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    color:black;
+    font-weight: normal;
+    overflow: hidden;
+    text-align: left;
+    padding: 0px;
+    padding-left:15px;
+    margin: 0px;
+}
+.popup-dettagli-richiesta-outer-container .row-container .file-container
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding-bottom:5px;
+}
+.popup-dettagli-richiesta-outer-container .row-container .file-container .file-container-item
+{
+    height:40px;
+    width: 100px;
+    margin-right:10px;
+    margin-top:5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: flex;
+    flex-direction: column;
+    background-color: #EBEBEB;
+    border-radius:4px;
+}
+.popup-dettagli-richiesta-outer-container .row-container .file-container .file-container-item i
+{
+    height:25px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.popup-dettagli-richiesta-outer-container .row-container .file-container .file-container-item span
+{
+    font-size: 12px;
+    font-family: 'Montserrat',sans-serif;
+    height:15px;
+    line-height:15px;
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0px;
+    background-color: #ddd;
+    color:gray;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.outer-container-popup-filtri-richieste
+{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.select-container-popup-filtri-richieste
+{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+.select-container-popup-filtri-richieste div
+{
+    width:100%;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Montserrat',sans-serif;
+    color:black;
+    text-align: left;
+    margin-bottom:5px;
+}
+.select-container-popup-filtri-richieste select
+{
+    width:100%;
+    font-size: 12px;
+    font-family: 'Montserrat',sans-serif;
+    text-align: left;
+    outline:none;
+}
+#popupDettagliRichiestaSelectAggiungiUtentiCoinvolti
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    text-align: left;
+    width:100%;
+    outline:none;
+}
+#containerInputReplica
+{
+    border:none;
+    border-bottom-left-radius:4px;
+    border-bottom-right-radius:4px;
+    padding:10px;
+    background-color:#eeeeee;
+    margin-top:10px;
+    margin-bottom:-10px;
+    width:100%;
+    flex-direction:column;
+}
+#containerInputReplica .container-input-replica-row
+{
+    display: flex;
+    flex-direction:row;
+}
+#popupRichiesteTextareaDescrizione
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    border:1px solid #bbb;
+    border-radius: 4px;
+    box-shadow: transparent;
+    overflow: hidden;
+    outline:none;
+    background-color: white;
+    padding:5px;
+}
+#popupRichiesteBtnInserisciReplica,#popupRichiesteBtnInserisciAllegato
+{
+    height: 30px;
+    background-color: transparent;
+    margin-left: 10px;
+    border:none;
+    font-size: 20px;
+    outline:none;
+    padding:5px;
+    transition: all 0.8s cubic-bezier(.25,.8,.25,1);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#popupRichiesteBtnInserisciReplica:active,#popupRichiesteBtnInserisciAllegato:active
+{
+    background-color: gray;
+}
+#containerAllegatiRisposta .container-allegati-risposta-item
+{
+    height:40px;
+    width: 100px;
+    margin-top:10px;
+    margin-right:10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    display: flex;
+    flex-direction: column;
+    background-color: #EBEBEB;
+    border-radius:4px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+#containerAllegatiRisposta .container-allegati-risposta-item i
+{
+    height:25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#containerAllegatiRisposta .container-allegati-risposta-item span
+{
+    font-size: 12px;
+    font-family: 'Montserrat',sans-serif;
+    height:15px;
+    line-height:15px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin:0px;
+    background-color: #ddd;
+    color:gray;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+#containerAllegatiRispostaAlertFileSize
+{
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin-top:10px;
+    width:100%;
+    min-height:20px;
+    line-height: 20px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    background-color: #fffaba;
+    text-align: left;
 }

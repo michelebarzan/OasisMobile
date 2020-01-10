@@ -4,10 +4,10 @@
 	border-radius:3px;
 	margin-top:20px;
 	margin-bottom:10px;
-	margin-right:20px;
-	margin-left:20px;
+	margin-right:10px;
+	margin-left:10px;
 	border-collapse: collapse;
-	width: calc(100% - 40px);
+	width: calc(100% - 20px);
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .proprieta-grafico-table-border-right
@@ -20,7 +20,7 @@
 }
 .material-design-table-dark th
 {
-	padding:20px 30px;
+	padding:10px 15px;
 	color:#aaa;
 	text-align: left;
 	font-size:12px;
@@ -28,7 +28,7 @@
 }
 .material-design-table-dark td 
 {
-	padding:20px 30px;
+	padding:10px 15px;
 	color:#ddd;
 	text-align: left;
 	font-size:12px;
@@ -88,6 +88,22 @@
 .material-design-table-dark select:hover
 {
 	border-bottom: 2px solid #363640;
+}
+.material-design-table-dark-button-reset-settings
+{
+    border:none;
+    background-color: transparent;
+    text-decoration: underline;
+    font-family: 'Montserrat',sans-serif;
+    font-size: 13px;
+    height: 30px;
+    color:#ddd;
+    padding-left:10px;
+    padding-right:10px;
+    background-color: #464651;
+    border-radius: 2px;
+    outline:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 /*-----------------------------------*/
 .pure-material-checkbox {

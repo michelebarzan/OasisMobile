@@ -76,3 +76,4 @@ window.addEventListener("load", function(event)
 
     document.documentElement.appendChild(alert);
 });
+

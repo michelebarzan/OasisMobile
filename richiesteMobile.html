@@ -17,7 +17,8 @@
 	<link rel="stylesheet" href="css/materialComponents.css" />
 
     <script src="js/richiesteMobile.js"></script>
-    <link rel="stylesheet" href="css/richiesteMobile.css" />
+	<link rel="stylesheet" href="css/richiesteMobile.css" />
+	<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.4.1/dist/multiple-select.min.css">
 
 	<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
 	<meta name="apple-mobile-web-app-title" content="Oasis mobile" />
@@ -38,19 +39,21 @@
 			<i class="fad fa-list-alt fa-2x"></i>
 			<span>Tutte le richieste</span>
 		</button>
-		<button class="top-control-bar-button" id="btnGestioneRichieste" onclick="resetStyle(this);getTGestioneRichieste()">
-			<i class="fad fa-reply-all fa-2x"></i>
+		<button class="top-control-bar-button" id="btnGestioneRichieste" onclick="resetStyle(this);getGestioneRichieste()">
+			<i class="fad fa-inbox-in fa-2x"></i>
 			<span>Gestione richieste</span>
+		</button>
+		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnFiltri" onclick="getPopupFiltri()">
+			<i class="fad fa-filter fa-2x"></i>
+			<span>Filtri</span>
 		</button>
 		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnImpostazioni" onclick="getPopupImpostazioni()">
 			<i class="fad fa-sliders-v fa-2x"></i>
 			<span>Impostazioni</span>
 		</button>
-		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnFiltri" onclick="">
-			<i class="fad fa-filter fa-2x"></i>
-			<span>Filtri</span>
-		</button>
 	</div>
 	<div class="richieste-container" id="richieste-container"></div>
+	<script src="https://unpkg.com/multiple-select@1.4.1/dist/multiple-select.min.js"></script>
+	<script src="libs/js/multiple-select-it-IT.js"></script>
 </body>
 </html>

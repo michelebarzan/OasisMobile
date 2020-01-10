@@ -23,6 +23,8 @@
         while($row=sqlsrv_fetch_array($result1))
         {
             $risposte=[];
+            $utenti_coinvolti=[];
+            $allegati=[];
 
             $info_richiesta["id_richiesta"]=$row["id_richiesta"];
             $info_richiesta["oggetto"]=utf8_encode($row["oggetto"]);
@@ -49,14 +51,83 @@
             {
                 while($row4=sqlsrv_fetch_array($result4))
                 {
+                    $allegati_risposta=[];
+
                     $risposta["id_risposta"]=$row4["id_risposta"];
                     $risposta["data_risposta"]=$row4["data_risposta"];
                     $risposta["username_utente_risposta"]=$row4["username"];
                     $risposta["descrizione"]=utf8_encode($row4["descrizione"]);
 
+                    $query7="SELECT id_allegato, percorso
+                            FROM dbo.allegati_risposte_richieste_e_faq
+                            WHERE (risposta = ".$row4['id_risposta'].")";	
+                    $result7=sqlsrv_query($conn,$query7);
+                    if($result7==FALSE)
+                    {
+                        die("error1");
+                    }
+                    else
+                    {
+                        while($row7=sqlsrv_fetch_array($result7))
+                        {
+                            $allegato_risposta["id_allegato"]=$row7["id_allegato"];
+                            $allegato_risposta["percorso"]=$row7["percorso"];
+
+                            array_push($allegati_risposta,$allegato_risposta);
+                        }
+                    }
+
+                    $risposta["allegati"]=$allegati_risposta;
+
                     array_push($risposte,$risposta);
                 }
                 $info_richiesta["risposte"]=$risposte;
+            }
+
+            $query5="SELECT dbo.utenti_incaricati_macrocategorie.id_utente_incaricato, dbo.utenti.username,utenti.id_utente,'true' AS disabilitato
+                    FROM dbo.utenti_incaricati_macrocategorie INNER JOIN dbo.utenti ON dbo.utenti_incaricati_macrocategorie.utente = dbo.utenti.id_utente
+                    WHERE (dbo.utenti_incaricati_macrocategorie.macrocategoria = ".$row['macrocategoria'].")
+                    UNION ALL
+                    SELECT dbo.utenti_incaricati_richieste.id_utente_incaricato, dbo.utenti.username,utenti.id_utente,'false' AS disabilitato
+                    FROM dbo.utenti_incaricati_richieste INNER JOIN dbo.utenti ON dbo.utenti_incaricati_richieste.utente = dbo.utenti.id_utente
+                    WHERE (dbo.utenti_incaricati_richieste.richiesta = ".$row['id_richiesta'].")";	
+            $result5=sqlsrv_query($conn,$query5);
+            if($result5==FALSE)
+            {
+                die("error1");
+            }
+            else
+            {
+                while($row5=sqlsrv_fetch_array($result5))
+                {
+                    $utente["id_utente_incaricato"]=$row5["id_utente_incaricato"];
+                    $utente["id_utente"]=$row5["id_utente"];
+                    $utente["username"]=$row5["username"];
+                    $utente["disabilitato"]=$row5["disabilitato"];
+
+                    array_push($utenti_coinvolti,$utente);
+                }
+                $info_richiesta["utenti_coinvolti"]=$utenti_coinvolti;
+            }
+
+            $query6="SELECT id_allegato, percorso
+                    FROM dbo.allegati_richieste
+                    WHERE (richiesta = ".$row['id_richiesta'].")";	
+            $result6=sqlsrv_query($conn,$query6);
+            if($result6==FALSE)
+            {
+                die("error1");
+            }
+            else
+            {
+                while($row6=sqlsrv_fetch_array($result6))
+                {
+                    $allegato["id_allegato"]=$row6["id_allegato"];
+                    $allegato["percorso"]=$row6["percorso"];
+
+                    array_push($allegati,$allegato);
+                }
+                $info_richiesta["allegati"]=$allegati;
             }
 
             $query2="SELECT * FROM colonne_richieste_macrocategorie WHERE macrocategoria=".$row['macrocategoria'];	
