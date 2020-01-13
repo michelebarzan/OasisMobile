@@ -3,7 +3,7 @@ $(function()
     $(".structure-header").load("structure-header.html");
     $(".main-nav-bar").load("main-nav-bar.html"); 
 });
-window.addEventListener("load", function(event)
+window.addEventListener("load", async function(event)
 {
     // iOS web app full screen hacks.
     if(window.navigator.standalone == true) {
@@ -299,3 +299,75 @@ window.addEventListener("click", function(event)
     }
     
 });
+function getMainSettingsPopup()
+{
+    var table=document.createElement("table");
+    table.setAttribute("class","material-design-table-dark");
+
+    //tbody
+    var tbody = table.createTBody();
+
+    //Auto login
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var labelAutoLogin=document.createElement("label");
+    labelAutoLogin.setAttribute("class","pure-material-checkbox");
+
+    var inputAutoLogin=document.createElement("input");
+    inputAutoLogin.setAttribute("type","checkbox");
+    if(checkboxAutoLogin)
+        inputAutoLogin.setAttribute("checked","checked");
+    inputAutoLogin.setAttribute("id","checkboxAutoLogin");
+    inputAutoLogin.setAttribute("onchange","checkboxAutoLogin=this.checked;setCookie('checkboxAutoLogin',this.checked)");
+    labelAutoLogin.appendChild(inputAutoLogin);
+
+    var spanAutoLogin=document.createElement("span");
+    spanAutoLogin.setAttribute("style","color:white");
+    spanAutoLogin.innerHTML="Auto login";
+    labelAutoLogin.appendChild(spanAutoLogin);
+
+    cell1.appendChild(labelAutoLogin);
+
+    //Ripristina impostazioni predefinite
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var buttonRipristinaImpostazioniPredefinite=document.createElement("button");
+    buttonRipristinaImpostazioniPredefinite.setAttribute("class","material-design-table-dark-button-reset-settings");
+    buttonRipristinaImpostazioniPredefinite.setAttribute("onclick","restoreDefaultMainSettings()");
+    buttonRipristinaImpostazioniPredefinite.innerHTML="Ripristina impostazioni predefinite";
+
+    cell1.appendChild(buttonRipristinaImpostazioniPredefinite);
+
+    //------------------------------------------------------------------------------------
+    Swal.fire
+    ({
+        title: 'Impostazioni',
+        background: '#363640',
+        position:"top",
+        width:"100%",
+        html: table.outerHTML,
+        showCloseButton: true,
+        showConfirmButton:false,
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-title")[0].style.color="#ddd";
+                    document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                }
+    }).then((result) => 
+    {
+        if (result.value)
+        {
+            
+        }
+    });
+}
+function restoreDefaultMainSettings()
+{
+    setCookie('checkboxAutoLogin',"");
+
+    location.reload();
+}

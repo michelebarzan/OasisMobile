@@ -68,12 +68,34 @@ function goToTop()
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
-window.addEventListener("load", function(event)
+window.addEventListener("load", async function(event)
 {
     var alert=document.createElement("div");
     alert.setAttribute("id","alertOrientation");
     alert.innerHTML="Dispositivo o modalità di visualizzazione non supportata<br>Contatta l' amministratore";
 
     document.documentElement.appendChild(alert);
+
+    var checkCookieMainSettingsResponse=await checkCookieMainSettings();
+    if(checkCookieMainSettingsResponse)
+    {
+        
+    }
 });
+var checkboxAutoLogin;
+async function checkCookieMainSettings()
+{
+    return new Promise(async function (resolve) 
+    {
+        var coockieCheckboxAutoLogin=await getCookie("checkboxAutoLogin");
+        if(coockieCheckboxAutoLogin=="")
+            checkboxAutoLogin=false;
+        if(coockieCheckboxAutoLogin.indexOf("true")>-1)
+            checkboxAutoLogin=true;
+        if(coockieCheckboxAutoLogin.indexOf("false")>-1)
+            checkboxAutoLogin=false;
+
+        resolve(true);
+    });
+}
 

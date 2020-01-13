@@ -1606,7 +1606,7 @@ function getPopupImpostazioni()
     //------------------------------------------------------------------------------------
     Swal.fire
     ({
-        title: 'Impostazioni',
+        title: 'Impostazioni richieste',
         background: '#363640',
         position:"top",
         width:"100%",

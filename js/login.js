@@ -8,6 +8,23 @@ window.addEventListener("load", function(event)
         return false;
             });
     }
+
+    setTimeout(async function(){
+        /*var a=await getCookie("checkboxAutoLogin");
+        console.log(a)
+        console.log(checkboxAutoLogin)*/
+        if(checkboxAutoLogin)
+        {
+            
+            var username=await getCookie("username");
+            var password=await getCookie("password");
+
+            if(username!="" && password!="")
+            {
+                login(document.getElementById("login-button"));
+            }
+        }
+    }, 1500);
 });
 async function checkCoockies()
 {
