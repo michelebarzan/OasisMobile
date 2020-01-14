@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Login</title>
         <link href="https://fonts.googleapis.com/css?family=Quicksand:300" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <script src="js/global.js"></script>
 	    <link rel="stylesheet" href="css/global.css" />
         <script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
@@ -17,7 +18,8 @@
 
         <meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
         <meta name="apple-mobile-web-app-title" content="Oasis mobile" />
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <link href="images/logo-white.png" rel="apple-touch-startup-image" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <link rel="apple-touch-icon" href="images/logo-black-bg.png">
         <link rel="apple-touch-startup-image" href="images/logo-black-bg.png">
@@ -34,7 +36,7 @@
                 <input type="checkbox" checked id="ricorda">
                 <span>Ricorda</span>
             </label>
-            <button id="login-button" onclick="login(this)">Login</button>
+            <button id="login-button" onclick="login(this,false)">Login</button>
             <div id="error-container"></div>
         </div>
     </body>

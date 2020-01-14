@@ -42,6 +42,31 @@
     text-align: center;
     margin-top: 20%;
 }
+.pupup-aggiungi-alla-home-outer-container
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size: 12px;
+    text-align: left;
+    margin-top:5px;
+    margin-bottom:-20px;
+}
+.pupup-aggiungi-alla-home-outer-container ul
+{
+    padding-left:20px;
+    margin-top:5px;
+}
+.pupup-aggiungi-alla-home-outer-container ul li div
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /*margin-top:2px;
+    margin-bottom:2px;*/
+}
+.pupup-aggiungi-alla-home-outer-container ul li a
+{
+    color:#016bcd;
+}
 /*Rimuovere per abilitare landscape*/
 @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) 
 {

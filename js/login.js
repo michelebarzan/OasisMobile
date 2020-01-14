@@ -10,18 +10,22 @@ window.addEventListener("load", function(event)
     }
 
     setTimeout(async function(){
-        /*var a=await getCookie("checkboxAutoLogin");
-        console.log(a)
-        console.log(checkboxAutoLogin)*/
         if(checkboxAutoLogin)
         {
-            
             var username=await getCookie("username");
             var password=await getCookie("password");
 
             if(username!="" && password!="")
             {
-                login(document.getElementById("login-button"));
+                login(document.getElementById("login-button"),true);
+            }
+        }
+        if(showPopupAggiungiAllaHome)
+        {
+            if (isIos())
+            {
+                if (!isInStandaloneMode())
+                    getPopupAggiungiAllaHomeIos();
             }
         }
     }, 1500);
@@ -39,7 +43,7 @@ async function checkCoockies()
         document.getElementById("password").value=password;
     }
 }
-function login(button)
+function login(button,autoLogin)
 {
     var error=false;
 
@@ -67,7 +71,10 @@ function login(button)
 
     if(!error)
     {
-        button.innerHTML='<i class="fad fa-spinner-third fa-spin"></i>';
+        if(autoLogin)
+            button.innerHTML='Auto login<i class="fad fa-spinner-third fa-spin" style="margin-left:10px"></i>';
+        else
+            button.innerHTML='<i class="fad fa-spinner-third fa-spin"></i>';
         $.post("login.php",
         {
             username,
@@ -95,6 +102,7 @@ function login(button)
                     {
                         button.innerHTML='<i class="far fa-check-circle" style="color:green"></i>';
                         window.location = 'index.html';
+                        setTimeout(function(){ button.innerHTML='Login'; }, 3000);
                     }
                     else
                     {

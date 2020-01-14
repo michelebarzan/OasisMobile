@@ -121,7 +121,23 @@ async function getPageList()
 
                 var mainNavBarSectionRowLink=document.createElement("a");
                 mainNavBarSectionRowLink.setAttribute("class","main-nav-bar-section-row-link");
-                mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                
+                try 
+                {
+                    if (isIos())
+                    {
+                        if(isInStandaloneMode())
+                            mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                        else
+                            mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                    }
+                    else
+                        mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                } 
+                catch (error) 
+                {
+                    mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                }
 
                 //icona------------------------------------------------------------------------
                 var mainNavBarSectionRowItem=document.createElement("div");
@@ -190,7 +206,23 @@ async function getPageList()
 
                     var mainNavBarSectionRowLink=document.createElement("a");
                     mainNavBarSectionRowLink.setAttribute("class","main-nav-bar-section-row-link");
-                    mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+
+                    try 
+                    {
+                        if (isIos())
+                        {
+                            if(isInStandaloneMode())
+                                mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                            else
+                                mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                        }
+                        else
+                            mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                    } 
+                    catch (error) 
+                    {
+                        mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                    }
 
                     //icona------------------------------------------------------------------------
                     var mainNavBarSectionRowItem=document.createElement("div");
@@ -258,7 +290,9 @@ async function aggiungiPaginaPreferiti(event,id_pagina)
     {
         if(status=="success")
         {
-            getPageList()
+            getPageList();
+            if(document.getElementsByClassName("homepageLinkContainer")[0]!=null)
+                getPagineHomepage();
         }
         else
             console.log(status);
@@ -275,7 +309,9 @@ function rimuoviPaginaPreferiti(event,id_pagina_preferita_utente)
     {
         if(status=="success")
         {
-            getPageList()
+            getPageList();
+            if(document.getElementsByClassName("homepageLinkContainer")[0]!=null)
+                getPagineHomepage();
         }
         else
             console.log(status);
@@ -290,6 +326,7 @@ window.addEventListener("click", function(event)
             && event.target.parentNode.className.indexOf("main-nav-bar")==-1
             && event.target.id!="main-nav-bar-open-button"
             && event.target.id!="main-nav-bar-open-button-icon"
+            && event.target.id!="index-btn-aggiungi-preferiti"
         )
         {
             mainNavBarClose();
@@ -370,4 +407,8 @@ function restoreDefaultMainSettings()
     setCookie('checkboxAutoLogin',"");
 
     location.reload();
+}
+function gotopath(path)
+{
+    window.location = path;
 }

@@ -1,10 +1,21 @@
 async function getPagineHomepage()
 {
-    try {
-        $(".homepageLinkContainer").empty();
-        var id_utente=await getSessionValue("id_utente");
-        if(id_utente=="" || id_utente==null || id_utente==undefined)
-            location.reload();
+    $(".homepageLinkContainer").empty();
+    var id_utente=await getSessionValue("id_utente");
+    if(id_utente=="" || id_utente==null || id_utente==undefined)
+    {
+        document.getElementsByClassName("homepageLinkContainer")[0].innerHTML='<div class="fa-2x" style="width:100%;display:flex;justify-content:center"><i class="fad fa-spinner-third fa-spin"></i></div>';
+        setTimeout(async function()
+        {
+            var id_utente=await getSessionValue("id_utente");
+            if(id_utente=="" || id_utente==null || id_utente==undefined)
+                getPagineHomepage();
+            else
+                logout();
+        }, 2500);
+    }
+    else
+    {
         $.get("getPageList.php",
         {
             id_utente
@@ -34,7 +45,7 @@ async function getPagineHomepage()
 
                 var homepageSectionTitle=document.createElement("div");
                 homepageSectionTitle.setAttribute("class","homepageSectionTitle");
-                homepageSectionTitle.innerHTML="Preferiti";
+                homepageSectionTitle.innerHTML='Preferiti<i class="fal fa-info-circle" style="float:right;font-size:20px;margin-top:3px;" id="index-btn-aggiungi-preferiti" onclick="getInfoPupupAggiungiAiPreferiti()"></i>';
                 homepageSectionOuterContainer.appendChild(homepageSectionTitle);
 
                 for(var i=0;i<pagine_preferite.length;i++)
@@ -44,6 +55,7 @@ async function getPagineHomepage()
                     var homepageLink=document.createElement("div");
                     homepageLink.setAttribute("class","homepageLink");
                     homepageLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                    homepageLink.setAttribute("onlongtouch","addPopupHomepageLink('"+pagina['pagina']+"',"+pagina['id_pagina_preferita_utente']+",true)");
 
                     var homepageLinkIconContainer=document.createElement("div");
                     homepageLinkIconContainer.setAttribute("class","homepageLinkiContainer")
@@ -91,6 +103,7 @@ async function getPagineHomepage()
 
                         var homepageLink=document.createElement("div");
                         homepageLink.setAttribute("class","homepageLink");
+                        homepageLink.setAttribute("onlongtouch","addPopupHomepageLink('"+pagina['pagina']+"',"+pagina['id_pagina']+",false)");
                         homepageLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
 
                         var homepageLinkIconContainer=document.createElement("div");
@@ -124,12 +137,98 @@ async function getPagineHomepage()
             else
                 console.log(status);
         });
+    }
+}
+function addPopupHomepageLink()
+{
+    /*console.log(onlongtouchElement);
+    console.log(onlongtouchEvent);
+    console.log(onlongtouchArguments);*/
+
+    var wasOpen=$(".popup-homepage-link").length;
+
+    var pagina=onlongtouchArguments[0];
+    var preferita=onlongtouchArguments[2];
+    if(preferita)
+        var id_pagina_preferita_utente=onlongtouchArguments[1];
+    else
+        var id_pagina=onlongtouchArguments[1];
+
+    removeAllPopupsHomepageLink();
+
+    if(onlongtouchElement.nextSibling!=null)
+    {
+        var nextHomepageLink=onlongtouchElement.nextSibling;
+        nextHomepageLink.style.marginLeft="50px";
+    }
+
+    var rect = onlongtouchElement.getBoundingClientRect();
+
+    var popupHomepageLink=document.createElement("div");
+    popupHomepageLink.setAttribute("class","popup-homepage-link");
+
+    var popupHomepageLinkButton=document.createElement("button");
+    popupHomepageLinkButton.setAttribute("class","popup-homepage-link-button");
+    if(preferita)
+    {
+        popupHomepageLinkButton.innerHTML='<i class="fas fa-star popup-homepage-link-icon"></i>';
+        popupHomepageLinkButton.setAttribute("onclick","removeAllPopupsHomepageLink();rimuoviPaginaPreferiti(event,"+id_pagina_preferita_utente+")");
+    }
+    else
+    {
+        popupHomepageLinkButton.innerHTML='<i class="fal fa-star popup-homepage-link-icon"></i>';
+        popupHomepageLinkButton.setAttribute("onclick","removeAllPopupsHomepageLink();aggiungiPaginaPreferiti(event,"+id_pagina+")");
+    }
+    popupHomepageLink.appendChild(popupHomepageLinkButton);
+
+    var popupHomepageLinkButton=document.createElement("button");
+    popupHomepageLinkButton.setAttribute("class","popup-homepage-link-button");
+    popupHomepageLinkButton.innerHTML='<i class="fad fa-external-link popup-homepage-link-icon"></i>';
+    popupHomepageLinkButton.setAttribute("style","margin-top:10px");
+    popupHomepageLinkButton.setAttribute("onclick","gotopath('"+pagina+"')");
+    popupHomepageLink.appendChild(popupHomepageLinkButton);
+
+    var left=rect.left+onlongtouchElement.offsetWidth;
+    var top=rect.top;
+
+    //Non so perche ma funziona, almeno... con solo due elementi sembra funzionare
+    if(onlongtouchElement.parentElement.childElementCount>1)
+    {
+        if(wasOpen && onlongtouchElement.nextSibling==null)
+            left=left-40;
+    }
+
+    document.body.appendChild(popupHomepageLink);
+
+    $(popupHomepageLink).css({"left":left+"px","top":top+"px"});
+    $(popupHomepageLink).show("fast","swing");
+    $(popupHomepageLink).css({"display":"flex"});
+}
+function removeAllPopupsHomepageLink()
+{
+    $(".popup-homepage-link").remove();
+    $(".homepageLink").css("margin-left","10px");
+}
+window.addEventListener("click", function(event)
+{
+    try {
+        if
+        (
+            event.target.className!="popup-homepage-link" 
+            && event.target.className!="popup-homepage-link-button"
+            && event.target.className!="fal fa-star popup-homepage-link-icon"
+            && event.target.className!="fas fa-star popup-homepage-link-icon"
+            && event.target.className!="fad fa-external-link popup-homepage-link-icon"
+        )
+        {
+            removeAllPopupsHomepageLink();
+        }
     } catch (error) {
-        getPagineHomepage()
+        removeAllPopupsHomepageLink();
     }
     
-}
-function gotopath(path)
+});
+function getInfoPupupAggiungiAiPreferiti()
 {
-    window.location = path;
+    window.alert("Per aggiugere o rimuovere una pagina dai preferiti, premi sopra di essa");
 }
