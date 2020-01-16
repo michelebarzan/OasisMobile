@@ -226,7 +226,7 @@ function getPopupAggiungiAllaHomeIos()
         allowOutsideClick:true,
         onOpen : function()
                 {
-                    document.getElementsByClassName("swal2-title")[0].style.fontFamily="'Montserrat',sans-serif";
+                    document.getElementsByClassName("swal2-title")[0].style.fontFamily="'Quicksand',sans-serif";
                     document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
                     document.getElementsByClassName("swal2-title")[0].style.textAlign="left";
                     document.getElementsByClassName("swal2-title")[0].style.width="100%";

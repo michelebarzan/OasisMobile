@@ -966,8 +966,8 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
                                 filterPlaceholder:"Cerca...",
                                 locale:"it-IT"
                             });
-                        $(".ms-choice").css({"font-family":"'Montserrat',sans-serif","font-size":"12px"});
-                        $(".ms-drop").css({"font-family":"'Montserrat',sans-serif","font-size":"12px","text-align":"left"});
+                        $(".ms-choice").css({"font-family":"'Quicksand',sans-serif","font-size":"12px"});
+                        $(".ms-drop").css({"font-family":"'Quicksand',sans-serif","font-size":"12px","text-align":"left"});
                     }
                     try {
                         initResizeTextarea();
@@ -1760,9 +1760,9 @@ async function getPopupFiltri()
             $('#multipleSelectStatoRichiesteMobile').multipleSelect({filter:true,filterPlaceholder:"Cerca...",locale:"it-IT",maxHeight:1000,onClose: function () {document.getElementById("outerContainerPopupFiltriRichieste").style.height="auto";},onOpen: function () {fixOuterContainerPopupFiltriRichiesteHeight("multipleSelectStatoRichiesteMobile",0)}});
             $('#multipleSelectMacrocategoriaRichiesteMobile').multipleSelect({filter:true,filterPlaceholder:"Cerca...",locale:"it-IT",maxHeight:1000,onClose: function () {document.getElementById("outerContainerPopupFiltriRichieste").style.height="auto";},onOpen: function () {fixOuterContainerPopupFiltriRichiesteHeight("multipleSelectMacrocategoriaRichiesteMobile",1)}});
             $('#multipleSelectUtenteRichiesteMobile').multipleSelect({filter:true,filterPlaceholder:"Cerca...",locale:"it-IT",maxHeight:1000,onClose: function () {document.getElementById("outerContainerPopupFiltriRichieste").style.height="auto";},onOpen: function () {fixOuterContainerPopupFiltriRichiesteHeight("multipleSelectUtenteRichiesteMobile",2)}});
-            document.getElementsByClassName("ms-choice")[0].style.fontFamily="'Montserrat',sans-serif";
-            document.getElementsByClassName("ms-choice")[1].style.fontFamily="'Montserrat',sans-serif";
-            document.getElementsByClassName("ms-choice")[2].style.fontFamily="'Montserrat',sans-serif";
+            document.getElementsByClassName("ms-choice")[0].style.fontFamily="'Quicksand',sans-serif";
+            document.getElementsByClassName("ms-choice")[1].style.fontFamily="'Quicksand',sans-serif";
+            document.getElementsByClassName("ms-choice")[2].style.fontFamily="'Quicksand',sans-serif";
         }
     }).then((result) => 
     {

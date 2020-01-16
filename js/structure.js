@@ -317,7 +317,7 @@ function rimuoviPaginaPreferiti(event,id_pagina_preferita_utente)
             console.log(status);
     });
 }
-window.addEventListener("click", function(event)
+window.addEventListener("touchstart", function(event)
 {
     try {
         if

@@ -103,7 +103,7 @@ body
 	display:block;
 	font-weight: bold;
 	font-size: 13px;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color:#EBEBEB;
 	text-shadow: 1px 1px 1px #444, 3px 3px 5px #444;
 	text-rendering: optimizeLegibility;
@@ -175,7 +175,7 @@ body
 	text-overflow: ellipsis;
 	white-space: nowrap; 
   	overflow: hidden;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color:#ddd;
 	float:left;
 	display: block;
@@ -224,7 +224,7 @@ body
 	color:#ddd;
 	text-decoration: underline;
 	font-size:14px;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 }
 .main-nav-bar-section-container
 {
@@ -244,7 +244,7 @@ body
 	box-sizing: border-box;
 	padding-left:20px;
 	padding-right:20px;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	font-size: 13px;
 	color:#ddd;
 	text-align:left;
@@ -278,7 +278,7 @@ body
 .main-nav-bar-section-row-link
 {
 	text-decoration: none;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	font-size: 13px;
 	color:#ddd;
 }

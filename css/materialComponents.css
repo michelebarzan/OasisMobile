@@ -24,7 +24,7 @@
 	color:#aaa;
 	text-align: left;
 	font-size:12px;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 }
 .material-design-table-dark td 
 {
@@ -32,7 +32,7 @@
 	color:#ddd;
 	text-align: left;
 	font-size:12px;
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 }
 .material-design-table-dark input[type=text],.material-design-table-dark input[type=number],.material-design-table-dark select
 {
@@ -82,7 +82,7 @@
 	display: block;
 	cursor: pointer;
 	transition: all 0.5s cubic-bezier(.25,.8,.25,1);
-	font-family: 'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	border-bottom: 2px solid #363640;
 }
 .material-design-table-dark select:hover
@@ -94,7 +94,7 @@
     border:none;
     background-color: transparent;
     text-decoration: underline;
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Quicksand', sans-serif;
     font-size: 13px;
     height: 30px;
     color:#ddd;
@@ -110,7 +110,7 @@
     z-index: 0;
     position: relative;
     display: inline-block;
-	font-family:'Montserrat',sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color:black;
 	font-size:13px;
     /*color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);

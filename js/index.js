@@ -209,7 +209,7 @@ function removeAllPopupsHomepageLink()
     $(".popup-homepage-link").remove();
     $(".homepageLink").css("margin-left","10px");
 }
-window.addEventListener("click", function(event)
+window.addEventListener("touchstart", function(event)
 {
     try {
         if
