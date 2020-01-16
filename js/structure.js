@@ -319,6 +319,18 @@ function rimuoviPaginaPreferiti(event,id_pagina_preferita_utente)
 }
 window.addEventListener("touchstart", function(event)
 {
+    checkMainNavBarClose();
+});
+window.addEventListener("touchend", function(event)
+{
+    checkMainNavBarClose();
+});
+window.addEventListener("onclick", function(event)
+{
+    checkMainNavBarClose();
+});
+function checkMainNavBarClose()
+{
     try {
         if
         (
@@ -334,8 +346,7 @@ window.addEventListener("touchstart", function(event)
     } catch (error) {
         mainNavBarClose();
     }
-    
-});
+}
 function getMainSettingsPopup()
 {
     var table=document.createElement("table");

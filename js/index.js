@@ -211,6 +211,18 @@ function removeAllPopupsHomepageLink()
 }
 window.addEventListener("touchstart", function(event)
 {
+    checkRemoveAllPopupsHomepageLink();
+});
+/*window.addEventListener("touchend", function(event)
+{
+    checkRemoveAllPopupsHomepageLink();
+});*/
+window.addEventListener("onclick", function(event)
+{
+    checkRemoveAllPopupsHomepageLink();
+});
+function checkRemoveAllPopupsHomepageLink()
+{
     try {
         if
         (
@@ -226,8 +238,7 @@ window.addEventListener("touchstart", function(event)
     } catch (error) {
         removeAllPopupsHomepageLink();
     }
-    
-});
+}
 function getInfoPupupAggiungiAiPreferiti()
 {
     window.alert("Per aggiugere o rimuovere una pagina dai preferiti, premi sopra di essa");
