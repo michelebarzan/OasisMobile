@@ -51,6 +51,8 @@ async function checkLogin()
                         {
                             logout();
                         }
+                        else
+                            checkPermessoPagina(id_utente)
                     }
                 }
                 else
@@ -60,6 +62,47 @@ async function checkLogin()
             });
         }
     }
+    else
+        checkPermessoPagina(id_utente)
+}
+async function checkPermessoPagina(id_utente)
+{
+    $.get("checkPermessoPagina.php",
+    {
+        id_utente,
+        nomePagina
+    },
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            console.log(response)
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({type: 'error',title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+            }
+            else
+            {
+                if(response.indexOf("false")>-1)
+                {
+                    var children = document.body.children;
+                    for (var i = 0; i < children.length; i++)
+                    {
+                        var element=children[i];
+                        element.style.display="none";
+                    }
+
+                    document.getElementsByClassName("structure-header")[0].style.display="";
+                    document.getElementsByClassName("main-nav-bar")[0].style.display="";
+
+                    var alert=document.createElement("div");
+                    alert.setAttribute("id","alertAccessoNonConsentito");
+                    alert.innerHTML='<i style="margin-right:5px" class="far fa-exclamation-triangle"></i>Accesso alla pagina non consentito';
+                    document.body.appendChild(alert);
+                }
+            }
+        }
+    });
 }
 function logout()
 {
@@ -73,8 +116,12 @@ function mainNavBarOpen()
 {
     const speed=200;
     $('.main-nav-bar').show(speed);
-    setTimeout(function()
+    setTimeout(async function()
     {
+        var username=await getSessionValue("username");
+
+        $( ".main-nav-bar-user-info-user-image img" ).attr('src','http://remote.oasisgroup.it/oasisusersimages/'+username+'.png');
+
         $('.main-nav-bar-hidden-elements').css("visibility", "visible");
     }, speed);
     getPageList();
@@ -402,7 +449,7 @@ function getMainSettingsPopup()
         showConfirmButton:false,
         onOpen : function()
                 {
-                    document.getElementsByClassName("swal2-title")[0].style.color="#ddd";
+                    document.getElementsByClassName("swal2-title")[0].style.color="gray";
                     document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
                 }
     }).then((result) => 
@@ -422,4 +469,55 @@ function restoreDefaultMainSettings()
 function gotopath(path)
 {
     window.location = path;
+}
+async function cambiaImmagineProfiloUtente(input)
+{
+    var immagine=input.files[0];
+    if(immagine!=undefined && immagine!=null)
+    {
+        if(immagine.type.split("/").indexOf('image')>-1)
+        {
+            var username=await getSessionValue("username");
+            var data= new FormData();
+            data.append('immagine',immagine);
+            data.append('username',username);
+            $.ajax(
+            {
+                url:'uploadImmagineProfiloUtente.php',
+                data:data,
+                processData:false,
+                contentType:false,
+                type:'POST',
+                success:function(response)
+                    {
+                        console.log(response);
+                        if(response.indexOf("ok")>-1)
+                        {
+                            Swal.fire
+                            ({
+                                type:'success',
+                                title: 'Immagine cambiata',
+                                width:"100%",
+                                showCloseButton: true,
+                                showConfirmButton:false,
+                                onOpen : function()
+                                        {
+                                            document.getElementsByClassName("swal2-title")[0].style.color="gray";
+                                            document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                                        }
+                            }).then((result) => 
+                            {
+                                mainNavBarOpen()
+                            });
+                        }
+                        else
+                        {
+                            Swal.fire({type: 'error',title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                        }
+                    }
+            });
+        }
+        else
+            Swal.fire({type: 'error',title: 'Formato non valido',onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+    }
 }

@@ -1,3 +1,5 @@
+var nomePagina="Home";
+
 async function getPagineHomepage()
 {
     $(".homepageLinkContainer").empty();

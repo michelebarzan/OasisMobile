@@ -5,7 +5,9 @@
 </div>
 <div class="main-nav-bar-user-info-container main-nav-bar-hidden-elements">
     <div class="main-nav-bar-user-info-menu">
-        <div class="main-nav-bar-user-info-user-image"></div>
+        <div class="main-nav-bar-user-info-user-image">
+            <img onerror="javascript:this.src='images/user.png'"/>
+        </div>
         <div class="main-nav-bar-user-info-username">Admin</div>
         <div class="main-nav-bar-user-info-arrow"><i class="fas fa-sort-down" onclick="$('.main-nav-bar-user-info-hidden-menu').toggle()"></i></div>
     </div>
@@ -13,5 +15,7 @@
 <div class="main-nav-bar-user-info-hidden-menu main-nav-bar-hidden-elements">
     <div class="main-nav-bar-user-info-hidden-menu-row"><a href="#" onclick="logout()">Logout</a></div>
     <div class="main-nav-bar-user-info-hidden-menu-row"><a href="cambiapassword.html">Cambia password</a></div>
+    <div class="main-nav-bar-user-info-hidden-menu-row"><a href="#" onclick="document.getElementById('mainNavBarCambiaImmagineInput').click()">Cambia immagine profilo</a></div>
+    <input type="file" style="display:none" id="mainNavBarCambiaImmagineInput" accept=".png" onchange="cambiaImmagineProfiloUtente(this)">
 </div>
 <div id="main-nav-bar-sections-outer-container" class="main-nav-bar-hidden-elements"></div>

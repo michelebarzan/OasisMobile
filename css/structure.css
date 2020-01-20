@@ -152,7 +152,9 @@ body
 .main-nav-bar-user-info-user-image
 {
 	float:left;
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	margin-left:15px;
 	box-sizing:border-box;
 	background:#ddd;
@@ -160,11 +162,18 @@ body
 	width:42px;
 	margin-top:4px;
 	margin-bottom:4px;
-	border:4px solid #ddd;
-	border-radius:20px;
-	background-image: url("../images/user.png");
-	background-position: center center;
+	/*border:4px solid #ddd;*/
+	border-radius:50%;
+	/*background-image: url("../images/user.png");*/
+	/*background-position: center center;
 	background-repeat: no-repeat;
+	background-size: cover;*/
+}
+.main-nav-bar-user-info-user-image img
+{
+	height:38px;
+	width:38px;
+	border-radius:50%;
 }
 .main-nav-bar-user-info-username
 {
@@ -206,8 +215,8 @@ body
 }
 .main-nav-bar-user-info-hidden-menu-row
 {
-	height:50px;
-	line-height:50px;
+	height:40px;
+	line-height:40px;
 	background-color: transparent; 
 	box-sizing: border-box;
 	padding-left:20px;
@@ -291,4 +300,13 @@ body
 .main-nav-bar-section-row a:hover
 {
 	text-decoration: underline;
+}
+#alertAccessoNonConsentito
+{
+	font-size: 14px;
+	color:red;
+	font-family: 'Quicksand',sans-serif;
+	width:100%;
+	text-align: center;
+	margin-top: 80px;
 }

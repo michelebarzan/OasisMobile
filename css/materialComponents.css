@@ -117,7 +117,7 @@
     font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
     font-size: 16px;*/
     line-height: 20px;
-	height:20px;
+	height:auto;
 }
 
 /* Input */
@@ -148,6 +148,12 @@
     display: inline-block;
     width: 100%;
     cursor: pointer;
+}
+
+.pure-material-checkbox div {
+    width:calc(100% - 25px);
+    /*margin-top:-10px;*/
+    float:right;
 }
 
 /* Box */
@@ -261,7 +267,8 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-select: none;
+    user-select: none;
+    color:white;
   }
   
   /* Hide the browser's default radio button */

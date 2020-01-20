@@ -29,6 +29,7 @@
             $info_richiesta["id_richiesta"]=$row["id_richiesta"];
             $info_richiesta["oggetto"]=utf8_encode($row["oggetto"]);
             $info_richiesta["descrizione"]=utf8_encode($row["descrizione"]);
+            $info_richiesta["urgente"]=$row["urgente"];
             $info_richiesta["note"]=utf8_encode($row["note"]);
             $info_richiesta["id_macrocategoria"]=$row["macrocategoria"];
             $info_richiesta["nome_macrocategoria"]=$row["nome_macrocategoria"];

@@ -1,3 +1,5 @@
+var nomePagina="Richieste";
+
 var rcDeafaultTop=0;
 var tcbExpanded=false;
 var view;
@@ -9,7 +11,7 @@ var filesRisposta=[];
 
 window.addEventListener("load", async function(event)
 {
-    //Controlla le impostazioni salvate nei cookie
+    //Controlla le impostazioni salvate nei cookie e sul server
     var checkCookieSettingsResponse=await checkCookieSettings();
     if(checkCookieSettingsResponse)
     {
@@ -19,6 +21,7 @@ window.addEventListener("load", async function(event)
         if(checkboxOnloadGestioneRichieste)
             document.getElementById('btnGestioneRichieste').click();
     }
+    checkServerSideSettings();
 
     //Posiziona correttamente il container per le richieste, in base alla configurazione dei controlli
     var tcbHeight=$(".top-control-bar").height();
@@ -327,6 +330,8 @@ function getElementRichiesta(infoRichiesta)
 {
     var richiestaOuterContainer=document.createElement("div");
     richiestaOuterContainer.setAttribute("class","richiesta-outer-container");
+    if((infoRichiesta["urgente"])=="true")
+        richiestaOuterContainer.setAttribute("style","border:3px solid red;animation: flashingBorder 1s linear infinite;border-radius:4px;");
     richiestaOuterContainer.setAttribute("id","richiestaElement"+infoRichiesta['id_richiesta']);
     richiestaOuterContainer.setAttribute("id_richiesta",infoRichiesta['id_richiesta']);
     richiestaOuterContainer.setAttribute("onclick","expandRichiesta("+infoRichiesta['id_richiesta']+",'dettagli',true)");
@@ -350,7 +355,8 @@ function getElementRichiesta(infoRichiesta)
 
     var userImage=document.createElement("img");
     userImage.setAttribute("class","user-image");
-    userImage.setAttribute("src","user_images/"+infoRichiesta['username_utente_creazione']+".png");
+    userImage.setAttribute("onerror","javascript:this.src='images/user.png'");
+    userImage.setAttribute("src","http://remote.oasisgroup.it/oasisusersimages/"+infoRichiesta['username_utente_creazione']+".png");
     richiestaInnerContainer.appendChild(userImage);
 
     var basicInfoContainer=document.createElement("div");
@@ -415,7 +421,10 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
 
     var simpleTextContainer=document.createElement("div");
     simpleTextContainer.setAttribute("class","simple-text-container");
-    simpleTextContainer.setAttribute("style","font-weight:bold;width:50%;height:30px;line-height:30px");
+    if((infoRichiesta["urgente"])=="true")
+        simpleTextContainer.setAttribute("style","color:red;animation: flashingFont 1s linear infinite;font-weight:bold;width:50%;height:30px;line-height:30px");
+    else
+        simpleTextContainer.setAttribute("style","font-weight:bold;width:50%;height:30px;line-height:30px");
     simpleTextContainer.innerHTML='#'+infoRichiesta["id_richiesta"];
     rowContainer.appendChild(simpleTextContainer);
 
@@ -432,7 +441,8 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
 
     var userImage=document.createElement("img");
     userImage.setAttribute("class","user-image");
-    userImage.setAttribute("src","user_images/"+infoRichiesta['username_utente_creazione']+".png");
+    userImage.setAttribute("onerror","javascript:this.src='images/user.png'");
+    userImage.setAttribute("src","http://remote.oasisgroup.it/oasisusersimages/"+infoRichiesta['username_utente_creazione']+".png");
     rowContainer.appendChild(userImage);
 
     var rowItem=document.createElement("div");
@@ -1037,7 +1047,7 @@ async function inserisciNuovaReplica(button,id_richiesta)
 
     var descrizione=document.getElementById("popupRichiesteTextareaDescrizione").value;
     var id_utente=await getSessionValue("id_utente");
-    var username=await getSessionValue("Username");
+    var username=await getSessionValue("username");
 
     if(descrizione=="" && filesRisposta.length==0)
     {
@@ -1115,7 +1125,7 @@ async function inserisciNuovaReplica(button,id_richiesta)
 
                                                     if(uploadedFiles==fileNum)
                                                     {
-                                                        appendNuovaReplica(id_richiesta,button);
+                                                        appendNuovaReplica(username,descrizione,id_richiesta,button);
                                                     }
                                                 }
                                                 else
@@ -1127,7 +1137,7 @@ async function inserisciNuovaReplica(button,id_richiesta)
                                                     document.getElementById("containerAllegatiRisposta").appendChild(alertFileSize);
                                                     
                                                     setTimeout(function(){
-                                                        appendNuovaReplica(id_richiesta,button);
+                                                        appendNuovaReplica(username,descrizione,id_richiesta,button);
                                                     }, 3000);
                                                 }
                                             }
@@ -1137,12 +1147,12 @@ async function inserisciNuovaReplica(button,id_richiesta)
                         }
                         else
                         {
-                            appendNuovaReplica(id_richiesta,button);
+                            appendNuovaReplica(username,descrizione,id_richiesta,button);
                         }
                     }
                     else
                     {
-                        appendNuovaReplica(id_richiesta,button);
+                        appendNuovaReplica(username,descrizione,id_richiesta,button);
                     }
                 }
             }
@@ -1151,8 +1161,111 @@ async function inserisciNuovaReplica(button,id_richiesta)
         });
     }
 }
-async function appendNuovaReplica(id_richiesta,button)
+function getIdMacrocategoria(id_richiesta)
 {
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getIdMacrocategoria.php",
+        {
+            id_richiesta
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
+function getUtenteCreazione(id_richiesta)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getUtenteCreazione.php",
+        {
+            id_richiesta
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
+function getUtentiCoinvoltiEUtentiMacrocategoria(id_richiesta,id_macrocategoria)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getUtentiCoinvoltiEUtentiMacrocategoria.php",
+        {
+            id_richiesta,
+            id_macrocategoria
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(JSON.parse(response));
+            }
+            else
+                reject({status});
+        });
+    });
+}
+function getMailsByServerSideSetting(utentiInvioMail,serverSideSetting,subject,body)
+{
+    var JSONutentiInvioMail=JSON.stringify(utentiInvioMail);
+    $.get("getMailsByServerSideSetting.php",
+    {
+        JSONutentiInvioMail,
+        serverSideSetting
+    },
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            var mails=JSON.parse(response);
+            //console.log(mails);
+            if(mails.length>0)
+                sendMail(mails.join(";"),subject,body);
+        }
+        else
+            console.log(status);
+    });
+}
+async function appendNuovaReplica(username_risposta,descrizione,id_richiesta,button)
+{
+    var id_macrocategoria=await getIdMacrocategoria(id_richiesta); 
+    var utentiInvioMailObj=await getUtentiCoinvoltiEUtentiMacrocategoria(id_richiesta,id_macrocategoria);
+    var utentiInvioMail=[];
+    utentiInvioMailObj.forEach(function(utenteObj)
+    {
+        utentiInvioMail.push(utenteObj.id_utente);
+    });
+    var subject="Nuova risposta di "+username_risposta+" alla richiesta codice "+id_richiesta;
+    var body="Testo: "+descrizione+". Consulta la pagina http://remote.oasisgroup.it/oasis/redirect.php?page=gestione_richieste";
+    getMailsByServerSideSetting(utentiInvioMail,"checkboxRiceviMailPerOgniRispostaRichiestaIncaricato",subject,body);
+    
+    setTimeout(async function()
+    {
+        var utenteCreazione=await getUtenteCreazione(id_richiesta);
+        var id_utente=await getSessionValue("id_utente");
+        if(utenteCreazione==id_utente)
+            var utentiInvioMail=[];
+        else
+            var utentiInvioMail=[utenteCreazione];
+        var subject="Nuova risposta di "+username_risposta+" alla tua richiesta codice "+id_richiesta;
+        var body="Testo: "+descrizione+". Consulta la pagina http://remote.oasisgroup.it/oasis/redirect.php?page=richieste";
+        getMailsByServerSideSetting(utentiInvioMail,"checkboxRiceviMailPerOgniRispostaTuaRichiesta",subject,body);
+    }, 10000);
+
     /*button.innerHTML='<i class="fad fa-paper-plane"></i>';
     button.disabled=false;
     document.getElementById("popupRichiesteTextareaDescrizione").value="";
@@ -1436,7 +1549,104 @@ var filterMacrocategoria=[];
 var filterUtente=[];
 var checkboxOnloadTutteLeRichieste;
 var checkboxOnloadGestioneRichieste;
+var checkboxRiceviMailPerOgniNuovaRichiesta;
+var checkboxRiceviMailPerOgniRispostaRichiestaIncaricato;
+var checkboxRiceviMailPerOgniRispostaTuaRichiesta;
 
+async function setServerSideSetting(name,value,id_utente)
+{
+    if(id_utente==undefined)
+        var id_utente=await getSessionValue("id_utente");
+    $.post("setServerSideSetting.php",{name,value,id_utente},
+    function(response, status)
+    {
+        if(status!="success")
+            console.log(status);
+    });
+}
+async function getServerSideSetting(name,id_utente)
+{
+    if(id_utente==undefined)
+        var id_utente=await getSessionValue("id_utente");
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getServerSideSetting.php",{name,id_utente},
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
+function getDefaultServerSideSetting(name)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getDefaultServerSideSetting.php",{name},
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
+async function checkServerSideSettings()
+{
+    return new Promise(async function (resolve) 
+    {
+        var serverSideSettingCheckboxRiceviMailPerOgniNuovaRichiesta=await getServerSideSetting("checkboxRiceviMailPerOgniNuovaRichiesta");
+        if(serverSideSettingCheckboxRiceviMailPerOgniNuovaRichiesta=="")
+        {
+            var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniNuovaRichiesta');
+            if(defaultServerSideSetting.indexOf("true")>-1)
+                checkboxRiceviMailPerOgniNuovaRichiesta=true;
+            if(defaultServerSideSetting.indexOf("false")>-1)
+                checkboxRiceviMailPerOgniNuovaRichiesta=false;
+        }
+        if(serverSideSettingCheckboxRiceviMailPerOgniNuovaRichiesta.indexOf("true")>-1)
+            checkboxRiceviMailPerOgniNuovaRichiesta=true;
+        if(serverSideSettingCheckboxRiceviMailPerOgniNuovaRichiesta.indexOf("false")>-1)
+            checkboxRiceviMailPerOgniNuovaRichiesta=false;
+
+        var serverSideSettingCheckboxRiceviMailPerOgniRispostaRichiestaIncaricato=await getServerSideSetting("checkboxRiceviMailPerOgniRispostaRichiestaIncaricato");
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaRichiestaIncaricato=="")
+        {
+            var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniRispostaRichiestaIncaricato');
+            if(defaultServerSideSetting.indexOf("true")>-1)
+                checkboxRiceviMailPerOgniRispostaRichiestaIncaricato=true;
+            if(defaultServerSideSetting.indexOf("false")>-1)
+                checkboxRiceviMailPerOgniRispostaRichiestaIncaricato=false;
+        }
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaRichiestaIncaricato.indexOf("true")>-1)
+            checkboxRiceviMailPerOgniRispostaRichiestaIncaricato=true;
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaRichiestaIncaricato.indexOf("false")>-1)
+            checkboxRiceviMailPerOgniRispostaRichiestaIncaricato=false;
+
+        var serverSideSettingCheckboxRiceviMailPerOgniRispostaTuaRichiesta=await getServerSideSetting("checkboxRiceviMailPerOgniRispostaTuaRichiesta");
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaTuaRichiesta=="")
+        {
+            var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniRispostaTuaRichiesta');
+            if(defaultServerSideSetting.indexOf("true")>-1)
+                checkboxRiceviMailPerOgniRispostaTuaRichiesta=true;
+            if(defaultServerSideSetting.indexOf("false")>-1)
+                checkboxRiceviMailPerOgniRispostaTuaRichiesta=false;
+        }
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaTuaRichiesta.indexOf("true")>-1)
+            checkboxRiceviMailPerOgniRispostaTuaRichiesta=true;
+        if(serverSideSettingCheckboxRiceviMailPerOgniRispostaTuaRichiesta.indexOf("false")>-1)
+            checkboxRiceviMailPerOgniRispostaTuaRichiesta=false;
+
+        resolve(true);
+    });
+}
 async function checkCookieSettings()
 {
     return new Promise(async function (resolve) 
@@ -1514,7 +1724,7 @@ function getPopupImpostazioni()
 
     var spanMostraIdentificativoRichiesta=document.createElement("span");
     spanMostraIdentificativoRichiesta.setAttribute("style","color:white");
-    spanMostraIdentificativoRichiesta.innerHTML="Mostra id richieste";
+    spanMostraIdentificativoRichiesta.innerHTML="<div>Mostra id richieste</div>";
     labelMostraIdentificativoRichiesta.appendChild(spanMostraIdentificativoRichiesta);
 
     cell1.appendChild(labelMostraIdentificativoRichiesta);
@@ -1591,6 +1801,75 @@ function getPopupImpostazioni()
 
     cell1.appendChild(labelOnloadGestioneRichieste);
 
+    //Ricevi una mail di notifica per ogni richiesta in cui sei coinvolto
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var labelRiceviMailPerOgniNuovaRichiesta=document.createElement("label");
+    labelRiceviMailPerOgniNuovaRichiesta.setAttribute("class","pure-material-checkbox");
+
+    var inputRiceviMailPerOgniNuovaRichiesta=document.createElement("input");
+    inputRiceviMailPerOgniNuovaRichiesta.setAttribute("type","checkbox");
+    if(checkboxRiceviMailPerOgniNuovaRichiesta)
+        inputRiceviMailPerOgniNuovaRichiesta.setAttribute("checked","checked");
+    inputRiceviMailPerOgniNuovaRichiesta.setAttribute("id","checkboxRiceviMailPerOgniNuovaRichiesta");
+    inputRiceviMailPerOgniNuovaRichiesta.setAttribute("onchange","checkboxRiceviMailPerOgniNuovaRichiesta=this.checked;setServerSideSetting('checkboxRiceviMailPerOgniNuovaRichiesta',this.checked);");
+    labelRiceviMailPerOgniNuovaRichiesta.appendChild(inputRiceviMailPerOgniNuovaRichiesta);
+
+    var spanRiceviMailPerOgniNuovaRichiesta=document.createElement("span");
+    spanRiceviMailPerOgniNuovaRichiesta.setAttribute("style","color:white");
+    spanRiceviMailPerOgniNuovaRichiesta.innerHTML="<div>Ricevi una mail di notifica per ogni richiesta in cui sei coinvolto</div>";
+    labelRiceviMailPerOgniNuovaRichiesta.appendChild(spanRiceviMailPerOgniNuovaRichiesta);
+
+    cell1.appendChild(labelRiceviMailPerOgniNuovaRichiesta);
+
+    //Ricevi una mail di notifica per ogni risposta data ad una richiesta in cui sei coinvolto
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var labelRiceviMailPerOgniRispostaRichiestaIncaricato=document.createElement("label");
+    labelRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("class","pure-material-checkbox");
+
+    var inputRiceviMailPerOgniRispostaRichiestaIncaricato=document.createElement("input");
+    inputRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("type","checkbox");
+    if(checkboxRiceviMailPerOgniRispostaRichiestaIncaricato)
+        inputRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("checked","checked");
+    inputRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("id","checkboxRiceviMailPerOgniRispostaRichiestaIncaricato");
+    inputRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("onchange","checkboxRiceviMailPerOgniRispostaRichiestaIncaricato=this.checked;setServerSideSetting('checkboxRiceviMailPerOgniRispostaRichiestaIncaricato',this.checked);");
+    labelRiceviMailPerOgniRispostaRichiestaIncaricato.appendChild(inputRiceviMailPerOgniRispostaRichiestaIncaricato);
+
+    var spanRiceviMailPerOgniRispostaRichiestaIncaricato=document.createElement("span");
+    spanRiceviMailPerOgniRispostaRichiestaIncaricato.setAttribute("style","color:white");
+    spanRiceviMailPerOgniRispostaRichiestaIncaricato.innerHTML="<div>Ricevi una mail di notifica per ogni risposta data ad una richiesta in cui sei coinvolto</div>";
+    labelRiceviMailPerOgniRispostaRichiestaIncaricato.appendChild(spanRiceviMailPerOgniRispostaRichiestaIncaricato);
+
+    cell1.appendChild(labelRiceviMailPerOgniRispostaRichiestaIncaricato);
+
+    //Ricevi una mail di notifica per ogni risposta data ad una tua richiesta
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var labelRiceviMailPerOgniRispostaTuaRichiesta=document.createElement("label");
+    labelRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("class","pure-material-checkbox");
+
+    var inputRiceviMailPerOgniRispostaTuaRichiesta=document.createElement("input");
+    inputRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("type","checkbox");
+    if(checkboxRiceviMailPerOgniRispostaTuaRichiesta)
+        inputRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("checked","checked");
+    inputRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("id","checkboxRiceviMailPerOgniRispostaTuaRichiesta");
+    inputRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("onchange","checkboxRiceviMailPerOgniRispostaTuaRichiesta=this.checked;setServerSideSetting('checkboxRiceviMailPerOgniRispostaTuaRichiesta',this.checked);");
+    labelRiceviMailPerOgniRispostaTuaRichiesta.appendChild(inputRiceviMailPerOgniRispostaTuaRichiesta);
+
+    var spanRiceviMailPerOgniRispostaTuaRichiesta=document.createElement("span");
+    spanRiceviMailPerOgniRispostaTuaRichiesta.setAttribute("style","color:white");
+    spanRiceviMailPerOgniRispostaTuaRichiesta.innerHTML="<div>Ricevi una mail di notifica per ogni risposta data ad una tua richiesta</div>";
+    labelRiceviMailPerOgniRispostaTuaRichiesta.appendChild(spanRiceviMailPerOgniRispostaTuaRichiesta);
+
+    cell1.appendChild(labelRiceviMailPerOgniRispostaTuaRichiesta);
+
     //Ripristina impostazioni predefinite
     var row = tbody.insertRow(-1);
 
@@ -1626,12 +1905,18 @@ function getPopupImpostazioni()
         }
     });
 }
-function ripristinaImpostazioniPredefinite()
+async function ripristinaImpostazioniPredefinite()
 {
     setCookie('checkboxMostraIdentificativoRichiesta',"");
     setCookie('checkboxRicordaFiltriAlProssimoAccesso',"");
     setCookie('checkboxOnloadTutteLeRichieste',"");
     setCookie('checkboxOnloadGestioneRichieste',"");
+    var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniNuovaRichiesta');
+    setServerSideSetting('checkboxRiceviMailPerOgniNuovaRichiesta',defaultServerSideSetting);
+    var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniRispostaRichiestaIncaricato');
+    setServerSideSetting('checkboxRiceviMailPerOgniRispostaRichiestaIncaricato',defaultServerSideSetting);
+    var defaultServerSideSetting=await getDefaultServerSideSetting('checkboxRiceviMailPerOgniRispostaTuaRichiesta');
+    setServerSideSetting('checkboxRiceviMailPerOgniRispostaTuaRichiesta',defaultServerSideSetting);
 
     cleanCookieFiltri();
 
