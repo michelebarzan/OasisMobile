@@ -1004,9 +1004,12 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
 }
 function cambiaStatoRichiesta(stato,button,id_richiesta)
 {
-    var oldButtonContent= button.innerHTML;
-    button.innerHTML='<i class="fad fa-spinner-third fa-spin"></i>';
-    button.disabled=true;
+    if(button!=null)
+    {
+        var oldButtonContent= button.innerHTML;
+        button.innerHTML='<i class="fad fa-spinner-third fa-spin"></i>';
+        button.disabled=true;
+    }
 
     $.post("cambiaStatoRichiesta.php",
     {
@@ -1029,8 +1032,11 @@ function cambiaStatoRichiesta(stato,button,id_richiesta)
             }
             else
             {
-                button.innerHTML=oldButtonContent;
-                button.disabled=false;
+                if(button!=null)
+                {
+                    button.innerHTML=oldButtonContent;
+                    button.disabled=false;
+                }
 
                 Swal.close();
                 reQueryView();
@@ -1278,6 +1284,11 @@ async function appendNuovaReplica(username_risposta,descrizione,id_richiesta,but
     var infoRichiesta=await getInfoRichiesta(id_richiesta);
 
     infoRichieste.push(infoRichiesta);
+
+    if(infoRichiesta["stato"]=="Aperta")
+    {
+        cambiaStatoRichiesta("Presa in carico",null,infoRichiesta.id_richiesta)
+    }
 
     var risposte=infoRichiesta["risposte"];
     var id_risposte=[];

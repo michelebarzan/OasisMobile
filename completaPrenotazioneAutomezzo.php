@@ -9,6 +9,8 @@
     $data_consegna=$_REQUEST['data_consegna'];
     $ora_consegna=$_REQUEST['ora_consegna'];
 
+    $note=str_replace("'","''",$note);
+
     $query2="UPDATE [dbo].[prenotazioni_automezzi] SET stato='close',data_consegna='$data_consegna $ora_consegna' , note='$note', km_consegna='$km_consegna', utente_chiusura=$id_utente, data_chiusura=GETDATE() WHERE id_prenotazione=$id_prenotazione";
     $result2=sqlsrv_query($conn,$query2);
     if($result2!=TRUE)
