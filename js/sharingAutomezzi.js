@@ -106,7 +106,10 @@ async function getElencoPrenotazioniAutomezzi(id_utente)
         prenotazione.destinazioni.forEach(function(indirizzo)
         {
             var li=document.createElement("li");
-            li.innerHTML=indirizzo;
+            var infoContainer=document.createElement("div");
+            infoContainer.setAttribute("class","sr-info-container-prenotazione-automezzi");
+            infoContainer.innerHTML=indirizzo;
+            li.appendChild(infoContainer);
             ul.appendChild(li);
         });
         innerRow.appendChild(ul);
@@ -753,6 +756,9 @@ async function getPopupConsegnaVeicolo()
                         document.getElementsByClassName("swal2-confirm")[0].style.borderRadius="3px";
                         document.getElementsByClassName("swal2-confirm")[0].style.backgroundColor="rgb(48, 133, 214";
                         document.getElementsByClassName("swal2-confirm")[0].style.boxShadow="0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
+                        try {
+                            initResizeTextarea();
+                        } catch (error) {}
                     }
         }).then((result) => 
         {
@@ -896,4 +902,35 @@ function getAnagraficaAutomezzi()
                 reject({status});
         });
     });
+}
+var observeTextarea;
+if (window.attachEvent) {
+    observeTextarea = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observeTextarea = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+function initResizeTextarea () {
+    var text = document.getElementById('note');
+    function resizeTextarea () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResizeTextarea () {
+        window.setTimeout(resizeTextarea, 0);
+    }
+    observeTextarea(text, 'change',  resizeTextarea);
+    observeTextarea(text, 'cut',     delayedResizeTextarea);
+    observeTextarea(text, 'paste',   delayedResizeTextarea);
+    observeTextarea(text, 'drop',    delayedResizeTextarea);
+    observeTextarea(text, 'keydown', delayedResizeTextarea);
+
+    text.focus();
+    text.select();
+    resizeTextarea();
 }
