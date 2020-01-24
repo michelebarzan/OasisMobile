@@ -39,6 +39,14 @@ async function getElencoPrenotazioniAutomezzi(id_utente)
     container.innerHTML="";
 
     var prenotazioniAutomezzi=await getPrenotazioniAutomezzi(id_utente);
+    if(prenotazioniAutomezzi.length==0)
+    {
+        var infoContainer=document.createElement("div");
+        infoContainer.setAttribute("class","sr-info-container-prenotazione-automezzi");
+        infoContainer.setAttribute("style","font-weight:bold;text-decoration:underline;font-size:15px");
+        infoContainer.innerHTML="Nessuna prenotazione a tuo nome";
+        container.appendChild(infoContainer);
+    }
     prenotazioniAutomezzi.forEach(function (prenotazione)
     {
         var outerContainer=document.createElement("div");
