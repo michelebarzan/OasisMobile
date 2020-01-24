@@ -4,7 +4,7 @@
 
     $utenti=[];
 
-    $query2="SELECT * FROM dbo.utenti WHERE eliminato='false'";	
+    $query2="SELECT * FROM dbo.utenti WHERE mail IS NOT NULL AND eliminato='false'";	
     $result2=sqlsrv_query($conn,$query2);
     if($result2==TRUE)
     {

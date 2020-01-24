@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Automezzi</title>
+
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script src="js/structure.js"></script>
+    <script src="js/global.js"></script>
+	<link rel="stylesheet" href="css/global.css" />
+	<link rel="stylesheet" href="css/structure.css" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:500" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="css/materialComponents.css" />
+
+	<script src="js/sharingAutomezzi.js"></script>
+	<link rel="stylesheet" href="css/sharingAutomezzi.css" />
+	<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.4.1/dist/multiple-select.min.css">
+
+	<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
+	<meta name="apple-mobile-web-app-title" content="Oasis mobile" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link href="images/logo-white.png" rel="apple-touch-startup-image" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon" href="images/logo-black-bg.png">
+	<link rel="apple-touch-startup-image" href="images/logo-black-bg.png">
+
+</head>
+<body>
+    <header class="structure-header"></header>
+	<div class="main-nav-bar"></div>
+	<div class="bottom-control-bar">
+		<button class="bottom-control-bar-button" id="btnEspandiControlliRichieste" onclick="getPopupPrenotazioneVeicolo()">
+			<div><i class="fal fa-clipboard" ></i></div>
+			<div><span>Prenota</span></div>
+		</button>
+		<button class="bottom-control-bar-button" id="btnEspandiControlliRichieste" onclick="getPopupConsegnaVeicolo()">
+			<div><i class="fad fa-clipboard-check" ></i></div>
+			<div><span>Consegna</span></div>
+		</button>
+	</div>
+	<div id="containerPrenotazioniAutomezzi"></div>
+</body>
+</html>

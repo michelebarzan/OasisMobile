@@ -2113,7 +2113,7 @@ function getUtenti()
 {
     return new Promise(function (resolve, reject) 
     {
-        $.get("getUtenti.php",
+        $.get("getUtentiMail.php",
         function(response, status)
         {
             if(status=="success")

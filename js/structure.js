@@ -76,7 +76,6 @@ async function checkPermessoPagina(id_utente)
     {
         if(status=="success")
         {
-            console.log(response)
             if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
             {
                 Swal.fire({type: 'error',title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
