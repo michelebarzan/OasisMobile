@@ -191,6 +191,18 @@ textarea.popupNuovaPrenotazioneVeicoloInput
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin:5px;
+    display: flex;
+    align-items: center;
+}
+.sr-info-container-prenotazione-automezzi i
+{
+    margin-right: 5px;
+    font-size: 5px;
+}
+.sr-info-container-prenotazione-automezzi span
+{
+    
 }
 .info-container-prenotazione-automezzi
 {
@@ -201,12 +213,15 @@ textarea.popupNuovaPrenotazioneVeicoloInput
 .list-prenotazione-automezzi
 {
     margin:0px;
-    margin-left:20px;
+    margin-left:0px;
     margin-top:5px;
     padding:0px;
     /*font-family: 'Quicksand',sans-serif;
     font-size: 12px;*/
     box-sizing: border-box;
+    list-style-type: none;
+    /*list-style-type: disc;
+    list-style-position: inside;*/
 }
 .button-consegna-automezzo-prenotazione-automezzi
 {

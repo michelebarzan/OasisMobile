@@ -116,7 +116,7 @@ async function getElencoPrenotazioniAutomezzi(id_utente)
             var li=document.createElement("li");
             var infoContainer=document.createElement("div");
             infoContainer.setAttribute("class","sr-info-container-prenotazione-automezzi");
-            infoContainer.innerHTML=indirizzo;
+            infoContainer.innerHTML='<i class="fas fa-circle"></i><span>'+indirizzo+'</span>';
             li.appendChild(infoContainer);
             ul.appendChild(li);
         });
