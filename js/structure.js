@@ -24,9 +24,12 @@ async function checkLogin()
     {
         var username=await getCookie("username");
         var password=await getCookie("password");
+        var id_utente=await getCookie("id_utente");
 
-        if(username=="" || password=="")
+        if(username=="" || password=="" || id_utente=="")
+        {
             logout();
+        }
         else
         {
             var ricorda=true;
@@ -52,7 +55,10 @@ async function checkLogin()
                             logout();
                         }
                         else
+                        {
+                            //window.alert(id_utente);
                             checkPermessoPagina(id_utente)
+                        }
                     }
                 }
                 else
@@ -79,6 +85,7 @@ async function checkPermessoPagina(id_utente)
             if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
             {
                 Swal.fire({type: 'error',title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                window.alert(response);
             }
             else
             {
@@ -98,6 +105,11 @@ async function checkPermessoPagina(id_utente)
                     alert.setAttribute("id","alertAccessoNonConsentito");
                     alert.innerHTML='<i style="margin-right:5px" class="far fa-exclamation-triangle"></i>Accesso alla pagina non consentito';
                     document.body.appendChild(alert);
+                }
+                else
+                {
+                    if(nomePagina=="Home")
+                        getPagineHomepage();
                 }
             }
         }

@@ -11,9 +11,13 @@ async function getPagineHomepage()
         {
             var id_utente=await getSessionValue("id_utente");
             if(id_utente=="" || id_utente==null || id_utente==undefined)
+                var id_utente=await getCookie("id_utente");
+            if(id_utente=="" || id_utente==null || id_utente==undefined)
                 getPagineHomepage();
             else
+            {
                 logout();
+            }
         }, 2500);
     }
     else

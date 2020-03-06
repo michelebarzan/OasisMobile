@@ -26,13 +26,15 @@
 					if($ricorda=='true')
 					{
 						$hour = time() + 3600 * 24 * 30;
-						setcookie('username', $username, $hour);
+                        setcookie('username', $username, $hour);
+                        setcookie('id_utente', $row2['id_utente'], $hour);
                         setcookie('password', $password_plain, $hour);
 					}
 					else
 					{
 						$hour = time() + 3600 * 24 * 30;
-						setcookie('username',null, $hour);
+                        setcookie('username',null, $hour);
+                        setcookie('id_utente', null, $hour);
                         setcookie('password', null, $hour);
 					}
 					session_start();

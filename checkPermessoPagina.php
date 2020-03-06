@@ -9,7 +9,7 @@
     $r=sqlsrv_query($conn,$q);
     if($r==FALSE)
     {
-        die("error");
+        die("error".$q);
     }
     else
     {
