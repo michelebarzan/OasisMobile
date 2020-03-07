@@ -1,3 +1,10 @@
+body
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin:0px;
+}
 .logo-container
 {
     box-sizing: border-box;
@@ -12,12 +19,13 @@
 }
 .logo-container img
 {
-    height: 80px;
-    width: 80px;
+    height: 90px;
+    width: 90px;
 }
 .homepageLinkContainer
 {
 	width:100%;
+	max-width: 800px;
 	height:auto;
 	box-sizing:border-box;
     padding-left:20px;
@@ -29,34 +37,40 @@
 {
     width:100%;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    margin-bottom:20px;
+	margin-bottom:20px;
+	border-radius: 4px;
 }
 .homepageSectionContainer
 {
+	border-radius: 4px;
 	width:100%;
 	box-sizing: border-box;
 	padding:10px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+	justify-content: flex-start;
 }
 .homepageSectionTitle
 {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	height:25px;
 	width:100%;
 	line-height: 25px;
 	font-family: 'Quicksand', sans-serif;
 	font-size:13px;
+	letter-spacing: 1px;
 	box-sizing: border-box;
-	padding-left:10px;
-	padding-right:10px;
+	padding-left:7px;
+	padding-right:7px;
 	color:#EBEBEB;
 	background-color:#404040 ;
-	font-weight:bold;
+	/*font-weight:bold;*/
 	text-transform: uppercase;
 }
 .homepageLink
 {
+	border-radius: 4px;
 	width:70px;
 	height:70px;
 	text-align:center;
@@ -82,7 +96,7 @@
 }
 .homepageLink i
 {
-	font-size:30px;
+	font-size:28px;
 }
 .homepageLink .homepageLinkTextContainer
 {
@@ -95,7 +109,7 @@
 	font-weight:bold;
 	text-align:center;
 	box-sizing:border-box;
-	font-size:12px;
+	font-size:11px;
 	padding-left:5px;
 	padding-right:5px;
 }

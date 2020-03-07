@@ -2,6 +2,9 @@ body
 {
     /*background-image: linear-gradient(-90deg, #cfd9df,#e2ebf0);*/
     background-color: #333333;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 .logo-container
 {
@@ -21,6 +24,9 @@ body
 }
 .input-container
 {
+    width:85%;
+    max-width:500px;
+    border-radius: 4px;
     margin-left:30px;
     margin-right:30px;
     background-color: whitesmoke;
@@ -47,9 +53,9 @@ body
 }
 .input-container button
 {
+    border-radius: 4px;
     margin-top:30px;
     height:50px;
-    border-radius: 0;
     border:2px solid gray;
     font-family: 'Quicksand', sans-serif;
     font-size:15px;
@@ -68,6 +74,7 @@ body
     background-size: 100%;
     transition: background 0s;
     background-color: gray;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 #error-container
 {

@@ -51,7 +51,7 @@ async function getPagineHomepage()
 
                 var homepageSectionTitle=document.createElement("div");
                 homepageSectionTitle.setAttribute("class","homepageSectionTitle");
-                homepageSectionTitle.innerHTML='Preferiti<i class="fal fa-info-circle" style="float:right;font-size:20px;margin-top:3px;" id="index-btn-aggiungi-preferiti" onclick="getInfoPupupAggiungiAiPreferiti()"></i>';
+                homepageSectionTitle.innerHTML='Preferiti<i class="fad fa-info-circle" style="float:right;font-size:18px;margin-top:4px;" id="index-btn-aggiungi-preferiti" onclick="getInfoPupupAggiungiAiPreferiti()"></i>';
                 homepageSectionOuterContainer.appendChild(homepageSectionTitle);
 
                 for(var i=0;i<pagine_preferite.length;i++)
