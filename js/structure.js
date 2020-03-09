@@ -487,6 +487,7 @@ function restoreDefaultMainSettings()
 }
 function gotopath(fileName)
 {
+    $("#pageContainer").hide();
     unloadModules(pageInfo.fileName);
     document.getElementById("pageContainer").innerHTML="";
     pageInfo=null;
@@ -516,14 +517,17 @@ function loadModules(fileName)
         if(status=="success")
         {
             document.getElementById("pageContainer").innerHTML=response;
-            setTimeout(function(){ modulesLoaded(fileName); }, 500);
+            setTimeout(function(){ modulesLoaded(fileName); }, 200);
         }
     });
 }
-function modulesLoaded(fileName)
+async function modulesLoaded(fileName)
 {
+    var id_utente=await getSessionValue("id_utente");
+    checkPermessoPagina(id_utente);
     window["onload"+fileName]();
     document.title=pageInfo.nomePagina;
+    $("#pageContainer").show("300","swing");
 }
 async function cambiaImmagineProfiloUtente(input)
 {
