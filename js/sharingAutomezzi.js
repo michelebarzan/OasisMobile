@@ -1,4 +1,11 @@
 var nomePagina="Automezzi";
+var pageInfo=
+{
+    pagina:"sharingAutomezzi.html",
+    nomePagina:"Automezzi",
+    id_pagina:"1034",
+    fileName:"sharingAutomezzi"
+};
 var id_prenotazione;
 var prenotazioniAperte=[];
 var id_utente;
@@ -17,7 +24,11 @@ if(today.getMinutes()<10)
 var now =  hh + ":" + ii;
 today = yyyy + '-' + mm + '-' + dd;
 
-window.addEventListener("load", async function(event)
+/*window.addEventListener("load", async function(event)
+{
+    
+});*/
+async function onloadsharingAutomezzi()
 {
     id_utente=await getSessionValue("id_utente");
     getElencoPrenotazioniAutomezzi(id_utente);
@@ -32,7 +43,7 @@ window.addEventListener("load", async function(event)
 
     //Aggiunge il bottone go to top
     addTopButton();
-});
+}
 async function getElencoPrenotazioniAutomezzi(id_utente)
 {
     var container=document.getElementById("containerPrenotazioniAutomezzi");

@@ -1,4 +1,11 @@
 var nomePagina="Home";
+var pageInfo=
+{
+    pagina:"index.html",
+    nomePagina:"Home",
+    id_pagina:"1032",
+    fileName:"index"
+};
 
 async function getPagineHomepage()
 {
@@ -30,6 +37,7 @@ async function getPagineHomepage()
         {
             if(status=="success")
             {
+                //console.log(response)
                 var responseArray=[];
                 var responseArrayObj = JSON.parse(response);
                 for (var key in responseArrayObj)
@@ -60,7 +68,10 @@ async function getPagineHomepage()
                     
                     var homepageLink=document.createElement("div");
                     homepageLink.setAttribute("class","homepageLink");
-                    homepageLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                    if(pagina['fileName']=="index")
+                        homepageLink.setAttribute("onclick","location.reload()");
+                    else
+                        homepageLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
                     homepageLink.setAttribute("onlongtouch","addPopupHomepageLink('"+pagina['pagina']+"',"+pagina['id_pagina_preferita_utente']+",true)");
 
                     var homepageLinkIconContainer=document.createElement("div");
@@ -110,7 +121,10 @@ async function getPagineHomepage()
                         var homepageLink=document.createElement("div");
                         homepageLink.setAttribute("class","homepageLink");
                         homepageLink.setAttribute("onlongtouch","addPopupHomepageLink('"+pagina['pagina']+"',"+pagina['id_pagina']+",false)");
-                        homepageLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                        if(pagina['fileName']=="index")
+                            homepageLink.setAttribute("onclick","location.reload()");
+                        else
+                            homepageLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
 
                         var homepageLinkIconContainer=document.createElement("div");
                         homepageLinkIconContainer.setAttribute("class","homepageLinkiContainer")
@@ -191,7 +205,12 @@ function addPopupHomepageLink()
     popupHomepageLinkButton.setAttribute("class","popup-homepage-link-button");
     popupHomepageLinkButton.innerHTML='<i class="fad fa-external-link popup-homepage-link-icon"></i>';
     popupHomepageLinkButton.setAttribute("style","margin-top:10px");
-    popupHomepageLinkButton.setAttribute("onclick","gotopath('"+pagina+"')");
+    var fileName=pagina.split(".")[0];
+    if(fileName=="index")
+        popupHomepageLinkButton.setAttribute("onclick","location.reload()");
+    else
+        popupHomepageLinkButton.setAttribute("onclick","$('.popup-homepage-link').remove();gotopath('"+fileName+"')");
+    //popupHomepageLinkButton.setAttribute("onclick","gotopath('"+pagina+"')");
     popupHomepageLink.appendChild(popupHomepageLinkButton);
 
     var left=rect.left+onlongtouchElement.offsetWidth;

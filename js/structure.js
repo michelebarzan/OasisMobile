@@ -179,13 +179,17 @@ async function getPageList()
 
                 var mainNavBarSectionRowLink=document.createElement("a");
                 mainNavBarSectionRowLink.setAttribute("class","main-nav-bar-section-row-link");
-                
-                try 
+
+                if(pagina['fileName']=="index")
+                    mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                else
+                    mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"');mainNavBarClose()");
+                /*try 
                 {
                     if (isIos())
                     {
                         if(isInStandaloneMode())
-                            mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                            mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
                         else
                             mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
                     }
@@ -194,8 +198,8 @@ async function getPageList()
                 } 
                 catch (error) 
                 {
-                    mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
-                }
+                    mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
+                }*/
 
                 //icona------------------------------------------------------------------------
                 var mainNavBarSectionRowItem=document.createElement("div");
@@ -265,12 +269,16 @@ async function getPageList()
                     var mainNavBarSectionRowLink=document.createElement("a");
                     mainNavBarSectionRowLink.setAttribute("class","main-nav-bar-section-row-link");
 
-                    try 
+                    if(pagina['fileName']=="index")
+                        mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
+                    else
+                        mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"');mainNavBarClose()");
+                    /*try 
                     {
                         if (isIos())
                         {
                             if(isInStandaloneMode())
-                                mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
+                                mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
                             else
                                 mainNavBarSectionRowLink.setAttribute("href",pagina['pagina']);
                         }
@@ -279,8 +287,8 @@ async function getPageList()
                     } 
                     catch (error) 
                     {
-                        mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['pagina']+"')");
-                    }
+                        mainNavBarSectionRowLink.setAttribute("onclick","gotopath('"+pagina['fileName']+"')");
+                    }*/
 
                     //icona------------------------------------------------------------------------
                     var mainNavBarSectionRowItem=document.createElement("div");
@@ -477,9 +485,45 @@ function restoreDefaultMainSettings()
 
     location.reload();
 }
-function gotopath(path)
+function gotopath(fileName)
 {
-    window.location = path;
+    unloadModules(pageInfo.fileName);
+    document.getElementById("pageContainer").innerHTML="";
+    pageInfo=null;
+    loadModules(fileName);
+}
+function unloadModules(fileName)
+{
+    document.getElementById(fileName+".js").remove();
+    document.getElementById(fileName+".css").remove();
+}
+function loadModules(fileName)
+{
+    var script=document.createElement("script");
+    script.setAttribute("id",fileName+".js");
+    script.setAttribute("src","js/"+fileName+".js");
+    document.head.appendChild(script);
+    
+    var link=document.createElement("link");
+    link.setAttribute("id",fileName+".css");
+    link.setAttribute("rel","stylesheet");
+    link.setAttribute("href","css/"+fileName+".css");
+    document.head.appendChild(link);
+
+    $.get(fileName+".html",
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            document.getElementById("pageContainer").innerHTML=response;
+            setTimeout(function(){ modulesLoaded(fileName); }, 500);
+        }
+    });
+}
+function modulesLoaded(fileName)
+{
+    window["onload"+fileName]();
+    document.title=pageInfo.nomePagina;
 }
 async function cambiaImmagineProfiloUtente(input)
 {

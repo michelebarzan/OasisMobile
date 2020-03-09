@@ -8,21 +8,21 @@
     $pagine_preferite=[];
     $sezioni=[];
 
-    $qPreferiti="SELECT dbo.pagine_preferite_utenti.id_pagina_preferita_utente, dbo.pagine_preferite_utenti.utente, dbo.elenco_pagine.id_pagina, dbo.elenco_pagine.pagina, dbo.elenco_pagine.nomePagina, dbo.elenco_pagine.applicazione, 
-                dbo.elenco_pagine.icona, dbo.elenco_pagine.descrizione AS descrizionePagina
+    $qPreferiti="SELECT dbo.pagine_preferite_utenti.id_pagina_preferita_utente, dbo.pagine_preferite_utenti.utente, dbo.elenco_pagine.*, dbo.elenco_pagine.descrizione AS descrizionePagina
                 FROM dbo.pagine_preferite_utenti INNER JOIN
                 dbo.elenco_pagine ON dbo.pagine_preferite_utenti.pagina = dbo.elenco_pagine.id_pagina
                 WHERE (dbo.pagine_preferite_utenti.utente = ".$id_utente.") AND (dbo.elenco_pagine.mobile = 'true') AND (dbo.elenco_pagine.applicazione = 'OasisMobile')";
     $rPreferiti=sqlsrv_query($conn,$qPreferiti);
     if($rPreferiti==FALSE)
     {
-        echo "error";
+        echo "error".$qPreferiti;
     }
     else
     {
         while($rowPreferiti=sqlsrv_fetch_array($rPreferiti))
         {
             $id_pagina=$rowPreferiti['id_pagina'];
+            $fileName=$rowPreferiti['fileName'];
             $pagina=$rowPreferiti['pagina'];
             $nomePagina=$rowPreferiti['nomePagina'];
             $descrizionePagina=$rowPreferiti['descrizionePagina'];
@@ -34,6 +34,7 @@
             $obj_pagina['nomePagina']=$nomePagina;
             $obj_pagina['descrizionePagina']=$descrizionePagina;
             $obj_pagina['icona']=$icona;
+            $obj_pagina['fileName']=$fileName;
             $obj_pagina['id_pagina_preferita_utente']=$id_pagina_preferita_utente;
 
             array_push($pagine_preferite,$obj_pagina);
@@ -72,11 +73,13 @@
                     {
                         $id_pagina=$rowPagine['id_pagina'];
                         $pagina=$rowPagine['pagina'];
+                        $fileName=$rowPagine['fileName'];
                         $nomePagina=$rowPagine['nomePagina'];
                         $descrizionePagina=$rowPagine['descrizione'];
                         $icona=$rowPagine['icona'];
 
                         $obj_pagina['id_pagina']=$id_pagina;
+                        $obj_pagina['fileName']=$fileName;
                         $obj_pagina['pagina']=$pagina;
                         $obj_pagina['nomePagina']=$nomePagina;
                         $obj_pagina['descrizionePagina']=$descrizionePagina;

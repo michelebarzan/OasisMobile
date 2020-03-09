@@ -1,4 +1,11 @@
 var nomePagina="Richieste";
+var pageInfo=
+{
+    pagina:"richiesteMobile.html",
+    nomePagina:"Richieste",
+    id_pagina:"1033",
+    fileName:"richiesteMobile"
+};
 
 var rcDeafaultTop=0;
 var tcbExpanded=false;
@@ -9,7 +16,11 @@ var infoRichieste=[];
 //var elementsRichieste=[];NON IN USO PERCHE IN APPENDNUOVAREPLICA NON RIESCO AD ELIMINARE L'ELEMENTO DA LUI
 var filesRisposta=[];
 
-window.addEventListener("load", async function(event)
+/*window.addEventListener("load", async function(event)
+{
+    
+});*/
+async function onloadrichiesteMobile()
 {
     //Controlla le impostazioni salvate nei cookie e sul server
     var checkCookieSettingsResponse=await checkCookieSettings();
@@ -30,8 +41,7 @@ window.addEventListener("load", async function(event)
 
     //Aggiunge il bottone go to top
     addTopButton();
-});
-
+}
 function setRcTop(rcHeight)
 {
     $(".richieste-container").css({"top":rcHeight+"px"});
@@ -961,7 +971,7 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
                                                     {
                                                         Swal.fire
                                                         ({
-                                                            type: 'error',
+                                                            icon: 'error',
                                                             title: 'Errore',
                                                             text: "Se il problema persiste contatta l' amministratore"
                                                         });
@@ -1024,7 +1034,7 @@ function cambiaStatoRichiesta(stato,button,id_richiesta)
             {
                 Swal.fire
                 ({
-                    type: 'error',
+                    icon: 'error',
                     title: 'Errore',
                     text: "Se il problema persiste contatta l' amministratore"
                 });
@@ -2059,6 +2069,10 @@ async function getPopupFiltri()
             document.getElementsByClassName("ms-choice")[0].style.fontFamily="'Quicksand',sans-serif";
             document.getElementsByClassName("ms-choice")[1].style.fontFamily="'Quicksand',sans-serif";
             document.getElementsByClassName("ms-choice")[2].style.fontFamily="'Quicksand',sans-serif";
+
+            try {
+                $(".ms-choice div").hide();
+            } catch (error) {}
         }
     }).then((result) => 
     {

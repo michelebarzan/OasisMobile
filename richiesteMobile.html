@@ -1,61 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Richieste</title>
 
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-	<script src="js/structure.js"></script>
-    <script src="js/global.js"></script>
-	<link rel="stylesheet" href="css/global.css" />
-	<link rel="stylesheet" href="css/structure.css" />
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Quicksand:500" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-	<link rel="stylesheet" href="css/materialComponents.css" />
-
-	<script src="js/richiesteMobile.js"></script>
-	<script src="js/sendMail.js"></script>
-	<link rel="stylesheet" href="css/richiesteMobile.css" />
-	<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.4.1/dist/multiple-select.min.css">
-
-	<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
-	<meta name="apple-mobile-web-app-title" content="Oasis mobile" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<link href="images/logo-white.png" rel="apple-touch-startup-image" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<link rel="apple-touch-icon" href="images/logo-black-bg.png">
-	<link rel="apple-touch-startup-image" href="images/logo-black-bg.png">
-
-</head>
-<body>
-    <header class="structure-header"></header>
-    <div class="main-nav-bar"></div>
-	<div class="top-control-bar">
-		<button class="top-control-bar-button" id="btnEspandiControlliRichieste" style="box-shadow: none;margin:0px;margin-top:10px;margin-top:10px" onclick="toggleTopControlBar(this)">
-			<i class="fad fa-caret-circle-down fa-2x" ></i>
-		</button>
-		<button class="top-control-bar-button" id="btnTutteLeRichieste" onclick="resetStyle(this);getTutteRichieste()">
-			<i class="fad fa-list-alt fa-2x"></i>
-			<span>Tutte le richieste</span>
-		</button>
-		<button class="top-control-bar-button" id="btnGestioneRichieste" onclick="resetStyle(this);getGestioneRichieste()">
-			<i class="fad fa-inbox-in fa-2x"></i>
-			<span>Gestione richieste</span>
-		</button>
-		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnFiltri" onclick="getPopupFiltri()">
-			<i class="fad fa-filter fa-2x"></i>
-			<span>Filtri</span>
-		</button>
-		<button class="top-control-bar-button top-control-bar-hidden-button" id="btnImpostazioni" onclick="getPopupImpostazioni()">
-			<i class="fad fa-sliders-v fa-2x"></i>
-			<span>Impostazioni</span>
-		</button>
-	</div>
-	<div class="richieste-container" id="richieste-container"></div>
-	<script src="https://unpkg.com/multiple-select@1.4.1/dist/multiple-select.min.js"></script>
-	<script src="libs/js/multiple-select-it-IT.js"></script>
-</body>
-</html>
+<div class="top-control-bar">
+	<button class="top-control-bar-button" id="btnEspandiControlliRichieste" style="box-shadow: none;margin:0px;margin-top:10px;margin-top:10px" onclick="toggleTopControlBar(this)">
+		<i class="fad fa-caret-circle-down fa-2x" ></i>
+	</button>
+	<button class="top-control-bar-button" id="btnTutteLeRichieste" onclick="resetStyle(this);getTutteRichieste()">
+		<i class="fad fa-list-alt fa-2x"></i>
+		<span>Tutte le richieste</span>
+	</button>
+	<button class="top-control-bar-button" id="btnGestioneRichieste" onclick="resetStyle(this);getGestioneRichieste()">
+		<i class="fad fa-inbox-in fa-2x"></i>
+		<span>Gestione richieste</span>
+	</button>
+	<button class="top-control-bar-button top-control-bar-hidden-button" id="btnFiltri" onclick="getPopupFiltri()">
+		<i class="fad fa-filter fa-2x"></i>
+		<span>Filtri</span>
+	</button>
+	<button class="top-control-bar-button top-control-bar-hidden-button" id="btnImpostazioni" onclick="getPopupImpostazioni()">
+		<i class="fad fa-sliders-v fa-2x"></i>
+		<span>Impostazioni</span>
+	</button>
+</div>
+<div class="richieste-container" id="richieste-container"></div>
