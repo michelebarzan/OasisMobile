@@ -90,7 +90,7 @@ function login(button,autoLogin)
                     button.innerHTML='Login';
                     Swal.fire
                     ({
-                        type: 'error',
+                        icon: 'error',
                         title: 'Errore',
                         text: "Se il problema persiste contatta l' amministratore"
                     });
@@ -117,7 +117,7 @@ function login(button,autoLogin)
                 button.innerHTML='Login';
                 Swal.fire
                 ({
-                    type: 'error',
+                    icon: 'error',
                     title: 'Errore',
                     text: "Se il problema persiste contatta l' amministratore"
                 });

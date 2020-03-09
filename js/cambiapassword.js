@@ -69,7 +69,7 @@ function changePassword(button)
                         button.innerHTML='Cambia password';
                         Swal.fire
                         ({
-                            type: 'error',
+                            icon: 'error',
                             title: 'Errore',
                             text: "Se il problema persiste contatta l' amministratore"
                         });
@@ -96,7 +96,7 @@ function changePassword(button)
                     button.innerHTML='Cambia password';
                     Swal.fire
                     ({
-                        type: 'error',
+                        icon: 'error',
                         title: 'Errore',
                         text: "Se il problema persiste contatta l' amministratore"
                     });

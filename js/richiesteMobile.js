@@ -935,6 +935,7 @@ async function expandRichiesta(id_richiesta,display,animationSwal)
         allowOutsideClick:false,
         onOpen : function()
                 {
+                    document.getElementsByClassName("swal2-popup")[0].style.maxWidth="700px";
                     document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
 
                     var closeButton=document.getElementsByClassName("swal2-close")[0];

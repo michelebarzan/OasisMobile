@@ -550,7 +550,7 @@ async function cambiaImmagineProfiloUtente(input)
                         {
                             Swal.fire
                             ({
-                                type:'success',
+                                icon:'success',
                                 title: 'Immagine cambiata',
                                 width:"100%",
                                 showCloseButton: true,

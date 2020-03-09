@@ -1,11 +1,25 @@
+#pageContainer
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.swal2-popup
+{
+    max-width: 700px;
+}
 /*Control bar*/
-
 .top-control-bar
 {
+    max-width: 700px;
+    width:calc(100% - 20px);
+    overflow:hidden;
     position: absolute;
     top:60px;
-    left:10px;
-    right:10px;
+    /*margin-left: 10px;
+    margin-right: 10px;*/
+    /*left:10px;
+    right:10px;*/
     display: flex;
     flex-direction: row;
     transition: all 0.8s cubic-bezier(.25,.8,.25,1);
@@ -48,9 +62,13 @@
 /*Anteprima richieste nella pagina*/
 .richieste-container
 {
+    max-width: 700px;
+    overflow:hidden;
     position: absolute;
-    left:10px;
-    right:10px;
+    /*left:10px;
+    right:10px;*/
+    /*margin-left: 10px;
+    margin-right: 10px;*/
     width:calc(100% - 20px);
     display: flex;
     flex-direction: column;
