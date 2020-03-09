@@ -525,7 +525,8 @@ async function modulesLoaded(fileName)
 {
     var id_utente=await getSessionValue("id_utente");
     checkPermessoPagina(id_utente);
-    window["onload"+fileName]();
+    if((window["onload"+fileName])!=undefined)
+        window["onload"+fileName]();
     document.title=pageInfo.nomePagina;
     $("#pageContainer").show("300","swing");
 }

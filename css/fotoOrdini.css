@@ -1,0 +1,189 @@
+#pageContainer
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.swal2-popup
+{
+    max-width: 700px;
+}
+#btnGoToTop
+{
+    bottom:80px;
+}
+#searcBarFotoOrdini
+{
+    -webkit-appearance:none;
+    margin-top:60px;
+    width: calc(100% - 40px);
+    max-width: 700px;
+    height:30px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    border-radius: 15px;
+    border:none;
+    padding-left: 10px;
+    padding-right:10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    outline: none;
+}
+#searcBarFotoOrdini:focus
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#pathBarFotoOrdini
+{
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right:5px;
+    margin-top:10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: calc(100% - 20px);
+    max-width: 700px;
+    height:30px;
+    border-bottom: 0.5px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+#pathBarFotoOrdini .fa-folder
+{
+    color:#fee799;
+    font-size: 15px;
+    text-shadow: 0px 2px 3px rgba(0,0,0,0.4), 0px 4px 7px rgba(0,0,0,0.1), 0px 9px 12px rgba(0,0,0,0.1);
+}
+.arrow-pathBarFotoOrdini
+{
+    margin-left: 5px;
+    box-sizing: border-box;
+    padding-top:5px;
+    padding-bottom:5px;
+    color: #404040;
+    font-weight: bold;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 14px;
+}
+#pathBarFotoOrdini button
+{
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding:5px;
+    margin-left: 5px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    border:none;
+    outline: none;
+    background-color: transparent;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+#pathBarFotoOrdini button:active
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#containerFotoOrdini
+{
+    /*margin-top:20px;
+    margin-bottom:80px;*/
+    margin-top:10px;
+    margin-bottom:60px;
+    max-width: 700px;
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
+    /*width:100%;*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /*justify-content: center*/
+    justify-content: flex-start;
+}
+.ordine-outer-container,.stazione-outer-container
+{
+    margin: 5px;
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    height: 55px;
+    width: 55px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+.ordine-outer-container i,.stazione-outer-container i
+{
+    color:#fee799;
+    font-size: 20px;
+    text-shadow: 0px 2px 3px rgba(0,0,0,0.4), 0px 4px 7px rgba(0,0,0,0.1), 0px 9px 12px rgba(0,0,0,0.1);
+}
+.ordine-outer-container span,.stazione-outer-container span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 10px;
+    color:black;
+    max-width: 55px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ordine-outer-container:active,.stazione-outer-container:active
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.foto-outer-container
+{
+    margin: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    height:120px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+.foto-outer-container img
+{
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height:100px;
+    width: 100px;
+    object-fit: cover;
+    display: block;
+}
+.foto-outer-container div
+{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: #404040;
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    box-sizing: border-box;
+    color:#EBEBEB;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.foto-outer-container:active
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}

@@ -1,0 +1,23 @@
+
+<div class="bottom-control-bar">
+	<button class="bottom-control-bar-button" onclick="document.getElementById('fotoOrdiniInputCarica').click()">
+		<div><i class="fal fa-images"></i></div>
+		<div><span>Carica foto</span></div>
+    </button>
+    <input type="file" id="fotoOrdiniInputCarica" style="display: none;" multiple>
+	<button class="bottom-control-bar-button" onclick="document.getElementById('fotoOrdiniInputScatta').click()">
+		<div><i class="fal fa-camera-alt"></i></div>
+		<div><span>Scatta foto</span></div>
+    </button>
+    <input type="file" id="fotoOrdiniInputScatta" style="display: none;" accept="image/*" capture="camera">
+    <button class="bottom-control-bar-button" onclick="getElencoFotoOrdini()">
+		<div><i class="fal fa-inbox-in"></i></div>
+		<div><span>Aggiorna</span></div>
+    </button>
+</div>
+<input type="text" id="searcBarFotoOrdini" placeholder="Cerca ordine..." onkeyup="searchFotoOrdini(this.value.toLowerCase())">
+<div id="pathBarFotoOrdini">
+    <i class="fas fa-folder"></i>
+    <button onclick="getElencoFotoOrdini()">Ordini</button>
+</div>
+<div id="containerFotoOrdini"></div>
