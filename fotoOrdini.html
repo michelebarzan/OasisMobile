@@ -4,12 +4,12 @@
 		<div><i class="fal fa-images"></i></div>
 		<div><span>Carica foto</span></div>
     </button>
-    <input type="file" id="fotoOrdiniInputCarica" style="display: none;" multiple>
+    <input type="file" id="fotoOrdiniInputCarica" style="display: none;" accept="image/*" onchange="checkImage(this,event)" multiple>
 	<button class="bottom-control-bar-button" onclick="document.getElementById('fotoOrdiniInputScatta').click()">
 		<div><i class="fal fa-camera-alt"></i></div>
 		<div><span>Scatta foto</span></div>
     </button>
-    <input type="file" id="fotoOrdiniInputScatta" style="display: none;" accept="image/*" capture="camera">
+    <input type="file" id="fotoOrdiniInputScatta" style="display: none;" accept="image/*" capture="camera" onchange="checkImage(this,event)">
     <button class="bottom-control-bar-button" onclick="getElencoFotoOrdini()">
 		<div><i class="fal fa-inbox-in"></i></div>
 		<div><span>Aggiorna</span></div>

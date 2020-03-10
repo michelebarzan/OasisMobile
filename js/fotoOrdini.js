@@ -1,4 +1,5 @@
 var nomePagina="Foto ordini";
+var files;
 var pageInfo=
 {
     pagina:"fotoOrdini.html",
@@ -20,6 +21,9 @@ function searchFotoOrdini(value)
 }
 async function getElencoFotoOrdini()
 {
+    var container=document.getElementById("containerFotoOrdini");
+    container.innerHTML="";
+    getFaSpinner(container,"container","Caricamento in corso...");
     document.getElementById("searcBarFotoOrdini").value="";
     var pathBarFotoOrdini=document.getElementById("pathBarFotoOrdini");
     pathBarFotoOrdini.innerHTML="";
@@ -33,8 +37,7 @@ async function getElencoFotoOrdini()
     pathBarFotoOrdini.appendChild(button);
 
     var ordini=await getFotoOrdini();
-    var container=document.getElementById("containerFotoOrdini");
-    container.innerHTML="";
+    removeFaSpinner("container");
     goToTop();
     ordini.forEach(ordine => 
     {
@@ -223,5 +226,61 @@ function getFotoOrdini()
             else
                 resolve([]);
         });
+    });
+}
+function checkImage(input)
+{
+    var formats=["jpg","png","jpeg"];
+
+    var outerContainer=document.createElement("div");
+    outerContainer.setAttribute("class","popup-foto-ordini-outer-container");
+
+    files=input.files;
+    console.log(files);
+    var i=0;
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","align-items: center;justify-content: start;flex-wrap: wrap;flex-direction:row;min-height:120px;");
+
+    files.forEach(function(file)
+    {
+        var nameArray=file.name.split(".");
+        var format=nameArray.slice(-1)[0];
+        if(formats.includes(format))
+        {
+            var img=document.createElement("img");
+            img.setAttribute("id","popupFotoOrdiniImgPreview"+i);
+            row.appendChild(img);
+            
+            i++;
+        }
+    });
+
+    outerContainer.appendChild(row);
+
+    Swal.fire(
+    {
+        width:"100%",
+        title: "Titolo",
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-title")[0].style.color="gray";
+                    document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+
+                    /*
+                    var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#popupFotoOrdiniImgPreview"+i).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[i]);
+                    */
+                },
+        showCloseButton:true,
+        showConfirmButton:false,
+        showCancelButton:false,
+        html:outerContainer.outerHTML
     });
 }
