@@ -66,6 +66,7 @@ async function sincronizzaFotoOrdini()
             else
             {
                 getSystemToast("<i class='fal fa-check-circle'></i><span>Foto sincronizzate</span>");
+                setTimeout(function(){ removeSystemToast(); }, 5000);
                 getElencoFotoOrdini();
             }
         }
@@ -198,6 +199,7 @@ async function getElencoFotoOrdine(ordine,stazione)
     var container=document.getElementById("containerFotoOrdini");
     container.innerHTML="";
     var fotoOrdine=await getFotoOrdine(ordine,stazione);
+    console.log(fotoOrdine);
     fotoOrdine.forEach(foto => 
     {
         var fotoOuterContainer=document.createElement("button");
