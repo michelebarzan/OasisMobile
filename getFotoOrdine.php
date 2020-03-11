@@ -12,7 +12,9 @@
 	$server_adress="remote.oasisgroup.it";
     $path="http://$server_adress/oasisfotoproduzione/FotoProduzioneAndroid/";
 
-    $query2="SELECT DISTINCT dbo.registrazioni_produzione.ordine, dbo.registrazioni_produzione.stazione, REPLACE(REPLACE(dbo.allegati_registrazioni_produzione.percorso, '+', ''), '//srv-01/Produzione/', '') AS percorso FROM dbo.allegati_registrazioni_produzione INNER JOIN dbo.registrazioni_produzione ON dbo.allegati_registrazioni_produzione.registrazione_produzione = dbo.registrazioni_produzione.id_registrazione WHERE ordine='$ordine' AND stazione='$stazione'";	
+    $query2="SELECT DISTINCT percorso
+            FROM dbo.allegati_registrazioni_produzione
+            WHERE (percorso LIKE '%/$ordine/%') AND (percorso LIKE '%$stazione/%')";	
     $result2=sqlsrv_query($conn,$query2);
     if($result2==TRUE)
     {
