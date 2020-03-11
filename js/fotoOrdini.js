@@ -10,8 +10,32 @@ var pageInfo=
 
 async function onloadfotoOrdini()
 {
+    chekcSincronizzazione();
     getElencoFotoOrdini();
     addTopButton();
+}
+function chekcSincronizzazione()
+{
+    $.get("chekcSincronizzazioneFotoOrdini.php",
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            console.log(response);
+            /*if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(response);
+                resolve([]);
+            }
+            else
+                resolve(JSON.parse(response));*/
+        }
+        else
+        {
+
+        }
+    });
 }
 function searchFotoOrdini(value)
 {
@@ -228,7 +252,7 @@ function getFotoOrdini()
         });
     });
 }
-function checkImage(input)
+async function checkImage(input)
 {
     var formats=["jpg","png","jpeg"];
 
@@ -239,9 +263,14 @@ function checkImage(input)
     console.log(files);
     var i=0;
 
+    var row1=document.createElement("div");
+    row1.setAttribute("class","popup-foto-ordini-row");
+    row1.setAttribute("id","nFotoOrdini");
+    row1.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline");
+
     var row=document.createElement("div");
     row.setAttribute("class","popup-foto-ordini-row");
-    row.setAttribute("style","align-items: center;justify-content: start;flex-wrap: wrap;flex-direction:row;min-height:120px;");
+    row.setAttribute("style","justify-content: start;flex-wrap: wrap;flex-direction:row;min-height:120px;max-height:330px;overflow-y:auto");
 
     files.forEach(function(file)
     {
@@ -252,35 +281,183 @@ function checkImage(input)
             var img=document.createElement("img");
             img.setAttribute("id","popupFotoOrdiniImgPreview"+i);
             row.appendChild(img);
-            
             i++;
         }
     });
+
+    var nFoto=i;
+    row1.innerHTML=nFoto+" foto selezionate";
+    outerContainer.appendChild(row1);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:10px;margin-top:10px;text-decoration:underline");
+    row.innerHTML="Stazione";
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:15px");
+
+    var selectStazione=document.createElement("select");
+    selectStazione.setAttribute("id","popupFotoOrdiniSelectStazione");
+    var stazioni=await getStazioni();
+    stazioni.forEach(function (stazione)
+    {
+        var option=document.createElement("option");
+        option.setAttribute("value",stazione);
+        option.innerHTML=stazione;
+        selectStazione.appendChild(option);
+    });
+    row.appendChild(selectStazione);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:10px;text-decoration:underline");
+    row.innerHTML="Ordine";
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:15px");
+
+    var inputOrdine=document.createElement("input");
+    inputOrdine.setAttribute("id","popupFotoOrdiniInputOrdine");
+    inputOrdine.setAttribute("type","text");
+    row.appendChild(inputOrdine);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","width:100%;flex-direction:row;align-items:center;justify-content:space-evenly;margin-top:10px");
+
+    var confirmButton=document.createElement("button");
+    confirmButton.setAttribute("id","popupFotoOrdiniConfirmButton");
+    confirmButton.setAttribute("onclick","uploadFotoOrdine(this)");
+    confirmButton.innerHTML='<span>CONFERMA</span><i class="fad fa-paper-plane"></i>';
+    row.appendChild(confirmButton);
 
     outerContainer.appendChild(row);
 
     Swal.fire(
     {
+        position:"top",
         width:"100%",
-        title: "Titolo",
+        background:"#404040",
+        title: "Caricamento foto ordine",
         onOpen : function()
                 {
-                    document.getElementsByClassName("swal2-title")[0].style.color="gray";
+                    document.getElementsByClassName("swal2-title")[0].style.color="#EBEBEB";
                     document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                    document.getElementsByClassName("swal2-title")[0].style.fontFamily="'Quicksand',sans-serif";
+                    document.getElementsByClassName("swal2-title")[0].style.fontWeight="normal";
+                    document.getElementsByClassName("swal2-popup")[0].style.paddingLeft="0px";
+                    document.getElementsByClassName("swal2-popup")[0].style.paddingRight="0px";
 
-                    /*
-                    var reader = new FileReader();
+                    for (let index = 0; index < i; index++)
+                    {
+                        var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $("#popupFotoOrdiniImgPreview"+i).attr('src', e.target.result);
-            }
+                        reader.onload = function (e) {
+                            $("#popupFotoOrdiniImgPreview"+index).attr('src', e.target.result);
+                        }
 
-            reader.readAsDataURL(input.files[i]);
-                    */
+                        reader.readAsDataURL(files[index]);
+                    }
                 },
         showCloseButton:true,
         showConfirmButton:false,
         showCancelButton:false,
         html:outerContainer.outerHTML
+    });
+}
+function getStazioni()
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getStazioni.php",
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                {
+                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                    console.log(response);
+                    resolve([]);
+                }
+                else
+                    resolve(JSON.parse(response));
+            }
+            else
+                resolve([]);
+        });
+    });
+}
+async function uploadFotoOrdine(button)
+{
+    button.disabled=true;
+    var icon=button.getElementsByTagName("i")[0];
+    icon.className="fad fa-spinner-third fa-spin";
+
+    var stazione=document.getElementById("popupFotoOrdiniSelectStazione").value;
+    var ordine=document.getElementById("popupFotoOrdiniInputOrdine").value;
+
+    var error=false;
+
+    if(stazione==null || ordine==null || stazione=="" || ordine=="" || files.length==0)
+    {
+        window.alert("Errore\n\nCompila tutti i campi");
+        icon.className="fad fa-paper-plane";
+        button.disabled=false;
+    }
+    else
+    {
+        for (let index = 0; index < files.length; index++) 
+        {
+            const file = files[index];
+            var response=await uploadFoto(file,stazione,ordine);
+            if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+                error=true;
+        }
+        if(error)
+        {
+            window.alert("Errore\n\nImpossibile caricare le foto.\nSe il problema persiste contatta l'amministratore");
+            console.log(response);
+            button.disabled=false;
+            icon.className="fad fa-exclamation-triangle";
+            setTimeout(function(){ icon.className="fad fa-paper-plane"; }, 3000);
+        }
+        else
+        {
+            Swal.fire({width:"100%",background:"#404040",icon:"success",title: "Le foto dell' ordine sono state caricate",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="#EBEBEB";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+        }
+    }
+}
+function uploadFoto(file,stazione,ordine)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        var data= new FormData();
+        data.append('file',file);
+        data.append("stazione",stazione);
+        data.append("ordine",ordine);
+        $.ajax(
+        {
+            url:'uploadFotoOrdine.php',
+            data:data,
+            processData:false,
+            contentType:false,
+            type:'POST',
+            success:function(response)
+                {
+                    resolve(response);
+                }
+        });
     });
 }
