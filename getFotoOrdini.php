@@ -5,7 +5,7 @@
 
     $ordini=[];
 
-    $query2="SELECT DISTINCT dbo.registrazioni_produzione.ordine FROM dbo.allegati_registrazioni_produzione INNER JOIN dbo.registrazioni_produzione ON dbo.allegati_registrazioni_produzione.registrazione_produzione = dbo.registrazioni_produzione.id_registrazione ORDER BY ordine DESC";	
+    $query2="SELECT DISTINCT ordine FROM dbo.view_allegati_registrazioni ORDER BY ordine DESC";	
     $result2=sqlsrv_query($conn,$query2);
     if($result2==TRUE)
     {

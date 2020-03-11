@@ -12,9 +12,7 @@
 	$server_adress="remote.oasisgroup.it";
     $path="http://$server_adress/oasisfotoproduzione/FotoProduzioneAndroid/";
 
-    $query2="SELECT DISTINCT percorso
-            FROM dbo.allegati_registrazioni_produzione
-            WHERE (percorso LIKE '%/$ordine/%') AND (percorso LIKE '%$stazione/%')";	
+    $query2="SELECT DISTINCT percorso FROM dbo.view_allegati_registrazioni WHERE ordine='$ordine' AND stazione = '$stazione'";	
     $result2=sqlsrv_query($conn,$query2);
     if($result2==TRUE)
     {

@@ -7,7 +7,7 @@ $ordine=$_REQUEST['ordine'];
 
 $stazioniOrdine=[];
 
-$query2="SELECT DISTINCT dbo.registrazioni_produzione.ordine, dbo.registrazioni_produzione.stazione FROM dbo.allegati_registrazioni_produzione INNER JOIN dbo.registrazioni_produzione ON dbo.allegati_registrazioni_produzione.registrazione_produzione = dbo.registrazioni_produzione.id_registrazione WHERE ordine='$ordine'";	
+$query2="SELECT DISTINCT stazione FROM dbo.view_allegati_registrazioni WHERE ordine='$ordine'";	
 $result2=sqlsrv_query($conn,$query2);
 if($result2==TRUE)
 {

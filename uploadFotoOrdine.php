@@ -22,7 +22,7 @@
     
     if (move_uploaded_file($_FILES["file"]["tmp_name"],$target_file)) 
     {
-        $query3="INSERT INTO allegati_registrazioni_produzione ([percorso]) VALUES ('//srv-dati/Produzione/FotoProduzioneAndroid/$ordine/$stazione/".basename($_FILES["file"]["name"])."')";
+        $query3="INSERT INTO allegati_registrazioni_produzione ([percorso]) VALUES ('//srv-dati/Produzione/FotoProduzioneAndroid/$ordine/+$stazione/".basename($_FILES["file"]["name"])."')";
         $result3=sqlsrv_query($conn,$query3);
         if($result3==FALSE)
         {
