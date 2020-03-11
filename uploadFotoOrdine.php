@@ -11,12 +11,12 @@
 		mkdir('\\\\srv-dati\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione);
     
     $target_dir='\\\\srv-dati\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'\\'.$stazione.'\\';*/
-    if(!is_dir('\\\\DESKTOP-L5K6JOC\\share\\Produzione\\FotoProduzioneAndroid\\'.$ordine))
-		mkdir('\\\\DESKTOP-L5K6JOC\\share\\Produzione\\FotoProduzioneAndroid\\'.$ordine);
-	if(!is_dir('\\\\DESKTOP-L5K6JOC\\share\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione))
-		mkdir('\\\\DESKTOP-L5K6JOC\\share\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione);
+    if(!is_dir('\\\\srv-dati\\Produzione\\FotoProduzioneAndroid\\'.$ordine))
+		mkdir('\\\\srv-datishare\\Produzione\\FotoProduzioneAndroid\\'.$ordine);
+	if(!is_dir('\\\\srv-datishare\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione))
+		mkdir('\\\\srv-datishare\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione);
     
-    $target_dir='\\\\DESKTOP-L5K6JOC\\share\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'\\'.$stazione.'\\';
+    $target_dir='\\\\srv-datishare\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'\\'.$stazione.'\\';
     $target_file = $target_dir.basename($_FILES["file"]["name"]);
     $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
     

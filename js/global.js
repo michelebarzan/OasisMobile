@@ -85,6 +85,25 @@ window.addEventListener("load", async function(event)
     //checkOnLongTouchElements();
     observer.observe(targetNode, config);
 });
+function getSystemToast(message)
+{
+    try {
+        document.getElementById("systemToast").remove(); 
+    } catch (error) {}
+    var systemToast=document.createElement("div");
+    systemToast.setAttribute("class","system-toast-outer-container");
+    systemToast.setAttribute("id","systemToast");
+    systemToast.innerHTML=message;
+    document.body.appendChild(systemToast);
+    $("#systemToast").show(300,"swing");
+    $("#systemToast").css("display","flex");
+}
+function removeSystemToast()
+{
+    try {
+        $("#systemToast").hide(300,"swing");
+    } catch (error) {}
+}
 //----------------------------------------------------------------------------------------------------------------------------------
 function checkOnLongTouchElements()
 {

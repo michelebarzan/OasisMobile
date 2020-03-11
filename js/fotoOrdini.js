@@ -16,24 +16,63 @@ async function onloadfotoOrdini()
 }
 function chekcSincronizzazione()
 {
+    getSystemToast("<i class='fad fa-spinner-third fa-spin'></i><span>Controllo sincronizzazione...</span>");
     $.get("chekcSincronizzazioneFotoOrdini.php",
     function(response, status)
     {
         if(status=="success")
         {
-            console.log(response);
-            /*if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            removeSystemToast();
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
             {
-                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                Swal.fire({icon:"error",title: "Errore sincronizzazione. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
                 console.log(response);
-                resolve([]);
             }
             else
-                resolve(JSON.parse(response));*/
+            {
+                var missingFolders=JSON.parse(response);
+                if(missingFolders.length>0)
+                    getSystemToast("<i class='fal fa-exclamation-triangle'></i><span style='text-decoration:underline' onclick='sincronizzaFotoOrdini()'>Sincronizza foto</span>");
+                else
+                    getSystemToast("<i class='fal fa-check-circle'></i><span>Foto sincronizzate</span>");
+                }
         }
         else
         {
-
+            Swal.fire({icon:"error",title: "Errore sincronizzazione. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+            console.log(status);
+        }
+    });
+}
+async function sincronizzaFotoOrdini()
+{
+    removeSystemToast();
+    getSystemToast("<i class='fad fa-spinner-third fa-spin'></i><span>Sincronizzazione in corso...</span>");
+    var id_utente=await getSessionValue("id_utente");
+    $.post("sincronizzaFotoOrdini.php",
+    {
+        id_utente
+    },
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            removeSystemToast();
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({icon:"error",title: "Errore sincronizzazione. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(response);
+            }
+            else
+            {
+                getSystemToast("<i class='fal fa-check-circle'></i><span>Foto sincronizzate</span>");
+                getElencoFotoOrdini();
+            }
+        }
+        else
+        {
+            Swal.fire({icon:"error",title: "Errore sincronizzazione. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+            console.log(status);
         }
     });
 }
@@ -436,6 +475,7 @@ async function uploadFotoOrdine(button)
         else
         {
             Swal.fire({width:"100%",background:"#404040",icon:"success",title: "Le foto dell' ordine sono state caricate",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="#EBEBEB";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+            sincronizzaFotoOrdini();
         }
     }
 }
