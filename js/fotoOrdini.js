@@ -35,7 +35,10 @@ function chekcSincronizzazione()
                 if(missingFolders.length>0)
                     getSystemToast("<i class='fal fa-exclamation-triangle'></i><span style='text-decoration:underline' onclick='sincronizzaFotoOrdini()'>Sincronizza foto</span>");
                 else
+                {
                     getSystemToast("<i class='fal fa-check-circle'></i><span>Foto sincronizzate</span>");
+                    setTimeout(function(){ removeSystemToast(); }, 5000);
+                }
                 }
         }
         else
@@ -209,6 +212,7 @@ async function getElencoFotoOrdine(ordine,stazione)
 
         var img=document.createElement("img");
         img.setAttribute("src",foto.percorso);
+        //img.setAttribute("onerror","window.alert('error')");
         fotoOuterContainer.appendChild(img);
 
         var div=document.createElement("div");
