@@ -456,9 +456,9 @@ async function uploadFotoOrdine(button)
 
     var error=false;
 
-    if(stazione==null || ordine==null || stazione=="" || ordine=="" || files.length==0)
+    if(stazione==null || ordine==null || stazione=="" || ordine=="" || files.length==0 || ordine.length!=8)
     {
-        window.alert("Errore\n\nCompila tutti i campi");
+        window.alert("Errore\n\nCompila tutti i campi.\nRicorda: l' ordine deve essere composto da 8 caratteri");
         icon.className="fad fa-paper-plane";
         button.disabled=false;
     }
