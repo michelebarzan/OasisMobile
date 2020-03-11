@@ -19,10 +19,10 @@
             $stazione=$row2['stazione'];
             if(!is_dir('\\\\srv-dati\\Produzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione))
             {
-				/*$query3="DELETE FROM dbo.allegati_registrazioni_produzione WHERE id_allegato=".$row2['id_allegato'];	
-				$result3=sqlsrv_query($conn,$query3);*/
+				$query3="DELETE FROM dbo.allegati_registrazioni_produzione WHERE id_allegato=".$row2['id_allegato'];	
+				$result3=sqlsrv_query($conn,$query3);
             }
-			if(!is_dir('C\\xampp\\htdocs\\OasisFotoProduzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione))
+			if(!is_dir('C:\\xampp\\htdocs\\OasisFotoProduzione\\FotoProduzioneAndroid\\'.$ordine.'/'.$stazione))
             {
                 $missingFolder["ordine"]=$ordine;
                 $missingFolder["stazione"]=$stazione;

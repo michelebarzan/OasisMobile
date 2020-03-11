@@ -31,6 +31,7 @@ function chekcSincronizzazione()
             else
             {
                 var missingFolders=JSON.parse(response);
+				console.log(missingFolders);
                 if(missingFolders.length>0)
                     getSystemToast("<i class='fal fa-exclamation-triangle'></i><span style='text-decoration:underline' onclick='sincronizzaFotoOrdini()'>Sincronizza foto</span>");
                 else
