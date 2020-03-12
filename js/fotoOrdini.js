@@ -212,6 +212,7 @@ async function getElencoFotoOrdine(ordine,stazione)
 
         var img=document.createElement("img");
         img.setAttribute("src",foto.percorso);
+        img.setAttribute("onclick","expandImage(this,'"+foto.nomeFile+"')");
         //img.setAttribute("onerror","window.alert('error')");
         fotoOuterContainer.appendChild(img);
 
@@ -513,4 +514,77 @@ function uploadFoto(file,stazione,ordine)
                 }
         });
     });
+}
+function fotoOrdiniIndietro()
+{
+    nPulsanti=$("#pathBarFotoOrdini button").length;
+    console.log(nPulsanti);
+    switch (nPulsanti)
+    {
+        case 1:
+            $('#pathBarFotoOrdini button').eq(0).click();
+        break;
+        case 2:
+            $('#pathBarFotoOrdini button').eq(0).click();
+        break;
+        case 3:
+            $('#pathBarFotoOrdini button').eq(1).click();
+        break;
+    }
+}
+function expandImage(img,nomeFile)
+{
+    var src=img.getAttribute("src");
+
+    var outerContainer=document.createElement("div");
+    outerContainer.setAttribute("class","popup-expand-image-outer-container");
+
+    var actionBar=document.createElement("div");
+    actionBar.setAttribute("class","popup-expand-image-action-bar");
+
+    var span=document.createElement("span");
+    span.innerHTML=nomeFile;
+    actionBar.appendChild(span);
+
+    var button=document.createElement("button");
+    button.setAttribute("style","font-size:14px");
+    button.setAttribute("class","popup-expand-image-action-bar-download-button");
+    button.setAttribute("onclick","downloadFotoOrdine('"+src+"')");
+    button.innerHTML='<i class="fal fa-cloud-download"></i>';
+    actionBar.appendChild(button);
+
+    var button=document.createElement("button");
+    button.setAttribute("style","margin-left:10px;font-size:18px");
+    button.setAttribute("class","popup-expand-image-action-bar-close-button");
+    button.setAttribute("onclick","Swal.close()");
+    button.innerHTML='<i class="fal fa-times"></i>';
+    actionBar.appendChild(button);
+
+    outerContainer.appendChild(actionBar);
+
+    var img=document.createElement("img");
+    img.setAttribute("src",src);
+
+    outerContainer.appendChild(img);
+
+    Swal.fire(
+    {
+        //position:"top",
+        width:"100%",
+        background:"#404040",
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                    document.getElementsByClassName("swal2-popup")[0].style.borderRadius="4px";
+                    /*document.getElementsByClassName("swal2-popup")[0].style.paddingRight="0px";*/
+                },
+        showCloseButton:false,
+        showConfirmButton:false,
+        showCancelButton:false,
+        html:outerContainer.outerHTML
+    });
+}
+function downloadFotoOrdine(src)
+{
+    window.open("downloadFotoOrdine.php?src="+src);
 }
