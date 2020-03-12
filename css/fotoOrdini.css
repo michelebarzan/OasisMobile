@@ -267,6 +267,12 @@
     font-size: 12px;
     color:#EBEBEB;
     letter-spacing: 2px;
+    display: flex;
+    flex-direction: row;
+}
+#popupFotoOrdiniConfirmButton span div
+{
+    margin-left: 5px;
 }
 #popupFotoOrdiniConfirmButton i
 {

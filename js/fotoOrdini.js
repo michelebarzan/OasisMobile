@@ -449,7 +449,10 @@ async function uploadFotoOrdine(button)
 {
     button.disabled=true;
     var icon=button.getElementsByTagName("i")[0];
+    var span=button.getElementsByTagName("span")[0];
+    span.innerHTML="CARICAMENTO<div id='progressoCaricamentoUploadFotoOrdine'>1</div>/"+files.length;
     icon.className="fad fa-spinner-third fa-spin";
+    let progressoCaricamentoUploadFotoOrdine=1;
 
     var stazione=document.getElementById("popupFotoOrdiniSelectStazione").value;
     var ordine=document.getElementById("popupFotoOrdiniInputOrdine").value;
@@ -460,12 +463,15 @@ async function uploadFotoOrdine(button)
     {
         window.alert("Errore\n\nCompila tutti i campi.\nRicorda: l' ordine deve essere composto da 8 caratteri");
         icon.className="fad fa-paper-plane";
+        span.innerHTML="CONFERMA";
         button.disabled=false;
     }
     else
     {
         for (let index = 0; index < files.length; index++) 
         {
+            document.getElementById("progressoCaricamentoUploadFotoOrdine").innerHTML=progressoCaricamentoUploadFotoOrdine;
+            progressoCaricamentoUploadFotoOrdine++;
             const file = files[index];
             var response=await uploadFoto(file,stazione,ordine);
             if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
@@ -475,9 +481,9 @@ async function uploadFotoOrdine(button)
         {
             window.alert("Errore\n\nImpossibile caricare le foto.\nSe il problema persiste contatta l'amministratore");
             console.log(response);
-            button.disabled=false;
             icon.className="fad fa-exclamation-triangle";
-            setTimeout(function(){ icon.className="fad fa-paper-plane"; }, 3000);
+            span.innerHTML="ERRORE";
+            setTimeout(function(){ icon.className="fad fa-paper-plane"; button.disabled=false;span.innerHTML="CONFERMA";}, 3000);
         }
         else
         {
