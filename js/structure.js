@@ -487,6 +487,7 @@ function restoreDefaultMainSettings()
 }
 function gotopath(fileName)
 {
+    removeSystemToast();
     $("#pageContainer").hide();
     unloadModules(pageInfo.fileName);
     document.getElementById("pageContainer").innerHTML="";

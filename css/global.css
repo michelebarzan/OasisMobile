@@ -75,14 +75,14 @@
 }
 .bottom-control-bar-button div i
 {
-    height:25px ;
+    height:23px ;
     font-size: 20px;
     text-align: center;
 }
 .bottom-control-bar-button div span
 {
     height:10px;
-    font-size: 12px;
+    font-size: 10px;
     font-family: 'Quicksand',sans-serif;
     font-weight: bold;
     text-align: center;
