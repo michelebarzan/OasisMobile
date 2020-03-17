@@ -1,0 +1,23 @@
+
+<div class="bottom-control-bar">
+    <button class="bottom-control-bar-button" onclick="cloudFotoIndietro()">
+      <div><i class="fal fa-long-arrow-left"></i></div>
+      <div><span>Indietro</span></div>
+    </button>
+    <button class="bottom-control-bar-button" onclick="document.getElementById('cloudFotoInputScatta').click()">
+        <div><i class="fal fa-camera-alt"></i></div>
+        <div><span>Carica foto</span></div>
+    </button>
+    <input type="file" id="cloudFotoInputScatta" style="display: none;" accept="image/*" capture="camera" onchange="checkImage(this,event)" multiple>
+    <button class="bottom-control-bar-button" onclick="nuovaCarella()">
+        <div><i class="fal fa-folder-plus"></i></div>
+        <div><span>Nuova cartella</span></div>
+    </button>
+  </div>
+  <input type="text" id="searcBarCloudFoto" placeholder="Cerca..." onkeyup="searchCloudFoto(this.value.toLowerCase())">
+  <div id="pathBarCloudFoto">
+      <i class="fas fa-folder"></i>
+      <div id="innerPathBarCloudFoto"></div>
+  </div>
+  <div id="containerCloudFoto"></div>
+  
