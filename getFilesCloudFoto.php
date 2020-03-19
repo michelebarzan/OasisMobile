@@ -20,6 +20,7 @@
             $file["cartella"]=$row2['cartella'];
             $file["nomeFile"]=$row2['nomeFile'];
             $file["dataOra"]=$row2['dataOra'];
+            $file["descrizione"]=$row2['descrizione'];
             $file["tipo"]='file';
             $file["server"]=$server;
             $file["path"]=getPath($conn,$row2['cartella']).$row2['nomeFile'];

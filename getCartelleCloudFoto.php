@@ -20,6 +20,7 @@
             $cartella["cartella"]=$row2['cartella'];
             $cartella["cartella_padre"]=$row2['cartella_padre'];
             $cartella["dataOra"]=$row2['dataOra'];
+            $cartella["descrizione"]=$row2['descrizione'];
             $cartella["tipo"]='cartella';
             $cartella["server"]=$server;
             $cartella["path"]=getPath($conn,$row2['cartella_padre']).$row2['cartella'];

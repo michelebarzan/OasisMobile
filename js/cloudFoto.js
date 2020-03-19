@@ -131,9 +131,13 @@ async function getElencoContenutoCartella(id_cartella)
         var button=document.createElement("button");
         button.setAttribute("class","cloud-foto-item-button");
         if(item.tipo=="cartella")
+        {
+            button.setAttribute("onlongtouch","clickActionButton("+item.id_cartella+")");
             button.setAttribute("onclick","getElencoContenutoCartella('"+item.id_cartella+"')");
+        }
         if(item.tipo=="file")
         {
+            button.setAttribute("onlongtouch","clickActionButton("+item.id_file+")");
             button.setAttribute("onclick","expandImage(this.firstChild,'"+item.nomeFile+"')");
         }
         if(item.tipo=="cartella")
@@ -153,6 +157,14 @@ async function getElencoContenutoCartella(id_cartella)
         name.setAttribute("class","cloud-foto-item-name");
         if(item.tipo=="cartella")
         {
+            name.setAttribute("id","cloudFotoItemName"+item.id_cartella);
+        }
+        if(item.tipo=="file")
+        {
+            name.setAttribute("id","cloudFotoItemName"+item.id_file);
+        }
+        if(item.tipo=="cartella")
+        {
             name.innerHTML=item.cartella;
         }
         if(item.tipo=="file")
@@ -161,17 +173,31 @@ async function getElencoContenutoCartella(id_cartella)
         }
         button.appendChild(name);
 
-        outerContainer.appendChild(button);
+        //outerContainer.appendChild(button);
 
         var date=document.createElement("div");
         date.setAttribute("class","cloud-foto-item-date");
         var dataOraString=item.dataOraString.replace(" ","<br>");
         dataOraString=dataOraString.split(".")[0];
         date.innerHTML=dataOraString;
-        outerContainer.appendChild(date);
+        //outerContainer.appendChild(date);
+        button.appendChild(date);
+
+        outerContainer.appendChild(button);
 
         var actionButton=document.createElement("button");
         actionButton.setAttribute("class","cloud-foto-item-action-button");
+        if(item.tipo=="cartella")
+        {
+            actionButton.setAttribute("id","cloudFotoItemActionButton"+item.id_cartella);
+            actionButton.setAttribute("onclick","actionMenuCloudFoto(event,'"+item.tipo+"','"+item.cartella+"','"+item.descrizione+"',"+item.id_cartella+")");
+        }
+        if(item.tipo=="file")
+        {
+            actionButton.setAttribute("id","cloudFotoItemActionButton"+item.id_file);
+            actionButton.setAttribute("onclick","actionMenuCloudFoto(event,'"+item.tipo+"','"+item.nomeFile+"','"+item.descrizione+"',"+item.id_file+")");
+        }
+
         actionButton.innerHTML='<i class="fal fa-ellipsis-v"></i>';
         
         outerContainer.appendChild(actionButton);
@@ -179,6 +205,322 @@ async function getElencoContenutoCartella(id_cartella)
         container.appendChild(outerContainer);
 
         i++;
+    });
+}
+function clickActionButton()
+{
+    var id=onlongtouchArguments[0];
+    document.getElementById("cloudFotoItemActionButton"+id).click();
+}
+var requeryElencoContenutoCartella;
+function actionMenuCloudFoto(event,tipo,nome,descrizione,id)
+{
+    requeryElencoContenutoCartella=true;
+    var outerContainer=document.createElement("div");
+    outerContainer.setAttribute("class","popup-cloud-foto-outer-container");
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","width:100%;color:#ddd;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline");
+    row.innerHTML="Nome "+tipo;
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","width:100%;margin-bottom:5px;justify-content:flex-start");
+
+    var input=document.createElement("input");
+    input.setAttribute("type","text");
+    input.setAttribute("class","popup-cloud-foto-input");
+    input.setAttribute("id","popupCloudFotoInputName");
+    if(tipo=="cartella")
+    {
+        input.setAttribute("value",nome);
+    }
+    if(tipo=="file")
+    {
+        var formato=nome.split(".")[1];
+        input.setAttribute("value",nome.replace("."+formato,""));
+        input.setAttribute("formato",formato);
+    }
+    row.appendChild(input);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","width:100%;color:#ddd;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline");
+    row.innerHTML="Descrizione";
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("style","width:100%;margin-bottom:5px;justify-content:flex-start");
+
+    var textarea=document.createElement("textarea");
+    textarea.setAttribute("class","popup-cloud-foto-textarea");
+    textarea.setAttribute("id","popupCloudFotoTextareaDescrizione");
+    if(descrizione!="null")
+        textarea.innerHTML=descrizione;
+    row.appendChild(textarea);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-cloud-foto-row");
+    row.setAttribute("style","width:100%;flex-direction:row;align-items:center;justify-content:space-between;flex-direction:row");
+
+    var rinominaButton=document.createElement("button");
+    rinominaButton.setAttribute("class","popup-cloud-foto-button");
+    rinominaButton.setAttribute("style","width:calc(50% - 5px);");
+    rinominaButton.setAttribute("onclick","salvaModificheFileCartellaCloudFoto('"+tipo+"',"+id+")");
+    rinominaButton.innerHTML='<span>Salva modifiche</span><i class="fas fa-save"></i>';
+    row.appendChild(rinominaButton);
+
+    var eliminaButton=document.createElement("button");
+    eliminaButton.setAttribute("class","popup-cloud-foto-button");
+    eliminaButton.setAttribute("style","width:calc(50% - 5px);");
+    eliminaButton.setAttribute("onclick","eliminaFileCartellaCloudFoto('"+tipo+"',"+id+",'"+nome+"')");
+    eliminaButton.innerHTML='<span>Elimina '+tipo+'</span><i class="fad fa-trash"></i>';
+    row.appendChild(eliminaButton);
+
+    outerContainer.appendChild(row);
+
+    Swal.fire
+    ({
+        //position:"top",
+        width:"100%",
+        background:"#404040",
+        title:"Menù "+tipo+ "&nbsp<u><i>"+nome+"</i></u>",
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-title")[0].style.fontWeight="normal";
+                    document.getElementsByClassName("swal2-title")[0].style.maxWidth="70%";
+                    document.getElementsByClassName("swal2-title")[0].style.boxSizing="border-box";
+                    document.getElementsByClassName("swal2-title")[0].style.marginLeft="10px";
+                    document.getElementsByClassName("swal2-title")[0].style.marginTop="15px";
+                    document.getElementsByClassName("swal2-title")[0].style.marginRight="10px";
+                    document.getElementsByClassName("swal2-title")[0].style.whiteSpace="nowrap";
+                    document.getElementsByClassName("swal2-title")[0].style.overflow="hidden";
+                    document.getElementsByClassName("swal2-title")[0].style.textOverflow="ellipsis";
+                    document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+
+                    $("textarea").keypress(function(event){
+                        var ew = event.which;
+                        if(ew == 32)
+                            return true;
+                        if(48 <= ew && ew <= 57)
+                            return true;
+                        if(65 <= ew && ew <= 90)
+                            return true;
+                        if(97 <= ew && ew <= 122)
+                            return true;
+                        return false;
+                    });
+                    $("input").keypress(function(event){
+                        var ew = event.which;
+                        if(ew == 32)
+                            return true;
+                        if(48 <= ew && ew <= 57)
+                            return true;
+                        if(65 <= ew && ew <= 90)
+                            return true;
+                        if(97 <= ew && ew <= 122)
+                            return true;
+                        return false;
+                    });
+                },
+        showCloseButton:true,
+        showConfirmButton:false,
+        showCancelButton:false,
+        html:outerContainer.outerHTML
+    }).then((result) => 
+    {
+        /*modificaInformazioniCloudFoto(tipo,id,'descrizione');
+        if(requeryElencoContenutoCartella)
+            getElencoContenutoCartella(cartella_corrente);*/
+    });
+}
+async function salvaModificheFileCartellaCloudFoto(tipo,id)
+{
+    var cartella=await getNomeCartellaCloudFoto(cartella_corrente);
+    var path=await getPath(cartella_corrente,cartella);
+    var pathString="";
+    path.forEach(function(item)
+    {
+        if(item.cartella!=null)
+            pathString+=item.cartella+"/";
+    });
+
+    if(tipo=="cartella")
+    {
+        var tabella="cartelle_cloud_foto";
+    }
+    if(tipo=="file")
+    {
+        var tabella="files_cloud_foto";
+    }
+    var colonna="descrizione";
+    var valore=document.getElementById("popupCloudFotoTextareaDescrizione").value;
+    $.post("modificaInformazioniCloudFoto.php",
+    {
+        tabella,
+        valore,
+        colonna,
+        id,
+        tipo
+    },
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(response);
+            }
+            else
+            {
+                if(tipo=="cartella")
+                {
+                    var colonna="cartella";
+                    var valore=document.getElementById("popupCloudFotoInputName").value;
+                }
+                if(tipo=="file")
+                {
+                    var colonna="nomeFile";
+                    var valore=document.getElementById("popupCloudFotoInputName").value+"."+document.getElementById("popupCloudFotoInputName").getAttribute("formato");
+                }
+                $.post("modificaInformazioniCloudFoto.php",
+                {
+                    tabella,
+                    valore,
+                    colonna,
+                    id,
+                    tipo
+                },
+                function(response, status)
+                {
+                    if(status=="success")
+                    {
+                        if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                        {
+                            Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                            console.log(response);
+                        }
+                        else
+                        {
+                            var nameContainer=document.getElementById("cloudFotoItemName"+id);
+                            var oldName=nameContainer.innerHTML;
+                            var newName=valore;
+                            $.post("rinominaFileCartellaCloudFoto.php",
+                            {
+                                oldName,
+                                newName,
+                                pathString
+                            },
+                            function(response, status)
+                            {
+                                if(status=="success")
+                                {
+                                    if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                                    {
+                                        Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                                        console.log(response);
+                                    }
+                                    else
+                                    {
+                                        //console.log("ok");
+                                        Swal.close();
+                                        getElencoContenutoCartella(cartella_corrente);
+                                    }
+                                }
+                                else
+                                {
+                                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                                    console.log(status);
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                        console.log(status);
+                    }
+                });
+            }
+        }
+        else
+        {
+            Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+            console.log(status);
+        }
+    });
+}
+async function eliminaFileCartellaCloudFoto(tipo,id,nome)
+{
+    var cartella=await getNomeCartellaCloudFoto(cartella_corrente);
+    var path=await getPath(cartella_corrente,cartella);
+    var pathString="";
+    path.forEach(function(item)
+    {
+        if(item.cartella!=null)
+            pathString+=item.cartella+"/";
+    });
+    if(tipo=="cartella")
+    {
+        var title="Vuoi eliminare la cartella e tutto il suo contenuto?";
+        var tabella="cartelle_cloud_foto";
+    }
+    if(tipo=="file")
+    {
+        var title="Vuoi eliminare il file?";
+        var tabella="files_cloud_foto";
+    }
+    Swal.fire
+    ({
+        icon:"warning",
+        title,
+        confirmButtonText:"Conferma",
+        confirmButtonColor:"#DA6969",
+        showCancelButton:true,
+        cancelButtonText:"Annulla",
+        showCloseButton:true,
+        onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}
+    }).then((result) => 
+    {
+        if (result.value)
+        {
+            $.post("eliminaFileCartellaCloudFoto.php",
+            {
+                id,
+                tipo,
+                pathString,
+                nome
+            },
+            function(response, status)
+            {
+                if(status=="success")
+                {
+                    if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                    {
+                        Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                        console.log(response);
+                    }
+                    else
+                    {
+                        //console.log("ok");
+                        getElencoContenutoCartella(cartella_corrente);
+                    }
+                }
+                else
+                {
+                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                    console.log(status);
+                }
+            });
+        }
     });
 }
 function getNomeCartellaCloudFoto(id_cartella)
@@ -581,89 +923,6 @@ async function checkImage(input)
         }
     }
 }
-/*async function checkImage(input)
-{  
-    //var formats=["jpg","png","jpeg"];
-
-    var outerContainer=document.createElement("div");
-    outerContainer.setAttribute("class","popup-cloud-foto-outer-container");
-
-    files=input.files;
-    //console.log(files);
-    var i=0;
-
-    var row1=document.createElement("div");
-    row1.setAttribute("class","popup-cloud-foto-row");
-    row1.setAttribute("id","nCloudFoto");
-    row1.setAttribute("style","padding-left:5px;padding-right:5px;width:100%;color:#EBEBEB;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline");
-
-    var row=document.createElement("div");
-    row.setAttribute("class","popup-cloud-foto-row");
-    row.setAttribute("style","justify-content: start;flex-wrap: wrap;flex-direction:row;min-height:120px;max-height:330px;overflow-y:auto");
-
-    files.forEach(function(file)
-    {
-        var nameArray=file.name.split(".");
-        var format=nameArray.slice(-1)[0];
-        //if(formats.includes(format))
-        //{
-            var img=document.createElement("img");
-            img.setAttribute("id","popupCloudFotoImgPreview"+i);
-            row.appendChild(img);
-            i++;
-        //}
-    });
-
-    var nFoto=i;
-    row1.innerHTML=nFoto+" foto selezionate";
-    outerContainer.appendChild(row1);
-
-    outerContainer.appendChild(row);
-
-    var row=document.createElement("div");
-    row.setAttribute("class","popup-cloud-foto-row");
-    row.setAttribute("style","width:100%;flex-direction:row;align-items:center;justify-content:space-evenly;margin-top:10px");
-
-    var confirmButton=document.createElement("button");
-    confirmButton.setAttribute("id","popupCloudFotoConfirmButton");
-    confirmButton.setAttribute("onclick","uploadCloudFoto(this)");
-    confirmButton.innerHTML='<span>CONFERMA</span><i class="fad fa-paper-plane"></i>';
-    row.appendChild(confirmButton);
-
-    outerContainer.appendChild(row);
-
-    Swal.fire(
-    {
-        position:"top",
-        width:"100%",
-        background:"#404040",
-        title: "Caricamento foto",
-        onOpen : function()
-                {
-                    document.getElementsByClassName("swal2-title")[0].style.color="#EBEBEB";
-                    document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
-                    document.getElementsByClassName("swal2-title")[0].style.fontFamily="'Quicksand',sans-serif";
-                    document.getElementsByClassName("swal2-title")[0].style.fontWeight="normal";
-                    document.getElementsByClassName("swal2-popup")[0].style.paddingLeft="0px";
-                    document.getElementsByClassName("swal2-popup")[0].style.paddingRight="0px";
-
-                    for (let index = 0; index < i; index++)
-                    {
-                        var reader = new FileReader();
-
-                        reader.onload = function (e) {
-                            $("#popupCloudFotoImgPreview"+index).attr('src', e.target.result);
-                        }
-
-                        reader.readAsDataURL(files[index]);
-                    }
-                },
-        showCloseButton:true,
-        showConfirmButton:false,
-        showCancelButton:false,
-        html:outerContainer.outerHTML
-    });
-}*/
 async function uploadCloudFoto(button)
 {
     button.disabled=true;
@@ -740,3 +999,27 @@ function uploadFoto(file,id_utente,pathString)
         });
     });
 }
+$("textarea").keypress(function(event){
+    var ew = event.which;
+    if(ew == 32)
+        return true;
+    if(48 <= ew && ew <= 57)
+        return true;
+    if(65 <= ew && ew <= 90)
+        return true;
+    if(97 <= ew && ew <= 122)
+        return true;
+    return false;
+});
+$("input").keypress(function(event){
+    var ew = event.which;
+    if(ew == 32)
+        return true;
+    if(48 <= ew && ew <= 57)
+        return true;
+    if(65 <= ew && ew <= 90)
+        return true;
+    if(97 <= ew && ew <= 122)
+        return true;
+    return false;
+});
