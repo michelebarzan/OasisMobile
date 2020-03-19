@@ -1023,3 +1023,9 @@ $("input").keypress(function(event){
         return true;
     return false;
 });
+function searchCloudFoto(value)
+{
+    $(".cloud-foto-item-outer-container").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+}
