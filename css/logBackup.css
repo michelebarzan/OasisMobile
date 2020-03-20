@@ -1,3 +1,9 @@
+#pageContainer
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 #registroBackupContainer
 {
     margin: 10px;
