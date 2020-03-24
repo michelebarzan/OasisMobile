@@ -54,9 +54,7 @@ async function getElencoUtenti()
         var button=document.createElement("button");
         button.setAttribute("class","gestione-utenti-item-button");
         var JSONutente=JSON.stringify(utente);
-        /*button.setAttribute("onclick","popupAnagraficaUtente('"+JSONutente+"')");
-        button.setAttribute("onlongtouch","popupAzioniUtenti("+utente.id_utente+",'"+utente.username+"','"+utente.eliminato+"')");*/
-        button.setAttribute("onlongtouch","popupAnagraficaUtente("+utente.id_utente+")");
+        //button.setAttribute("onlongtouch","popupAnagraficaUtente("+utente.id_utente+")");
         button.setAttribute("onclick","popupAzioniUtenti("+utente.id_utente+",'"+utente.username+"','"+utente.eliminato+"')");
         
         var img=document.createElement("img");
@@ -260,12 +258,14 @@ async function popupPermessiUtente(JSONutente)
             {
                 var row=document.createElement("div");
                 row.setAttribute("class","popup-foto-ordini-row");
-                row.setAttribute("style","width:100%;display:flex;flex-direction:row;align-items:center;justify-content:flex-start");
+                row.setAttribute("style","width:100%;text-align:left");
 
                 var labelCheckbox=document.createElement("label");
                 labelCheckbox.setAttribute("class","pure-material-checkbox");
+                labelCheckbox.setAttribute("style","-webkit-appearance:none;width:100%");
 
                 var inputCheckbox=document.createElement("input");
+                inputCheckbox.setAttribute("style","-webkit-appearance:none;");
                 inputCheckbox.setAttribute("type","checkbox");
                 if(pagina.checked=="checked")
                 {
@@ -276,7 +276,7 @@ async function popupPermessiUtente(JSONutente)
                 labelCheckbox.appendChild(inputCheckbox);
 
                 var spanCheckbox=document.createElement("span");
-                spanCheckbox.setAttribute("style","color:#ddd;font-size:12px");
+                spanCheckbox.setAttribute("style","color:#ddd;font-size:12px;-webkit-appearance:none;text-align:left");
                 spanCheckbox.innerHTML="<div>"+pagina.nomePagina+"</div>";
                 labelCheckbox.appendChild(spanCheckbox);
 

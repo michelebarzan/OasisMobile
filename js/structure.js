@@ -5,7 +5,11 @@ $(function()
 });
 window.addEventListener("load", async function(event)
 {
-    document.getElementById("main-nav-bar-page-title").innerHTML=nomePagina;
+    /*try {
+        document.getElementById("main-nav-bar-page-title").innerHTML=nomePagina;
+    } catch (error) {
+        window.alert(error);
+    }*/
     // iOS web app full screen hacks.
     if(window.navigator.standalone == true) {
             // make all link remain in web app mode.
