@@ -27,7 +27,11 @@ body
 }
 .structure-header button
 {
-    padding: 13px;
+	/*padding: 13px;*/
+	width: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
     border:none;
     background-color: transparent;
     border-radius: 0;
@@ -44,6 +48,17 @@ body
     --fa-primary-color: gray; 
     --fa-secondary-color: black;
 }
+#main-nav-bar-page-title
+{
+	width: calc(100% - 200px);
+	height:50px;
+	line-height:50px;
+	color:#ddd;
+	font-family: 'Quicksand',sans-serif;
+	text-align: center;
+	font-size: 12px;
+}
+
 /*----------------------------------------------*/
 .main-nav-bar
 {

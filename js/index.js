@@ -82,7 +82,8 @@ async function getPagineHomepage()
 
                     var homepageLinkName=document.createElement("div");
                     homepageLinkName.setAttribute("class","homepageLinkTextContainer");
-                    homepageLinkName.innerHTML=pagina["nomePagina"];
+                    //homepageLinkName.innerHTML=pagina["nomePagina"];
+                    homepageLinkName.innerHTML=pagina["nomePagina"].replace(" ","<br>");
 
                     homepageLinkIconContainer.appendChild(homepageLinkIcon);
                     homepageLink.appendChild(homepageLinkIconContainer);
@@ -134,7 +135,8 @@ async function getPagineHomepage()
 
                         var homepageLinkName=document.createElement("div");
                         homepageLinkName.setAttribute("class","homepageLinkTextContainer");
-                        homepageLinkName.innerHTML=pagina["nomePagina"];
+                        //homepageLinkName.innerHTML=pagina["nomePagina"];
+                        homepageLinkName.innerHTML=pagina["nomePagina"].replace(" ","<br>");
 
                         homepageLinkIconContainer.appendChild(homepageLinkIcon);
                         homepageLink.appendChild(homepageLinkIconContainer);

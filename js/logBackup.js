@@ -6,7 +6,6 @@ var pageInfo=
     id_pagina:"1040",
     fileName:"logBackup"
 };
-
 function onloadlogBackup()
 {
     getRegistroBackup();

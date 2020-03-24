@@ -1,0 +1,28 @@
+<div class="bottom-control-bar">
+    <button class="bottom-control-bar-button" onclick="popupAggiungiUtente()" style="width:33%;align-items:center;justify-content:center">
+      <div><i class="fal fa-user-plus"></i></div>
+      <div><span>Aggiungi</span></div>
+    </button>
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-filter"></i></div>
+        <div><span>Filtra</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-sort-alpha-down-alt"></i></div>
+        <div><span>Ordina</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="">
+        <div><i class="fal fa-cog"></i></div>
+        <div><span>Impostazioni</span></div>
+    </button>-->
+</div>
+<div class="gestione-utenti-top-bar">
+    <button onclick="toggleOrderIcon(this);"><i class="fal fa-sort-alpha-down"></i></button>
+    <input type="text" id="searcBarGestioneUtenti" placeholder="Cerca..." onkeyup="searchGestioneUtenti(this.value.toLowerCase())">
+    <select id="selectFiltroGestioneUtenti" onchange="getElencoUtenti()">
+        <option value="">Tutti</option>
+        <option value="false" selected>Attivi</option>
+        <option value="true">Eliminati</option>
+    </select>
+</div>
+<div id="containerGestioneUtenti"></div>

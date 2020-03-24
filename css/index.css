@@ -83,7 +83,13 @@
 	background: -webkit-linear-gradient(to left, #00B4DB, #0083b0); /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to left, #00B4DB, #0083b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	color:#fff;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	flex-direction: column;
 	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+	box-sizing: border-box;
+	padding:5px;
 }
 .homepageLink:active
 {
@@ -105,16 +111,16 @@
 	align-items: center;
 	justify-content: center;
 	width:100%;
-	height: 45px;
+	/*height: 35px;*/
 }
 .homepageLink i
 {
-	font-size:28px;
+	font-size:22px;
 }
 .homepageLink .homepageLinkTextContainer
 {
 	width:100%;
-	height:25px;
+	/*height:35px;*/
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -122,7 +128,7 @@
 	/*font-weight:bold;*/
 	text-align:center;
 	box-sizing:border-box;
-	font-size:11px;
+	font-size:10px;
 	padding-left:5px;
 	padding-right:5px;
 }

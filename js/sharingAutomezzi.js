@@ -1,8 +1,8 @@
-var nomePagina="Automezzi";
+var nomePagina="Sharing Automezzi";
 var pageInfo=
 {
     pagina:"sharingAutomezzi.html",
-    nomePagina:"Automezzi",
+    nomePagina:"Sharing Automezzi",
     id_pagina:"1034",
     fileName:"sharingAutomezzi"
 };

@@ -5,6 +5,7 @@ $(function()
 });
 window.addEventListener("load", async function(event)
 {
+    document.getElementById("main-nav-bar-page-title").innerHTML=nomePagina;
     // iOS web app full screen hacks.
     if(window.navigator.standalone == true) {
             // make all link remain in web app mode.
@@ -530,6 +531,7 @@ async function modulesLoaded(fileName)
         window["onload"+fileName]();
     document.title=pageInfo.nomePagina;
     $("#pageContainer").show("300","swing");
+    document.getElementById("main-nav-bar-page-title").innerHTML=nomePagina;
 }
 async function cambiaImmagineProfiloUtente(input)
 {
