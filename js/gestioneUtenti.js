@@ -384,9 +384,9 @@ function confermaPermessiPagine(id_utente)
         }
     });
 }
-function popupAnagraficaUtente()
+function popupAnagraficaUtente(id_utente)
 {
-    var id_utente=onlongtouchArguments[0];
+    //var id_utente=onlongtouchArguments[0];
     var utente=getFirstObjByPropValue(utenti,"id_utente",id_utente);
 
     var outerContainer=document.createElement("div");
