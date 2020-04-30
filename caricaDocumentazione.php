@@ -3,12 +3,13 @@
     include "connessione.php";
     
     $id_utente=$_REQUEST["id_utente"];        
+    $fileName=$_REQUEST["fileName"];        
     $nome=$_REQUEST["nome"];        
     $categoria=$_REQUEST["categoria"];        
     $documento=$_FILES["documento"];
 
     $target_dir="OasisDocumentazione\\pdf.js\\web\\attachment\\";
-    $target_file = $target_dir.basename($_FILES["documento"]["name"]);
+    $target_file = $target_dir.basename($fileName);
     $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
     
     //define ('SITE_ROOT', realpath(dirname(__FILE__)));
@@ -29,7 +30,7 @@
                     ,GETDATE()
                     ,'false'
                     ,'$categoria'
-                    ,'".$_FILES['documento']['name']."')";	
+                    ,'".$fileName."')";	
         $result2=sqlsrv_query($conn,$query2);
         if($result2==TRUE)
             echo "ok";

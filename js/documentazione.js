@@ -523,9 +523,11 @@ async function caricaDocumento()
     }
     else
     {
+        var fileName=documento.name.replace(" ","_");
         var id_utente=await getSessionValue("id_utente");
         var data= new FormData();
         data.append('id_utente',id_utente);
+        data.append('fileName',fileName);
         data.append('nome',nome);
         data.append('categoria',categoria);
         data.append('documento',documento);
