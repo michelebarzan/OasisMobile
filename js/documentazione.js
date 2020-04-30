@@ -523,7 +523,7 @@ async function caricaDocumento()
     }
     else
     {
-        var fileName=documento.name.replace(" ","_");
+        var fileName=documento.name.replace(/ /g,"_")
         var id_utente=await getSessionValue("id_utente");
         var data= new FormData();
         data.append('id_utente',id_utente);
@@ -579,7 +579,8 @@ function getFileDocumentazione(input)
 
     if(formato=="pdf")
     {
-        document.getElementById("containerDocumentoScelto").innerHTML=documento.name;
+        var fileName=documento.name.replace(/ /g,"_")
+        document.getElementById("containerDocumentoScelto").innerHTML=fileName;
     }
     else
     {
