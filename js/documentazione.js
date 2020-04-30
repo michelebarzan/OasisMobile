@@ -551,7 +551,7 @@ async function caricaDocumento()
                             width:"100%",
                             background:"#404040",
                             icon:"success",
-                            title: "Docuemento caricato",
+                            title: "Documento caricato",
                             showConfirmButton:false,
                             showCloseButton:true,
                             onOpen : function()
