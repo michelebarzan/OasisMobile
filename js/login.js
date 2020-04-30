@@ -20,14 +20,14 @@ window.addEventListener("load", function(event)
                 login(document.getElementById("login-button"),true);
             }
         }
-        if(showPopupAggiungiAllaHome)
+        /*if(showPopupAggiungiAllaHome)
         {
             if (isIos())
             {
                 if (!isInStandaloneMode())
                     getPopupAggiungiAllaHomeIos();
             }
-        }
+        }*/
     }, 1500);
 });
 async function checkCoockies()

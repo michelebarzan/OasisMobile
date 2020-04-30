@@ -249,6 +249,7 @@ function getPopupAggiungiAllaHomeIos()
                     document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
                     document.getElementsByClassName("swal2-title")[0].style.textAlign="left";
                     document.getElementsByClassName("swal2-title")[0].style.width="100%";
+                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
                 }
     });
     setCookie("showPopupAggiungiAllaHome","false");

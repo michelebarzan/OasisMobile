@@ -1,0 +1,28 @@
+<div class="bottom-control-bar">
+    <button class="bottom-control-bar-button" onclick="popupCaricaDocumento()" style="align-items:center;justify-content:center">
+      <div><i class="fal fa-file-upload"></i></div>
+      <div><span>Carica</span></div>
+    </button>
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-filter"></i></div>
+        <div><span>Filtra</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-sort-alpha-down-alt"></i></div>
+        <div><span>Ordina</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="">
+        <div><i class="fal fa-cog"></i></div>
+        <div><span>Impostazioni</span></div>
+    </button>-->
+</div>
+<div class="documentazione-top-bar">
+    <button onclick="toggleOrderIcon(this);">
+        <i class="fad fa-sort-amount-down"></i>
+        <span>Nome</span>
+    </button>
+    <input type="search" id="searcBarDocumentazione" placeholder="Cerca..." onkeyup="searchdocumentazione(this.value.toLowerCase())">
+    <select id="selectFiltroCategoria" onchange="getElencoDocumentazione()"></select>
+</div>
+<div id="containerDocumentazione"></div>
+<datalist id="datalistCategorie"></datalist>

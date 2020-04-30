@@ -152,9 +152,9 @@ async function getPagineHomepage()
                     homepageSectionContainerHeights.push(homepageSectionOuterContainer.offsetHeight);
                 }
 
-                var maxHeight = Math.max.apply(null, homepageSectionContainerHeights);
+                /*var maxHeight = Math.max.apply(null, homepageSectionContainerHeights);
 
-                $(".homepageSectionOuterContainer").height(maxHeight);
+                $(".homepageSectionOuterContainer").height(maxHeight);*/
             }
             else
                 console.log(status);

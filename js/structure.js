@@ -114,7 +114,17 @@ async function checkPermessoPagina(id_utente)
                 else
                 {
                     if(nomePagina=="Home")
+                    {
+                        if(showPopupAggiungiAllaHome)
+                        {
+                            if (isIos())
+                            {
+                                if (!isInStandaloneMode())
+                                    getPopupAggiungiAllaHomeIos();
+                            }
+                        }
                         getPagineHomepage();
+                    }
                 }
             }
         }

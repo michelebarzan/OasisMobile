@@ -1,0 +1,469 @@
+html
+{
+    overflow: hidden;
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+}
+body
+{
+    margin:0px;
+    overflow: hidden;
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+}
+#pageContainer
+{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+    /*overflow-y: auto;*/
+}
+.swal2-popup
+{
+    max-width: 700px;
+}
+#btnGoToTop
+{
+    bottom:80px;
+}
+.documentazione-top-bar
+{
+    height:50px;
+    width:100%;
+    background-color: rgb(228, 226, 226);
+    box-sizing: border-box;
+    padding:10px;
+    margin-top:50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /*box-shadow: 0 1px 3px rgba(61, 61, 61, 0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+}
+#searcBarDocumentazione
+{
+    background-image: url("../images/search.png");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    -webkit-appearance:none;
+    width: calc(100% - 150px);
+    max-width: 640px;
+    margin-right: 5px;
+    height:30px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    border-radius: 4px;
+    border:none;
+    box-sizing: border-box;
+    padding-left: 35px;
+    padding-right:10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    outline: none;
+}
+#searcBarDocumentazione:focus
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#selectFiltroCategoria
+{
+    width:110px;
+    height:30px;
+    background-color: transparent;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 11px;
+    border:none;
+    outline: none;
+}
+.documentazione-top-bar button
+{
+    width:25px;
+    height: 30px;
+    background-color: transparent;
+    border:none;
+    outline: none;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    font-size: 16px;
+}
+.documentazione-top-bar button:active
+{
+    color:rgb(48, 133, 214);
+}
+.documentazione-top-bar button span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 10px;
+    margin-top:1px;
+}
+#containerDocumentazione
+{
+    max-width: 700px;
+    width: 100%;
+    box-sizing: border-box;
+    padding:10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    height:calc(100% - 160px);
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.documenti-row-item
+{
+    width:calc(50% - 20px);
+    height:200px;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    margin:10px;
+    background-color: #555555;
+}
+.documenti-row-item-info-bar
+{
+    width: 100%;
+    height: 30px;
+    background-color: #404040;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.info-bar-container-nome
+{
+    width:calc(100% - 30px);
+    margin-left: 5px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 10px;
+    color:white;
+    line-height: 10px;
+    overflow:hidden;
+    max-height: 100%;
+    margin-right:5px;
+}
+.info-bar-menu-button
+{
+    cursor: pointer;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    background-color: #555555;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border:none;
+    outline: none;
+    -webkit-appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.info-bar-menu-button:hover
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.info-bar-menu-button:active
+{
+    color:#4C91CB;
+}
+.info-bar-container-hidden-button
+{
+    display: none;
+    margin-left:auto;
+    flex-direction:row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.info-bar-hidden-button
+{
+    cursor: pointer;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border:none;
+    outline: none;
+    -webkit-appearance: none;
+    align-items: center;
+    justify-content: center;
+    margin-right:5px;
+    display: flex;
+}
+.info-bar-hidden-button:hover
+{
+    background-color: #555555;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.info-bar-hidden-button:active
+{
+    color:#4C91CB;
+}
+.documentazione-container
+{
+    width:calc(100% - 4px);
+    max-width:calc(100% -4px);
+    min-width:calc(100% - 4px);
+    height:calc(100% - calc(30px + 4px));
+    margin:2px;
+    border:none;
+}
+#expandPdfOuterContainer
+{
+    position: fixed;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    height: 100%;
+    width: 100%;
+    background-color:rgba(0,0,0,0.73) ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding:20px;
+    box-sizing: border-box;
+}
+#expandPdfOuterContainerInfoBar
+{
+    height: 35px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #404040;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+#expandPdfOuterContainerInfoBar span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:white;
+    width: calc(100% - 50px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#expandPdfOuterContainerInfoBar button
+{
+    outline: none;
+    margin-left:10px;
+    height: 25px;
+    width: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    border:none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    background-color: transparent;
+    -webkit-appearance: none;
+}
+#expandPdfOuterContainerInfoBar button:hover
+{
+    color:#4C91CB;
+}
+#expandPdfIframe
+{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 100%;
+    height: calc(100% - 30px);
+    box-sizing: border-box;
+    border:none;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.popup-documentazione-outer-container
+{
+    margin:20px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width:calc(100% - 40px);
+    /*align-items: center;*/
+    justify-content: flex-start;
+}
+.popup-documentazione-row
+{
+    display: flex;
+    width: auto;
+    box-sizing: border-box;
+}
+.popup-documentazione-row img
+{
+    width: 100px;
+    height: 100px;
+    margin:5px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 4px;
+}
+.swal2-title
+{
+    color:#ddd;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Quicksand',sans-serif;
+}
+.swal2-popup
+{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#popup-documentazione-select
+{
+    width:150px;
+    background-color: #4d4d4d;
+    border:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    height: 30px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    -webkit-appearance:none;
+}
+.popup-documentazione-textarea,.popup-documentazione-input
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    border:2px solid #4d4d4d;
+    background-color: #363636;
+    border-radius: 4px;
+    outline: none;
+    width:100%;
+    resize: none;
+    overflow: hidden;
+    -webkit-appearance:none;
+    box-sizing: border-box;
+    padding:5px;
+    font-weight: normal;
+}
+.popup-documentazione-textarea
+{
+    height:60px;
+}
+.popup-documentazione-button
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /*width:220px;*/
+    background-color: #4d4d4d;
+    border:none;
+    height: 30px;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+.popup-documentazione-button span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    display: flex;
+    flex-direction: row;
+}
+.popup-documentazione-button i
+{
+    color:#ddd;
+    margin-left: 10px;
+}
+.popup-documentazione-button:active
+{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#popupDocumentazioneConfirmButton
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    width:220px;
+    background-color: #4d4d4d;
+    border:none;
+    height: 40px;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+#popupDocumentazioneConfirmButton span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: row;
+}
+#popupDocumentazioneConfirmButton span div
+{
+    margin-left: 5px;
+}
+#popupDocumentazioneConfirmButton i
+{
+    color:#ddd;
+    margin-left: 10px;
+}
+#popupDocumentazioneConfirmButton:active
+{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#containerDocumentoScelto
+{
+    width:calc(50% - 5px);
+    margin-left:10px;
+    text-align: left;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.system-toast-outer-container
+{
+    left:10px;
+    bottom:70px;
+    /*width:200px;*/
+}
