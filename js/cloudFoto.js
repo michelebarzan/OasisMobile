@@ -132,12 +132,12 @@ async function getElencoContenutoCartella(id_cartella)
         button.setAttribute("class","cloud-foto-item-button");
         if(item.tipo=="cartella")
         {
-            button.setAttribute("onlongtouch","clickActionButton("+item.id_cartella+")");
+            //button.setAttribute("onlongtouch","clickActionButton("+item.id_cartella+")");
             button.setAttribute("onclick","getElencoContenutoCartella('"+item.id_cartella+"')");
         }
         if(item.tipo=="file")
         {
-            button.setAttribute("onlongtouch","clickActionButton("+item.id_file+")");
+            //button.setAttribute("onlongtouch","clickActionButton("+item.id_file+")");
             button.setAttribute("onclick","expandImage(this.firstChild,'"+item.nomeFile+"')");
         }
         if(item.tipo=="cartella")
