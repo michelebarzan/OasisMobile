@@ -312,7 +312,7 @@ function selectAllCheckboxes(button)
         }
     }
 }
-function deleteAllCheckedFiles()
+function getPopupDeleteAllCheckedFiles()
 {
     if(checkedFiles.length>0)
     {
@@ -326,47 +326,52 @@ function deleteAllCheckedFiles()
             cancelButtonText:"Annulla",
             showCloseButton:true,
             onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}
-        }).then((result) => async function ()
+        }).then((result) => 
         {
             if (result.value)
             {
-                var error=false;
-                for (let index = 0; index < checkedFiles.length; index++) 
-                {
-                    const number = checkedFiles[index];
-                    var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+number);
-                    var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
-                    var nome=cloudFotoItemOuterContainer.getAttribute("nome");
-                    var id=cloudFotoItemOuterContainer.getAttribute("id_file_cartella");
-
-                    var cartella=await getNomeCartellaCloudFoto(cartella_corrente);
-                    var path=await getPath(cartella_corrente,cartella);
-                    var pathString="";
-                    path.forEach(function(item)
-                    {
-                        if(item.cartella!=null)
-                            pathString+=item.cartella+"/";
-                    });
-                    if(tipo=="cartella")
-                    {
-                        var tabella="cartelle_cloud_foto";
-                    }
-                    if(tipo=="file")
-                    {
-                        var tabella="files_cloud_foto";
-                    }
-                    
-                    var response=await eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome);
-                    if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
-                        error=true;
-                }
-                if(error)
-                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
-                else
-                    getElencoContenutoCartella(cartella_corrente);
+                deleteAllCheckedFiles();
             }
         });
     }
+}
+async function deleteAllCheckedFiles()
+{
+	var error=false;
+	for (let index = 0; index < checkedFiles.length; index++) 
+	{
+		const number = checkedFiles[index];
+		var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+number);
+		var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+		var nome=cloudFotoItemOuterContainer.getAttribute("nome");
+		var id=cloudFotoItemOuterContainer.getAttribute("id_file_cartella");
+
+		var cartella=await getNomeCartellaCloudFoto(cartella_corrente);
+		var path=await getPath(cartella_corrente,cartella);
+		var pathString="";
+		path.forEach(function(item)
+		{
+			if(item.cartella!=null)
+				pathString+=item.cartella+"/";
+		});
+		if(tipo=="cartella")
+		{
+			var tabella="cartelle_cloud_foto";
+		}
+		if(tipo=="file")
+		{
+			var tabella="files_cloud_foto";
+		}
+		
+		var response=await eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome);
+		if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+			error=true;
+	}
+	removeCheckboxes();
+	if(error)
+		Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+	else
+		getElencoContenutoCartella(cartella_corrente);
 }
 function eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome)
 {
@@ -383,6 +388,7 @@ function eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome)
         {
             if(status=="success")
             {
+				console.log(response);
                 resolve(response);
             }
             else
@@ -451,7 +457,7 @@ function getCheckboxes()
 
         var btnElimina=document.createElement("button");
         btnElimina.setAttribute("class","bottom-control-bar-button select-files-button");
-        btnElimina.setAttribute("onclick","deleteAllCheckedFiles()");
+        btnElimina.setAttribute("onclick","getPopupDeleteAllCheckedFiles()");
         btnElimina.setAttribute("style","width:25%;align-items:center;justify-content:center");
         var div=document.createElement("div");
         var i=document.createElement("i");
