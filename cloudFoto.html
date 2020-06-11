@@ -1,4 +1,4 @@
-<div class="bottom-control-bar">
+<div class="bottom-control-bar" id="bottomControlBarCloudFoto">
     <button class="bottom-control-bar-button" onclick="cloudFotoIndietro()" style="width:33%;align-items:center;justify-content:center">
       <div><i class="fal fa-long-arrow-left"></i></div>
       <div><span>Indietro</span></div>
@@ -11,7 +11,7 @@
         <div><i class="fal fa-camera-alt"></i></div>
         <div><span>Carica foto</span></div>
     </button>
-    <input type="file" id="cloudFotoInputScatta" style="display: none;" accept="image/*" onchange="checkImage(this,event)" multiple>
+    <input type="file" id="cloudFotoInputScatta" accept="image/*" onchange="checkImage(this,event)" multiple>
     <!--<button class="bottom-control-bar-button" onclick="">
         <div><i class="fal fa-cog"></i></div>
         <div><span>Impostazioni</span></div>

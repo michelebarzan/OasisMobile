@@ -119,8 +119,20 @@ function checkOnLongTouchElements()
 
         element.setAttribute("ontouchstart","touchStart(event,this,'"+elementFunctionName+"')");
         element.setAttribute("ontouchend","touchEnd(event)");
+        element.setAttribute("onlongtouchid",index);
+        element.setAttribute("ontouchmove","checkOnLongTouchMove(this,event)");
+
+        if(element.getAttribute("onclick")!=null)
+        {
+            onlongtouchClickEvent=element.getAttribute("onclick");
+            onlongtouchClickEvents[index]=onlongtouchClickEvent;
+            element.removeAttribute("onclick");
+        }
     }
 }
+
+var checkLongtouchMove;
+var onlongtouchClickEvents=[];
 var checkLongtouchTimeout, longtouch;
 var timer;
 var onlongtouchElement;
@@ -130,6 +142,17 @@ var touchduration = 500; //length of time we want the user to touch before we do
 
 function touchStart(e,element,elementFunctionName) 
 {
+    $("html").css({
+        "-webkit-touch-callout": "none",
+        "-webkit-user-select": "none",
+        "-khtml-user-select": "none", 
+        "-moz-user-select": "none", 
+        "-ms-user-select": "none", 
+        "user-select": "none"
+    });
+    $("html").attr("oncontextmenu","return false;");
+
+    checkLongtouchMove=false;
     checkLongtouchTimeout = setTimeout(function() {
         longtouch = true;
     }, touchduration);
@@ -152,23 +175,60 @@ function touchStart(e,element,elementFunctionName)
         else
             onlongtouchArguments.push(parseFloat(argument));
     });
-    e.preventDefault();
+    //e.preventDefault();
     onlongtouchElement=element;
 
-    timer = setTimeout(window[elementFunctionName], touchduration); 
+    timer = setTimeout(function()
+    {
+        if(!checkLongtouchMove)
+            executeFunctionByName(e,elementFunctionName, window);
+    }, touchduration);
+    //timer = setTimeout(window[elementFunctionName], touchduration);
 }
-
+function executeFunctionByName(event,functionName, context)
+{
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for(var i = 0; i < namespaces.length; i++) 
+    {
+        context = context[namespaces[i]];
+    }
+    return context[func].apply(context);
+}
+function checkOnLongTouchMove(element,event)
+{
+    checkLongtouchMove=true;
+}
 function touchEnd(e)
 {
     onlongtouchEvent=e;
     if (!longtouch)
     {
-        onlongtouchElement.click();
+        if(!checkLongtouchMove)
+        {
+            event.preventDefault();
+            onlongtouchClickEvent=onlongtouchClickEvents[onlongtouchElement.getAttribute("onlongtouchid")];
+            onlongtouchElement.setAttribute("onclick",onlongtouchClickEvent);
+            onlongtouchElement.click();
+        }
     }
     longtouch = false;
     clearTimeout(checkLongtouchTimeout);
     if (timer)
         clearTimeout(timer);
+    
+    setTimeout(function()
+    {
+        $("html").css({
+            "-webkit-touch-callout": "",
+            "-webkit-user-select": "",
+            "-khtml-user-select": "", 
+            "-moz-user-select": "", 
+            "-ms-user-select": "", 
+            "user-select": ""
+        });
+        $("html").removeAttr("oncontextmenu");
+    }, 500);
 }
 //----------------------------------------------------------------------------------------------------------------------------------
 var checkboxAutoLogin;

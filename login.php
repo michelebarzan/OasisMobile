@@ -2,7 +2,7 @@
 
 	include "connessione.php";
 	
-    $username= $_REQUEST ['username'];
+    $username= strtolower($_REQUEST ['username']);
     $password_plain=$_REQUEST ['password'];
     $password=sha1($_REQUEST ['password']);
     $ricorda= $_REQUEST ['ricorda'];

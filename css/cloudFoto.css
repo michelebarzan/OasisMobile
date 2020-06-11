@@ -1,6 +1,12 @@
 html
 {
     overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
 }
 body
 {
@@ -22,6 +28,10 @@ body
 #btnGoToTop
 {
     bottom:80px;
+}
+#cloudFotoInputScatta
+{
+    display: none;
 }
 #searcBarCloudFoto
 {
@@ -166,6 +176,21 @@ body
     max-height: 45px;
     overflow: hidden;
 }
+.cloud-foto-item-checkbox-button-container
+{
+    width: 30px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cloud-foto-item-checkbox-button-container i
+{
+    font-size: 17px;
+    color:black;
+}
 .cloud-foto-item-button
 {
     border: none;
@@ -185,16 +210,17 @@ body
 }
 .cloud-foto-item-button:active
 {
-    background-color: #aaa;
+    background-color: rgba(0, 0, 0, 0.11);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
-.cloud-foto-item-outer-container .fa-folder,.cloud-foto-item-outer-container img
+.cloud-foto-item-outer-container .fa-folder,.cloud-foto-item-outer-container img,.cloud-foto-item-outer-container video
 {
     height:35px;
     margin-left: 5px;
     line-height: 35px;
     text-align: center;
     box-sizing: border-box;
+    object-fit:fill;
 }
 .cloud-foto-item-outer-container .fa-folder
 {
@@ -203,12 +229,12 @@ body
     font-size: 23px;
     text-shadow: 0px 2px 3px rgba(0,0,0,0.4), 0px 4px 7px rgba(0,0,0,0.1), 0px 9px 12px rgba(0,0,0,0.1);
 }
-.cloud-foto-item-outer-container img
+.cloud-foto-item-outer-container img,.cloud-foto-item-outer-container video
 {
     width: 35px;
     min-width: 35px;
     max-width: 35px;
-    object-fit: cover;
+    object-fit: fill;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
@@ -345,7 +371,7 @@ body
 {
     color:#DA6969;
 }
-.popup-expand-image-outer-container img
+.popup-expand-image-outer-container img,.popup-expand-image-outer-container video
 {
     width:100%;
     object-fit: cover;
@@ -368,7 +394,7 @@ body
     width: auto;
     box-sizing: border-box;
 }
-.popup-cloud-foto-row img
+.popup-cloud-foto-row img,.popup-cloud-foto-row video
 {
     width: 100px;
     height: 100px;

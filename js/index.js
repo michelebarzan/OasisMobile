@@ -178,13 +178,20 @@ function addPopupHomepageLink()
 
     removeAllPopupsHomepageLink();
 
+    var rect = onlongtouchElement.getBoundingClientRect();
+    var left=rect.left+onlongtouchElement.offsetWidth;
+    var top=rect.top;
+
     if(onlongtouchElement.nextSibling!=null)
     {
         var nextHomepageLink=onlongtouchElement.nextSibling;
-        nextHomepageLink.style.marginLeft="50px";
+        var nextRect = nextHomepageLink.getBoundingClientRect();
+        var nextTop=nextRect.top;
+        if(nextTop==top)
+            nextHomepageLink.style.marginLeft="50px";
     }
 
-    var rect = onlongtouchElement.getBoundingClientRect();
+    top=top+document.documentElement.scrollTop;
 
     var popupHomepageLink=document.createElement("div");
     popupHomepageLink.setAttribute("class","popup-homepage-link");
@@ -215,8 +222,7 @@ function addPopupHomepageLink()
     //popupHomepageLinkButton.setAttribute("onclick","gotopath('"+pagina+"')");
     popupHomepageLink.appendChild(popupHomepageLinkButton);
 
-    var left=rect.left+onlongtouchElement.offsetWidth;
-    var top=rect.top;
+    //console.log()
 
     //Non so perche ma funziona, almeno... con solo due elementi sembra funzionare
     if(onlongtouchElement.parentElement.childElementCount>1)

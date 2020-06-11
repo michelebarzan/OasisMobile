@@ -8,6 +8,8 @@ var pageInfo=
 };
 var nomiCartelle=[];
 var cartella_corrente;
+var checkedFiles=[];
+var filesLenght;
 
 async function onloadcloudFoto()
 {
@@ -50,6 +52,8 @@ function getPath(id_cartella,cartella)
 }
 async function getElencoContenutoCartella(id_cartella)
 {
+    filesLenght=0;
+
     var container=document.getElementById("containerCloudFoto");
     container.innerHTML="";
     getFaSpinner(container,"container","Caricamento in corso...");
@@ -123,6 +127,11 @@ async function getElencoContenutoCartella(id_cartella)
     {
         var outerContainer=document.createElement("div");
         outerContainer.setAttribute("class","cloud-foto-item-outer-container");
+        outerContainer.setAttribute("id","cloudFotoItemOuterContainer"+i);
+        outerContainer.setAttribute("number",i);
+
+        outerContainer.setAttribute("tipo",item.tipo);
+
         if(i==array.length-1)
         {
             outerContainer.setAttribute("style","border-bottom:0.5px solid transparent");
@@ -133,12 +142,25 @@ async function getElencoContenutoCartella(id_cartella)
         if(item.tipo=="cartella")
         {
             //button.setAttribute("onlongtouch","clickActionButton("+item.id_cartella+")");
+            button.setAttribute("onlongtouch","getCheckboxes("+i+")");
             button.setAttribute("onclick","getElencoContenutoCartella('"+item.id_cartella+"')");
+            button.setAttribute("tipo","cartella");
+            button.setAttribute("id_cartella",item.id_cartella);
+            
+            outerContainer.setAttribute("nome",item.cartella);
+            outerContainer.setAttribute("id_file_cartella",item.id_cartella);
         }
         if(item.tipo=="file")
         {
+            var formato=item.nomeFile.split(".")[item.nomeFile.split(".").length-1];
             //button.setAttribute("onlongtouch","clickActionButton("+item.id_file+")");
-            button.setAttribute("onclick","expandImage(this.firstChild,'"+item.nomeFile+"')");
+            button.setAttribute("onlongtouch","getCheckboxes("+i+")");
+            button.setAttribute("onclick","expandImage('"+formato+"',this.firstChild,'"+item.nomeFile+"')");
+            button.setAttribute("tipo","file");
+            button.setAttribute("nomeFile",item.nomeFile);
+
+            outerContainer.setAttribute("nome",item.nomeFile);
+            outerContainer.setAttribute("id_file_cartella",item.id_file);
         }
         if(item.tipo=="cartella")
         {
@@ -148,9 +170,22 @@ async function getElencoContenutoCartella(id_cartella)
         }
         if(item.tipo=="file")
         {
-            var img=document.createElement("img");
-            img.setAttribute("src",location.protocol+"//"+item.server+"/"+item.path);
-            button.appendChild(img);
+            if(formato.toLowerCase()=="mp4")
+            {
+                var video=document.createElement("video");
+                //video.setAttribute("controls","controls");
+                var source=document.createElement("source");
+                source.setAttribute("src",location.protocol+"//"+item.server+"/"+item.path);
+                source.setAttribute("type","video/mp4");
+                video.appendChild(source);
+                button.appendChild(video);
+            }
+            else
+            {
+                var img=document.createElement("img");
+                img.setAttribute("src",location.protocol+"//"+item.server+"/"+item.path);
+                button.appendChild(img);
+            }
         }
 
         var name=document.createElement("div");
@@ -206,6 +241,298 @@ async function getElencoContenutoCartella(id_cartella)
 
         i++;
     });
+    filesLenght=i;
+}
+function removeCheckboxes()
+{
+    checkedFiles=[];
+    var cloudFotoItemButtons=document.getElementsByClassName("cloud-foto-item-button");
+    for (let index = 0; index < cloudFotoItemButtons.length; index++)
+    {
+        const cloudFotoItemButton = cloudFotoItemButtons[index];
+        const cloudFotoItemOuterContainer = cloudFotoItemButton.parentElement;
+        var number=cloudFotoItemOuterContainer.getAttribute("number");
+
+        cloudFotoItemButton.removeAttribute("onclick");
+
+        var tipo=cloudFotoItemButton.getAttribute("tipo");
+        if(tipo=="cartella")
+        {
+            var id_cartella=cloudFotoItemButton.getAttribute("id_cartella");
+            cloudFotoItemButton.setAttribute("onlongtouch","getCheckboxes("+number+")");
+            cloudFotoItemButton.setAttribute("onclick","getElencoContenutoCartella('"+id_cartella+"')");
+        }
+        if(tipo=="file")
+        {
+            var nomeFile=cloudFotoItemButton.getAttribute("nomeFile");
+            var formato=nomeFile.split(".")[nomeFile.split(".").length-1];
+            cloudFotoItemButton.setAttribute("onlongtouch","getCheckboxes("+number+")");
+            cloudFotoItemButton.setAttribute("onclick","expandImage('"+formato+"',this.firstChild,'"+nomeFile+"')");
+        }
+
+        cloudFotoItemButton.style.width="";
+
+        document.getElementById("clouFotoItemCheckboxButtonContainer"+number).remove();
+    }
+    
+    $(".select-files-button").remove();
+    $("#bottomControlBarCloudFoto *").css("display","");
+}
+function selectAllCheckboxes(button)
+{
+    var checkbox=button.getElementsByTagName("i")[0];
+    var className=checkbox.className;
+
+    if(className=="fal fa-square")
+    {       
+        var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+        for (let index = 0; index < checkboxContainers.length; index++)
+        {
+            var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+            for (let index = 0; index < checkboxContainers.length; index++)
+            {
+                const checkboxContainer = checkboxContainers[index];
+                var checked=checkboxContainer.getAttribute("checked");
+                var number=checkboxContainer.getAttribute("number");
+                if(checked=="false")
+                    toggleCheckboxCloudFotoItem(number);
+            }
+        }
+    }
+    else
+    {       
+        var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+        for (let index = 0; index < checkboxContainers.length; index++)
+        {
+            const checkboxContainer = checkboxContainers[index];
+            var checked=checkboxContainer.getAttribute("checked");
+            var number=checkboxContainer.getAttribute("number");
+            if(checked=="true")
+                toggleCheckboxCloudFotoItem(number);
+        }
+    }
+}
+function deleteAllCheckedFiles()
+{
+    if(checkedFiles.length>0)
+    {
+        Swal.fire
+        ({
+            icon:"warning",
+            title:"Vuoi eliminare tutti i file e le cartella selezionate?",
+            confirmButtonText:"Conferma",
+            confirmButtonColor:"#DA6969",
+            showCancelButton:true,
+            cancelButtonText:"Annulla",
+            showCloseButton:true,
+            onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}
+        }).then((result) => async function ()
+        {
+            if (result.value)
+            {
+                var error=false;
+                for (let index = 0; index < checkedFiles.length; index++) 
+                {
+                    const number = checkedFiles[index];
+                    var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+number);
+                    var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+                    var nome=cloudFotoItemOuterContainer.getAttribute("nome");
+                    var id=cloudFotoItemOuterContainer.getAttribute("id_file_cartella");
+
+                    var cartella=await getNomeCartellaCloudFoto(cartella_corrente);
+                    var path=await getPath(cartella_corrente,cartella);
+                    var pathString="";
+                    path.forEach(function(item)
+                    {
+                        if(item.cartella!=null)
+                            pathString+=item.cartella+"/";
+                    });
+                    if(tipo=="cartella")
+                    {
+                        var tabella="cartelle_cloud_foto";
+                    }
+                    if(tipo=="file")
+                    {
+                        var tabella="files_cloud_foto";
+                    }
+                    
+                    var response=await eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome);
+                    if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                        error=true;
+                }
+                if(error)
+                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                else
+                    getElencoContenutoCartella(cartella_corrente);
+            }
+        });
+    }
+}
+function eliminaFileCartellaCloudFotoAsync(id,tipo,pathString,nome)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.post("eliminaFileCartellaCloudFoto.php",
+        {
+            id,
+            tipo,
+            pathString,
+            nome
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+            {
+                resolve("error");
+            }
+        });
+    });
+}
+function getCheckboxes()
+{
+    if(document.getElementsByClassName("cloud-foto-item-checkbox-button-container").length==0)
+    {
+        var bottomControlBarCloudFoto=document.getElementById("bottomControlBarCloudFoto");
+        $("#bottomControlBarCloudFoto *").css("display","none");
+
+        var btnAnnulla=document.createElement("button");
+        btnAnnulla.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnAnnulla.setAttribute("onclick","removeCheckboxes()");
+        btnAnnulla.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-undo");
+        div.appendChild(i);
+        btnAnnulla.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Annulla";
+        div.appendChild(span);
+        btnAnnulla.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnAnnulla);
+
+        var btnSelezionaTutti=document.createElement("button");
+        btnSelezionaTutti.setAttribute("id","btnSelezionaTutti");
+        btnSelezionaTutti.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnSelezionaTutti.setAttribute("onclick","selectAllCheckboxes(this)");
+        btnSelezionaTutti.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-square");
+        i.setAttribute("style","font-size: 17px;");
+        div.appendChild(i);
+        btnSelezionaTutti.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Seleziona";
+        div.appendChild(span);
+        btnSelezionaTutti.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnSelezionaTutti);
+
+        var btnScarica=document.createElement("button");
+        btnScarica.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnScarica.setAttribute("onclick","console.log(checkedFiles)");
+        btnScarica.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-cloud-download");
+        div.appendChild(i);
+        btnScarica.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Scarica";
+        div.appendChild(span);
+        btnScarica.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnScarica);
+
+        var btnElimina=document.createElement("button");
+        btnElimina.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnElimina.setAttribute("onclick","deleteAllCheckedFiles()");
+        btnElimina.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-trash");
+        div.appendChild(i);
+        btnElimina.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Elimina";
+        div.appendChild(span);
+        btnElimina.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnElimina);
+
+        var i=onlongtouchArguments[0];
+        var cloudFotoItemButtons=document.getElementsByClassName("cloud-foto-item-button");
+        for (let index = 0; index < cloudFotoItemButtons.length; index++)
+        {
+            const cloudFotoItemButton = cloudFotoItemButtons[index];
+            const cloudFotoItemOuterContainer = cloudFotoItemButton.parentElement;
+            var number=cloudFotoItemOuterContainer.getAttribute("number");
+
+            cloudFotoItemButton.setAttribute("onclick","toggleCheckboxCloudFotoItem("+number+")");
+    
+            cloudFotoItemButton.style.width="calc(100% - 55px)";
+    
+            var checkboxContainer=document.createElement("button");
+            checkboxContainer.setAttribute("class","cloud-foto-item-checkbox-button-container");
+            checkboxContainer.setAttribute("number",number);
+            checkboxContainer.setAttribute("id","clouFotoItemCheckboxButtonContainer"+number);
+            checkboxContainer.setAttribute("checked","false");
+            checkboxContainer.setAttribute("onclick","toggleCheckboxCloudFotoItem("+number+")");
+    
+            var checkbox=document.createElement("i");
+            checkbox.setAttribute("class","fal fa-square");
+    
+            checkboxContainer.appendChild(checkbox);
+    
+            cloudFotoItemOuterContainer.insertBefore(checkboxContainer, cloudFotoItemOuterContainer.firstChild);
+        }
+
+        if(!isNaN(i))
+        {
+            toggleCheckboxCloudFotoItem(i);
+        }
+    }
+}
+function toggleCheckboxCloudFotoItem(number)
+{
+    var button=document.getElementById("clouFotoItemCheckboxButtonContainer"+number);
+    var checkbox=button.getElementsByTagName("i")[0];
+    var className=checkbox.className;
+
+    if(className=="fal fa-square")
+    {
+        checkbox.className="fas fa-check-square";
+        checkbox.style.color="rgb(48, 133, 214)";
+        button.setAttribute("checked","true");
+        checkedFiles.push(parseInt(number));
+    }
+    else
+    {
+        checkbox.className="fal fa-square";
+        checkbox.style.color="black";
+        button.setAttribute("checked","false");
+        
+        checkedFiles.splice(checkedFiles.indexOf(number), 1);
+    }
+
+    var button=document.getElementById("btnSelezionaTutti");
+    var checkbox=button.getElementsByTagName("i")[0];
+    var className=checkbox.className;
+    if(filesLenght==checkedFiles.length)
+    {
+        checkbox.className="fas fa-check-square";
+        checkbox.style.color="rgb(48, 133, 214)";
+    }
+    else
+    {
+        checkbox.className="fal fa-square";
+        checkbox.style.color="black";
+    }
 }
 function clickActionButton()
 {
@@ -239,7 +566,8 @@ function actionMenuCloudFoto(event,tipo,nome,descrizione,id)
     }
     if(tipo=="file")
     {
-        var formato=nome.split(".")[1];
+        //var formato=nome.split(".")[1];
+		var formato=nome.split(".")[nome.split(".").length-1];
         input.setAttribute("value",nome.replace("."+formato,""));
         input.setAttribute("formato",formato);
     }
@@ -304,6 +632,7 @@ function actionMenuCloudFoto(event,tipo,nome,descrizione,id)
                     document.getElementsByClassName("swal2-title")[0].style.overflow="hidden";
                     document.getElementsByClassName("swal2-title")[0].style.textOverflow="ellipsis";
                     document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
 
                     $("textarea").keypress(function(event){
                         var ew = event.which;
@@ -687,9 +1016,14 @@ function getFiles(id_cartella)
         });
     });
 }
-function expandImage(img,nomeFile)
+function expandImage(formato,element,nomeFile)
 {
-    var src=img.getAttribute("src");
+    if(formato.toLowerCase()=="mp4")
+    {
+        var src=element.getElementsByTagName("source")[0].getAttribute("src");
+    }
+    else
+        var src=element.getAttribute("src");
 
     var outerContainer=document.createElement("div");
     outerContainer.setAttribute("class","popup-expand-image-outer-container");
@@ -717,10 +1051,22 @@ function expandImage(img,nomeFile)
 
     outerContainer.appendChild(actionBar);
 
-    var img=document.createElement("img");
-    img.setAttribute("src",src);
-
-    outerContainer.appendChild(img);
+    if(formato.toLowerCase()=="mp4")
+    {
+        var video=document.createElement("video");
+        video.setAttribute("controls","controls");
+        var source=document.createElement("source");
+        source.setAttribute("src",src);
+        source.setAttribute("type","video/mp4");
+        video.appendChild(source);
+        outerContainer.appendChild(video);
+    }
+    else
+    {
+        var img=document.createElement("img");
+        img.setAttribute("src",src);
+        outerContainer.appendChild(img);
+    }
 
     Swal.fire(
     {

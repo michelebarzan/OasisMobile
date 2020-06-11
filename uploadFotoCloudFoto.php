@@ -8,6 +8,10 @@
 
     $fileName=basename($_FILES["file"]["name"]);
 
+    $formato=explode(".",$fileName)[sizeof(explode(".",$fileName))-1];
+    if(strtolower($formato)=="mov")
+        $fileName=str_ireplace(".MOV",".mp4",$fileName);
+
     $target_file = "C:/xampp/htdocs/".$pathString.$fileName;
     $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
     
