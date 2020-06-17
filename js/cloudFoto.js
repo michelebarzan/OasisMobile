@@ -11,8 +11,41 @@ var cartella_corrente;
 var checkedFiles=[];
 var filesLenght;
 
+var itemClassOuterContainer;
+var itemClassButton;
+var itemClassName;
+var itemClassDate;
+var itemClassActionButton;
+var itemClassCheckbox;
+
 async function onloadcloudFoto()
 {
+    var checkCookieSettingsResponse=await checkCookieSettings();
+    //if(checkCookieSettingsResponse)
+
+    if(checkboxMostraImmaginiIngrandite)
+    {
+        itemClassOuterContainer="cloud-foto-large-item-outer-container";
+        itemClassButton="cloud-foto-large-item-button";
+        itemClassName="cloud-foto-large-item-name";
+        itemClassDate="cloud-foto-large-item-date";
+        itemClassActionButton="cloud-foto-large-item-action-button";
+        itemClassCheckbox="cloud-foto-large-item-checkbox-button-container";
+
+        document.getElementById("containerCloudFoto").className="container-cloud-foto-large-item";
+    }
+    else
+    {
+        itemClassOuterContainer="cloud-foto-item-outer-container";
+        itemClassButton="cloud-foto-item-button";
+        itemClassName="cloud-foto-item-name";
+        itemClassDate="cloud-foto-item-date";
+        itemClassActionButton="cloud-foto-item-action-button";
+        itemClassCheckbox="cloud-foto-item-checkbox-button-container";
+
+        document.getElementById("containerCloudFoto").className="container-cloud-foto-small-item";
+    }
+
     getElencoContenutoCartella(1);
 }
 function getPath(id_cartella,cartella)
@@ -52,7 +85,17 @@ function getPath(id_cartella,cartella)
 }
 async function getElencoContenutoCartella(id_cartella)
 {
+    try {
+        removeCheckboxes();
+    } catch (error) {}
+
     filesLenght=0;
+
+    var oldScrollTop=0;
+    if(document.getElementById("containerCloudFoto")!=null)
+    {
+        oldScrollTop=document.getElementById("containerCloudFoto").scrollTop;
+    }
 
     var container=document.getElementById("containerCloudFoto");
     container.innerHTML="";
@@ -128,7 +171,7 @@ async function getElencoContenutoCartella(id_cartella)
         //console.log(item);
 
         var outerContainer=document.createElement("div");
-        outerContainer.setAttribute("class","cloud-foto-item-outer-container");
+        outerContainer.setAttribute("class",itemClassOuterContainer);
         outerContainer.setAttribute("id","cloudFotoItemOuterContainer"+i);
         outerContainer.setAttribute("number",i);
 
@@ -141,7 +184,8 @@ async function getElencoContenutoCartella(id_cartella)
         }
 
         var button=document.createElement("button");
-        button.setAttribute("class","cloud-foto-item-button");
+        button.setAttribute("class",itemClassButton);
+        button.setAttribute("number",i);
         if(item.tipo=="cartella")
         {
             //button.setAttribute("onlongtouch","clickActionButton("+item.id_cartella+")");
@@ -158,7 +202,7 @@ async function getElencoContenutoCartella(id_cartella)
             var formato=item.nomeFile.split(".")[item.nomeFile.split(".").length-1];
             //button.setAttribute("onlongtouch","clickActionButton("+item.id_file+")");
             button.setAttribute("onlongtouch","getCheckboxes("+i+")");
-            button.setAttribute("onclick","expandImage('"+formato+"',this.firstChild,'"+item.nomeFile+"')");
+            button.setAttribute("onclick","expandImage("+i+",'"+formato+"',this.firstChild,'"+item.nomeFile+"')");
             button.setAttribute("tipo","file");
             button.setAttribute("nomeFile",item.nomeFile);
 
@@ -190,41 +234,40 @@ async function getElencoContenutoCartella(id_cartella)
                 button.appendChild(img);
             }
         }
-
-        var name=document.createElement("div");
-        name.setAttribute("class","cloud-foto-item-name");
-        if(item.tipo=="cartella")
+        if(!checkboxMostraImmaginiIngrandite)
         {
-            name.setAttribute("id","cloudFotoItemName"+item.id_cartella);
+            var name=document.createElement("div");
+            name.setAttribute("class",itemClassName);
+            if(item.tipo=="cartella")
+            {
+                name.setAttribute("id","cloudFotoItemName"+item.id_cartella);
+            }
+            if(item.tipo=="file")
+            {
+                name.setAttribute("id","cloudFotoItemName"+item.id_file);
+            }
+            if(item.tipo=="cartella")
+            {
+                name.innerHTML=item.cartella;
+            }
+            if(item.tipo=="file")
+            {
+                name.innerHTML=item.nomeFile;
+            }
+            button.appendChild(name);
+        
+            var date=document.createElement("div");
+            date.setAttribute("class",itemClassDate);
+            var dataOraString=item.dataOraString.replace(" ","<br>");
+            dataOraString=dataOraString.split(".")[0];
+            date.innerHTML=dataOraString;
+            button.appendChild(date);
         }
-        if(item.tipo=="file")
-        {
-            name.setAttribute("id","cloudFotoItemName"+item.id_file);
-        }
-        if(item.tipo=="cartella")
-        {
-            name.innerHTML=item.cartella;
-        }
-        if(item.tipo=="file")
-        {
-            name.innerHTML=item.nomeFile;
-        }
-        button.appendChild(name);
-
-        //outerContainer.appendChild(button);
-
-        var date=document.createElement("div");
-        date.setAttribute("class","cloud-foto-item-date");
-        var dataOraString=item.dataOraString.replace(" ","<br>");
-        dataOraString=dataOraString.split(".")[0];
-        date.innerHTML=dataOraString;
-        //outerContainer.appendChild(date);
-        button.appendChild(date);
 
         outerContainer.appendChild(button);
 
         var actionButton=document.createElement("button");
-        actionButton.setAttribute("class","cloud-foto-item-action-button");
+        actionButton.setAttribute("class",itemClassActionButton);
         var src=location.protocol+"//"+item.server+"/"+item.path;
         if(item.tipo=="cartella")
         {
@@ -237,7 +280,32 @@ async function getElencoContenutoCartella(id_cartella)
             actionButton.setAttribute("onclick","actionMenuCloudFoto(event,'"+item.tipo+"','"+item.nomeFile+"','"+item.descrizione+"',"+item.id_file+",'"+src+"','"+location.protocol+"','"+item.server+"','"+item.path+"')");
         }
 
-        actionButton.innerHTML='<i class="fal fa-ellipsis-v"></i>';
+        if(!checkboxMostraImmaginiIngrandite)
+            actionButton.innerHTML='<i class="fal fa-ellipsis-v"></i>';
+        else
+        {
+            var name=document.createElement("span");
+            if(item.tipo=="cartella")
+            {
+                name.setAttribute("id","cloudFotoItemName"+item.id_cartella);
+            }
+            if(item.tipo=="file")
+            {
+                name.setAttribute("id","cloudFotoItemName"+item.id_file);
+            }
+            if(item.tipo=="cartella")
+            {
+                name.innerHTML=item.cartella;
+            }
+            if(item.tipo=="file")
+            {
+                name.innerHTML=item.nomeFile;
+            }
+            var icon=document.createElement("i");
+            icon.setAttribute("class","fal fa-ellipsis-v");
+            actionButton.appendChild(name);
+            actionButton.appendChild(icon);
+        }
         
         outerContainer.appendChild(actionButton);
 
@@ -246,11 +314,21 @@ async function getElencoContenutoCartella(id_cartella)
         i++;
     });
     filesLenght=i;
+
+    if(checkboxMostraImmaginiIngrandite)
+    {
+        try {
+            var width=document.getElementsByClassName(itemClassOuterContainer)[0].offsetWidth;
+            $("."+itemClassOuterContainer).css("height",width+"px")
+        } catch (error) {}
+    }
+
+    document.getElementById("containerCloudFoto").scrollTop = oldScrollTop;
 }
 function removeCheckboxes()
 {
     checkedFiles=[];
-    var cloudFotoItemButtons=document.getElementsByClassName("cloud-foto-item-button");
+    var cloudFotoItemButtons=document.getElementsByClassName(itemClassButton);
     for (let index = 0; index < cloudFotoItemButtons.length; index++)
     {
         const cloudFotoItemButton = cloudFotoItemButtons[index];
@@ -271,12 +349,15 @@ function removeCheckboxes()
             var nomeFile=cloudFotoItemButton.getAttribute("nomeFile");
             var formato=nomeFile.split(".")[nomeFile.split(".").length-1];
             cloudFotoItemButton.setAttribute("onlongtouch","getCheckboxes("+number+")");
-            cloudFotoItemButton.setAttribute("onclick","expandImage('"+formato+"',this.firstChild,'"+nomeFile+"')");
+            cloudFotoItemButton.setAttribute("onclick","expandImage("+number+",'"+formato+"',this.firstChild,'"+nomeFile+"')");
         }
 
         cloudFotoItemButton.style.width="";
 
         document.getElementById("clouFotoItemCheckboxButtonContainer"+number).remove();
+
+        if(checkboxMostraImmaginiIngrandite)
+            cloudFotoItemButton.style.display="";
     }
     
     $(".select-files-button").remove();
@@ -289,10 +370,10 @@ function selectAllCheckboxes(button)
 
     if(className=="fal fa-square")
     {       
-        var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+        var checkboxContainers=document.getElementsByClassName(itemClassCheckbox);
         for (let index = 0; index < checkboxContainers.length; index++)
         {
-            var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+            var checkboxContainers=document.getElementsByClassName(itemClassCheckbox);
             for (let index = 0; index < checkboxContainers.length; index++)
             {
                 const checkboxContainer = checkboxContainers[index];
@@ -305,7 +386,7 @@ function selectAllCheckboxes(button)
     }
     else
     {       
-        var checkboxContainers=document.getElementsByClassName("cloud-foto-item-checkbox-button-container");
+        var checkboxContainers=document.getElementsByClassName(itemClassCheckbox);
         for (let index = 0; index < checkboxContainers.length; index++)
         {
             const checkboxContainer = checkboxContainers[index];
@@ -428,11 +509,15 @@ async function downloadAllCheckedFiles()
     });
     var id_utente=await getSessionValue("id_utente");
 
+    var thereIsAFolder=false;
+
 	for (let index = 0; index < checkedFiles.length; index++) 
 	{
 		const number = checkedFiles[index];
 		var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+number);
-		var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+        var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+        if(tipo=="cartella")
+            thereIsAFolder=true;
         var nome=cloudFotoItemOuterContainer.getAttribute("nome");
         var server=cloudFotoItemOuterContainer.getAttribute("server");
 		
@@ -480,6 +565,52 @@ async function downloadAllCheckedFiles()
 
                 document.body.appendChild(iframe);
                 document.getElementById('downloadCartellaLink').src = "files/cloudFoto/"+cartella+"_"+id_utente+".rar";
+
+                if(thereIsAFolder)
+                {
+                    if(checkboxShowAlertRar)
+                    {
+                        setCookie("checkboxShowAlertRar","false");
+                        checkboxShowAlertRar=false;
+
+                        if(isIos())
+                        {
+                            var link=document.createElement("a");
+                            link.setAttribute("href","https://apps.apple.com/it/app/izip-zip-unzip-unrar-tool/id413971331");
+                            link.setAttribute("style","font-family:'Quicksand', sans-serif;color:#4C91CB;font-size:14px;margin-bottom:20px;display:block;margin-top:10px");
+                            link.setAttribute("target","_blank");
+                            link.innerHTML="Applicazione consigliata: iZip";
+                        }
+                        else
+                        {
+                            var link=document.createElement("a");
+                            link.setAttribute("href","https://play.google.com/store/apps/details?id=com.rarlab.rar&hl=it");
+                            link.setAttribute("style","font-family:'Quicksand', sans-serif;color:#4C91CB;font-size:14px;margin-bottom:20px;display:block;margin-top:10px");
+                            link.setAttribute("target","_blank");
+                            link.innerHTML="Applicazione consigliata: RAR";
+                        }
+
+                        Swal.fire
+                        ({
+                            icon:"info",
+                            title: "Il file scaricato o alcuni dei file scaricati sono archivi rar. Per visualizzarli avrai bisogno di un applicazione di terze parti.",
+                            width:"100%",
+                            background:"#404040",
+                            onOpen : function()
+                                    {
+                                        document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                                        document.getElementsByClassName("swal2-title")[0].style.paddingLeft="10px";
+                                        document.getElementsByClassName("swal2-title")[0].style.paddingRight="10px";
+                                        document.getElementsByClassName("swal2-popup")[0].style.borderRadius="4px";
+                                        document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                                    },
+                            showCloseButton:true,
+                            showConfirmButton:false,
+                            showCancelButton:false,
+                            html:link.outerHTML
+                        });
+                    }
+                }
             }
         }
     });
@@ -487,60 +618,13 @@ async function downloadAllCheckedFiles()
 function getCheckboxes()
 {
     checkedFiles=[];
-    if(document.getElementsByClassName("cloud-foto-item-checkbox-button-container").length==0)
+    if(document.getElementsByClassName(itemClassCheckbox).length==0)
     {
+        getSystemToast("<span>Clicca su un elemento per selezionarlo</span>");
+        setTimeout(function(){ removeSystemToast(); }, 5000);
+
         var bottomControlBarCloudFoto=document.getElementById("bottomControlBarCloudFoto");
         $("#bottomControlBarCloudFoto *").css("display","none");
-
-        var btnAnnulla=document.createElement("button");
-        btnAnnulla.setAttribute("class","bottom-control-bar-button select-files-button");
-        btnAnnulla.setAttribute("onclick","removeCheckboxes()");
-        btnAnnulla.setAttribute("style","width:25%;align-items:center;justify-content:center");
-        var div=document.createElement("div");
-        var i=document.createElement("i");
-        i.setAttribute("class","fal fa-undo");
-        div.appendChild(i);
-        btnAnnulla.appendChild(div);
-        var div=document.createElement("div");
-        var span=document.createElement("span");
-        span.innerHTML="Annulla";
-        div.appendChild(span);
-        btnAnnulla.appendChild(div);
-        bottomControlBarCloudFoto.appendChild(btnAnnulla);
-
-        var btnSelezionaTutti=document.createElement("button");
-        btnSelezionaTutti.setAttribute("id","btnSelezionaTutti");
-        btnSelezionaTutti.setAttribute("class","bottom-control-bar-button select-files-button");
-        btnSelezionaTutti.setAttribute("onclick","selectAllCheckboxes(this)");
-        btnSelezionaTutti.setAttribute("style","width:25%;align-items:center;justify-content:center");
-        var div=document.createElement("div");
-        var i=document.createElement("i");
-        i.setAttribute("class","fal fa-square");
-        i.setAttribute("style","font-size: 17px;");
-        div.appendChild(i);
-        btnSelezionaTutti.appendChild(div);
-        var div=document.createElement("div");
-        var span=document.createElement("span");
-        span.innerHTML="Seleziona";
-        div.appendChild(span);
-        btnSelezionaTutti.appendChild(div);
-        bottomControlBarCloudFoto.appendChild(btnSelezionaTutti);
-
-        var btnScarica=document.createElement("button");
-        btnScarica.setAttribute("class","bottom-control-bar-button select-files-button");
-        btnScarica.setAttribute("onclick","downloadAllCheckedFiles()");
-        btnScarica.setAttribute("style","width:25%;align-items:center;justify-content:center");
-        var div=document.createElement("div");
-        var i=document.createElement("i");
-        i.setAttribute("class","fal fa-cloud-download");
-        div.appendChild(i);
-        btnScarica.appendChild(div);
-        var div=document.createElement("div");
-        var span=document.createElement("span");
-        span.innerHTML="Scarica";
-        div.appendChild(span);
-        btnScarica.appendChild(div);
-        bottomControlBarCloudFoto.appendChild(btnScarica);
 
         var btnElimina=document.createElement("button");
         btnElimina.setAttribute("class","bottom-control-bar-button select-files-button");
@@ -558,20 +642,73 @@ function getCheckboxes()
         btnElimina.appendChild(div);
         bottomControlBarCloudFoto.appendChild(btnElimina);
 
+        var btnScarica=document.createElement("button");
+        btnScarica.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnScarica.setAttribute("onclick","downloadAllCheckedFiles()");
+        btnScarica.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-cloud-download");
+        div.appendChild(i);
+        btnScarica.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Scarica";
+        div.appendChild(span);
+        btnScarica.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnScarica);
+
+        var btnSelezionaTutti=document.createElement("button");
+        btnSelezionaTutti.setAttribute("id","btnSelezionaTutti");
+        btnSelezionaTutti.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnSelezionaTutti.setAttribute("onclick","selectAllCheckboxes(this)");
+        btnSelezionaTutti.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-square");
+        i.setAttribute("style","font-size: 17px;");
+        div.appendChild(i);
+        btnSelezionaTutti.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Seleziona <b id='checkedFilesLabel'>0</b>/<b>"+filesLenght+"</b>";
+        div.appendChild(span);
+        btnSelezionaTutti.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnSelezionaTutti);
+
+        var btnAnnulla=document.createElement("button");
+        btnAnnulla.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnAnnulla.setAttribute("onclick","removeCheckboxes()");
+        btnAnnulla.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-undo");
+        div.appendChild(i);
+        btnAnnulla.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Annulla";
+        div.appendChild(span);
+        btnAnnulla.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnAnnulla);
+
         var i=onlongtouchArguments[0];
-        var cloudFotoItemButtons=document.getElementsByClassName("cloud-foto-item-button");
+        var cloudFotoItemButtons=document.getElementsByClassName(itemClassButton);
         for (let index = 0; index < cloudFotoItemButtons.length; index++)
         {
             const cloudFotoItemButton = cloudFotoItemButtons[index];
             const cloudFotoItemOuterContainer = cloudFotoItemButton.parentElement;
+
             var number=cloudFotoItemOuterContainer.getAttribute("number");
+            var nome=cloudFotoItemOuterContainer.getAttribute("nome");
+            var tipo=cloudFotoItemButton.getAttribute("tipo");
 
             cloudFotoItemButton.setAttribute("onclick","toggleCheckboxCloudFotoItem("+number+")");
     
             cloudFotoItemButton.style.width="calc(100% - 55px)";
     
             var checkboxContainer=document.createElement("button");
-            checkboxContainer.setAttribute("class","cloud-foto-item-checkbox-button-container");
+            checkboxContainer.setAttribute("class",itemClassCheckbox);
             checkboxContainer.setAttribute("number",number);
             checkboxContainer.setAttribute("id","clouFotoItemCheckboxButtonContainer"+number);
             checkboxContainer.setAttribute("checked","false");
@@ -581,7 +718,29 @@ function getCheckboxes()
             checkbox.setAttribute("class","fal fa-square");
     
             checkboxContainer.appendChild(checkbox);
-    
+
+            if(checkboxMostraImmaginiIngrandite)
+            {
+                if(tipo=="cartella")
+                {
+                    checkboxContainer.setAttribute("style","background-image: url('../images/folder.png');background-repeat:no-repeat");
+                }
+                else
+                {
+                    var formato=nome.split(".")[nome.split(".").length-1];
+                    if(formato.toLowerCase()=="mp4")
+                    {
+                        checkboxContainer.setAttribute("style","background-image: url('../images/video_player.png');background-repeat:no-repeat");
+                    }
+                    else
+                    {
+                        var img=cloudFotoItemButton.firstChild;
+                        var src=img.getAttribute("src");
+                        checkboxContainer.setAttribute("style","background-image:url('"+src+"')");
+                    }
+                }
+                cloudFotoItemButton.style.display="none";
+            }
             cloudFotoItemOuterContainer.insertBefore(checkboxContainer, cloudFotoItemOuterContainer.firstChild);
         }
 
@@ -631,6 +790,7 @@ function toggleCheckboxCloudFotoItem(number)
         checkbox.className="fal fa-square";
         checkbox.style.color="black";
     }
+    document.getElementById("checkedFilesLabel").innerHTML=checkedFiles.length;
 }
 function clickActionButton()
 {
@@ -651,6 +811,13 @@ function actionMenuCloudFoto(event,tipo,nome,descrizione,id,src,protocol,server,
     var span=document.createElement("span");
     span.innerHTML="Menù "+tipo+ "&nbsp<u><i>"+nome+"</i></u>";
     actionBar.appendChild(span);
+
+    var button=document.createElement("button");
+    button.setAttribute("style","font-size:14px;margin-right:10px");
+    button.setAttribute("class","popup-expand-image-action-bar-share-button");
+    button.setAttribute("onclick","condividiFotoCartella('"+src+"','"+nome+"','"+tipo+"','"+protocol+"','"+server+"','"+path+"',"+id+")");
+    button.innerHTML='<i class="fal fa-share-alt"></i>';
+    actionBar.appendChild(button);
 
     var button=document.createElement("button");
     button.setAttribute("style","font-size:14px");
@@ -797,6 +964,86 @@ function actionMenuCloudFoto(event,tipo,nome,descrizione,id,src,protocol,server,
         /*modificaInformazioniCloudFoto(tipo,id,'descrizione');
         if(requeryElencoContenutoCartella)
             getElencoContenutoCartella(cartella_corrente);*/
+    });
+}
+function condividiFotoCartella(src,nome,tipo,protocol,server,path,id)
+{
+    if(tipo=="cartella")
+        src = protocol+"/"+server+"/OasisMobile/shareCloudFoto.php?path="+path+"&nome="+nome+"&id_cartella="+id;
+
+    var outerContainer=document.createElement("div");
+    outerContainer.setAttribute("class","share-popup-outer-container");
+
+    var row=document.createElement("div");
+    
+    row.setAttribute("style","width:100%;margin-bottom:10px;");
+
+    var subjectEncoded = encodeURIComponent(nome);
+    var bodyEncoded = encodeURIComponent(src);
+
+    var buttonScegliDocumento=document.createElement("a");
+    buttonScegliDocumento.setAttribute("href","mailto:?subject="+subjectEncoded+"&body=" + bodyEncoded);
+    buttonScegliDocumento.setAttribute("class","share-popup-button");
+    buttonScegliDocumento.setAttribute("style","width:100%;text-decoration:none");
+    buttonScegliDocumento.innerHTML='<span>Invia mail</span><i class="fal fa-envelope"></i>';
+    
+    row.appendChild(buttonScegliDocumento);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    
+    row.setAttribute("style","width:100%;margin-bottom:10px;");
+
+    var buttonScegliDocumento=document.createElement("a");
+    buttonScegliDocumento.setAttribute("href","https://api.whatsapp.com/send?text="+bodyEncoded);
+    buttonScegliDocumento.setAttribute("class","share-popup-button");
+    buttonScegliDocumento.setAttribute("style","width:100%;text-decoration:none");
+    buttonScegliDocumento.innerHTML='<span>Invia Whatsapp</span><i class="fab fa-whatsapp"></i>';
+    
+    row.appendChild(buttonScegliDocumento);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    
+    row.setAttribute("style","width:100%;color:#ddd;font-size: 12px;text-align:center;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;");
+    row.innerHTML="Oppure copia il link";
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    
+    row.setAttribute("style","width:100%;justify-content:flex-start");
+
+    var input=document.createElement("textarea");
+    input.setAttribute("style","font-size:10px;");
+    input.setAttribute("class","share-popup-input");
+    input.innerHTML=src;
+    
+    row.appendChild(input);
+
+    outerContainer.appendChild(row);
+
+    Swal.fire
+    ({
+        //position:"top",
+        width:"100%",
+        background:"#404040",
+        title:"Condividi "+tipo,
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-title")[0].style.fontWeight="normal";
+                    document.getElementsByClassName("swal2-title")[0].style.marginTop="15px";
+                    document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                },
+        showCloseButton:true,
+        showConfirmButton:false,
+        showCancelButton:false,
+        html:outerContainer.outerHTML
+    }).then((result) => 
+    {
+        
     });
 }
 async function salvaModificheFileCartellaCloudFoto(tipo,id)
@@ -1145,7 +1392,7 @@ function getFiles(id_cartella)
         });
     });
 }
-function expandImage(formato,element,nomeFile)
+function expandImage(number,formato,element,nomeFile)
 {
     if(formato.toLowerCase()=="mp4")
     {
@@ -1165,6 +1412,13 @@ function expandImage(formato,element,nomeFile)
     actionBar.appendChild(span);
 
     var button=document.createElement("button");
+    button.setAttribute("style","font-size:14px;margin-right:10px");
+    button.setAttribute("class","popup-expand-image-action-bar-share-button");
+    button.setAttribute("onclick","condividiFotoCartella('"+src+"','"+nomeFile+"','file')");
+    button.innerHTML='<i class="fal fa-share-alt"></i>';
+    actionBar.appendChild(button);
+
+    var button=document.createElement("button");
     button.setAttribute("style","font-size:14px");
     button.setAttribute("class","popup-expand-image-action-bar-download-button");
     button.setAttribute("onclick","downloadFoto('"+src+"')");
@@ -1180,6 +1434,15 @@ function expandImage(formato,element,nomeFile)
 
     outerContainer.appendChild(actionBar);
 
+    var innerContainer=document.createElement("div");
+    innerContainer.setAttribute("class","popup-expand-image-inner-container");
+
+    var button=document.createElement("button");
+    button.setAttribute("onclick","getPreviousImage("+number+")");
+    button.setAttribute("class","popup-expand-image-gallery-button");
+    button.innerHTML='<i class="fad fa-chevron-double-left"></i>';
+    innerContainer.appendChild(button);
+
     if(formato.toLowerCase()=="mp4")
     {
         var video=document.createElement("video");
@@ -1188,20 +1451,28 @@ function expandImage(formato,element,nomeFile)
         source.setAttribute("src",src);
         source.setAttribute("type","video/mp4");
         video.appendChild(source);
-        outerContainer.appendChild(video);
+        innerContainer.appendChild(video);
     }
     else
     {
         var img=document.createElement("img");
         img.setAttribute("src",src);
-        outerContainer.appendChild(img);
+        innerContainer.appendChild(img);
     }
+
+    var button=document.createElement("button");
+    button.setAttribute("onclick","getNextImage("+number+")");
+    button.setAttribute("class","popup-expand-image-gallery-button");
+    button.innerHTML='<i class="fad fa-chevron-double-right"></i>';
+    innerContainer.appendChild(button);
+
+    outerContainer.appendChild(innerContainer);
 
     Swal.fire(
     {
         //position:"top",
         width:"100%",
-        background:"#404040",
+        background:"#292929",
         onOpen : function()
                 {
                     document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
@@ -1213,6 +1484,48 @@ function expandImage(formato,element,nomeFile)
         showCancelButton:false,
         html:outerContainer.outerHTML
     });
+}
+function getPreviousImage(number)
+{
+    var previousNumber=number-1;
+    var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+previousNumber);
+    if(cloudFotoItemOuterContainer!=null)
+    {
+        var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+        if(tipo=="cartella")
+            getPreviousImage(previousNumber);
+        else
+        {
+            var element=cloudFotoItemOuterContainer.firstChild.firstChild;
+            var cloudFotoItemButton=cloudFotoItemOuterContainer.firstChild;
+
+            var nomeFile=cloudFotoItemButton.getAttribute("nomeFile");
+            var formato=nomeFile.split(".")[nomeFile.split(".").length-1];
+
+            expandImage(previousNumber,formato,element,nomeFile);
+        }
+    }
+}
+function getNextImage(number)
+{
+    var nextNumber=number+1;
+    var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+nextNumber);
+    if(cloudFotoItemOuterContainer!=null)
+    {
+        var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+        if(tipo=="cartella")
+            getNextImage(nextNumber);
+        else
+        {
+            var element=cloudFotoItemOuterContainer.firstChild.firstChild;
+            var cloudFotoItemButton=cloudFotoItemOuterContainer.firstChild;
+
+            var nomeFile=cloudFotoItemButton.getAttribute("nomeFile");
+            var formato=nomeFile.split(".")[nomeFile.split(".").length-1];
+
+            expandImage(nextNumber,formato,element,nomeFile);
+        }
+    }
 }
 function downloadFoto(src)
 {
@@ -1299,6 +1612,49 @@ function downloadCartella(src,nome,protocol,server,path)
 
                 document.body.appendChild(iframe);
                 document.getElementById('downloadCartellaLink').src = "files/cloudFoto/"+nome+".rar";
+
+                if(checkboxShowAlertRar)
+                {
+                    setCookie("checkboxShowAlertRar","false");
+                    checkboxShowAlertRar=false;
+
+                    if(isIos())
+                    {
+                        var link=document.createElement("a");
+                        link.setAttribute("href","https://apps.apple.com/it/app/izip-zip-unzip-unrar-tool/id413971331");
+                        link.setAttribute("style","font-family:'Quicksand', sans-serif;color:#4C91CB;font-size:14px;margin-bottom:20px;display:block;margin-top:10px");
+                        link.setAttribute("target","_blank");
+                        link.innerHTML="Applicazione consigliata: iZip";
+                    }
+                    else
+                    {
+                        var link=document.createElement("a");
+                        link.setAttribute("href","https://play.google.com/store/apps/details?id=com.rarlab.rar&hl=it");
+                        link.setAttribute("style","font-family:'Quicksand', sans-serif;color:#4C91CB;font-size:14px;margin-bottom:20px;display:block;margin-top:10px");
+                        link.setAttribute("target","_blank");
+                        link.innerHTML="Applicazione consigliata: RAR";
+                    }
+
+                    Swal.fire
+                    ({
+                        icon:"info",
+                        title: "Il file scaricato o alcuni dei file scaricati sono archivi rar. Per visualizzarli avrai bisogno di un applicazione di terze parti.",
+                        width:"100%",
+                        background:"#404040",
+                        onOpen : function()
+                                {
+                                    document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                                    document.getElementsByClassName("swal2-title")[0].style.paddingLeft="10px";
+                                    document.getElementsByClassName("swal2-title")[0].style.paddingRight="10px";
+                                    document.getElementsByClassName("swal2-popup")[0].style.borderRadius="4px";
+                                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                                },
+                        showCloseButton:true,
+                        showConfirmButton:false,
+                        showCancelButton:false,
+                        html:link.outerHTML
+                    });
+                }
             }
         }
     });
@@ -1309,10 +1665,10 @@ function nuovaCarella()
     var container=document.getElementById("containerCloudFoto");
 
     var outerContainer=document.createElement("div");
-    outerContainer.setAttribute("class","cloud-foto-item-outer-container");
+    outerContainer.setAttribute("class",itemClassOuterContainer);
 
     var button=document.createElement("button");
-    button.setAttribute("class","cloud-foto-item-button");
+    button.setAttribute("class",itemClassButton);
     //button.setAttribute("onclick","getElencoContenutoCartella('"+item.id_cartella+"')");
 
     var icon=document.createElement("i");
@@ -1320,7 +1676,7 @@ function nuovaCarella()
     button.appendChild(icon);
 
     var name=document.createElement("div");
-    name.setAttribute("class","cloud-foto-item-name");
+    name.setAttribute("class",itemClassName);
 
     var input=document.createElement("input");
     input.setAttribute("type","text");
@@ -1336,7 +1692,7 @@ function nuovaCarella()
     outerContainer.appendChild(button);
 
     var date=document.createElement("div");
-    date.setAttribute("class","cloud-foto-item-date");
+    date.setAttribute("class",itemClassDate);
     outerContainer.appendChild(date);
 
     container.appendChild(outerContainer);
@@ -1586,7 +1942,109 @@ $("input").keypress(function(event){
 });
 function searchCloudFoto(value)
 {
-    $(".cloud-foto-item-outer-container").filter(function() {
+    $("."+itemClassOuterContainer).filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+}
+
+var checkboxMostraImmaginiIngrandite;
+var checkboxShowAlertRar;
+
+function getPopupImpostazioni()
+{
+    var table=document.createElement("table");
+    table.setAttribute("class","material-design-table-dark");
+
+    //tbody
+    var tbody = table.createTBody();
+
+    //Mostra immagini ingrandite
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var labelMostraImmaginiIngrandite=document.createElement("label");
+    labelMostraImmaginiIngrandite.setAttribute("class","pure-material-checkbox");
+
+    var inputMostraImmaginiIngrandite=document.createElement("input");
+    inputMostraImmaginiIngrandite.setAttribute("type","checkbox");
+    if(checkboxMostraImmaginiIngrandite)
+        inputMostraImmaginiIngrandite.setAttribute("checked","checked");
+    inputMostraImmaginiIngrandite.setAttribute("id","checkboxMostraImmaginiIngrandite");
+    inputMostraImmaginiIngrandite.setAttribute("onchange","checkboxMostraImmaginiIngrandite=this.checked;setCookie('checkboxMostraImmaginiIngrandite',this.checked);Swal.close();gotopath('cloudFoto');");
+    labelMostraImmaginiIngrandite.appendChild(inputMostraImmaginiIngrandite);
+
+    var spanMostraImmaginiIngrandite=document.createElement("span");
+    spanMostraImmaginiIngrandite.setAttribute("style","color:white");
+    spanMostraImmaginiIngrandite.innerHTML="<div>Visualizzazione galleria</div>";
+    labelMostraImmaginiIngrandite.appendChild(spanMostraImmaginiIngrandite);
+
+    cell1.appendChild(labelMostraImmaginiIngrandite);
+
+    //Ripristina impostazioni predefinite
+    var row = tbody.insertRow(-1);
+
+    var cell1 = row.insertCell(0);
+
+    var buttonRipristinaImpostazioniPredefinite=document.createElement("button");
+    buttonRipristinaImpostazioniPredefinite.setAttribute("class","material-design-table-dark-button-reset-settings");
+    buttonRipristinaImpostazioniPredefinite.setAttribute("onclick","ripristinaImpostazioniPredefinite()");
+    buttonRipristinaImpostazioniPredefinite.innerHTML="Ripristina impostazioni predefinite<i style='margin-left:5px' class='fad fa-repeat-alt'></i>";
+
+    cell1.appendChild(buttonRipristinaImpostazioniPredefinite);
+    //------------------------------------------------------------------------------------
+    Swal.fire
+    ({
+        title: 'Impostazioni richieste',
+        background: '#404040',
+        position:"top",
+        width:"100%",
+        html: table.outerHTML,
+        showCloseButton: true,
+        showConfirmButton:false,
+        onOpen : function()
+                {
+                    document.getElementsByClassName("swal2-title")[0].style.color="#ddd";
+                    document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                }
+    }).then((result) => 
+    {
+        if (result.value)
+        {
+            
+        }
+    });
+}
+function ripristinaImpostazioniPredefinite()
+{
+    Swal.close();
+    
+    setCookie('checkboxShowAlertRar',"");
+    setCookie('checkboxMostraImmaginiIngrandite',"");
+
+    gotopath("cloudFoto");
+}
+async function checkCookieSettings()
+{
+    return new Promise(async function (resolve) 
+    {
+        var coockieCheckboxShowAlertRar=await getCookie("checkboxShowAlertRar");
+        if(coockieCheckboxShowAlertRar=="")
+            checkboxShowAlertRar=true;
+        if(coockieCheckboxShowAlertRar.indexOf("true")>-1)
+            checkboxShowAlertRar=true;
+        if(coockieCheckboxShowAlertRar.indexOf("false")>-1)
+            checkboxShowAlertRar=false;
+        
+        var coockiecheckboxMostraImmaginiIngrandite=await getCookie("checkboxMostraImmaginiIngrandite");
+        if(coockiecheckboxMostraImmaginiIngrandite=="")
+            checkboxMostraImmaginiIngrandite=false;
+        if(coockiecheckboxMostraImmaginiIngrandite.indexOf("true")>-1)
+            checkboxMostraImmaginiIngrandite=true;
+        if(coockiecheckboxMostraImmaginiIngrandite.indexOf("false")>-1)
+            checkboxMostraImmaginiIngrandite=false;
+        
+        resolve(true);
     });
 }
