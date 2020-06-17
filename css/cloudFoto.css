@@ -253,6 +253,8 @@ body
     text-align: center;
     box-sizing: border-box;
     width: 35px;
+    min-width: 35px;
+    max-width: 35px;
     object-fit: fill;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -833,6 +835,12 @@ body
 .material-design-table-dark
 {
     background-color: #4d4d4d;
+    max-width: calc(100% - 20px);
+    overflow: hidden;
+}
+.pure-material-checkbox
+{
+    min-width: 100%;
 }
 .material-design-table-dark tbody tr:hover,.material-design-table-dark thead tr:hover
 {
