@@ -723,14 +723,14 @@ function getCheckboxes()
             {
                 if(tipo=="cartella")
                 {
-                    checkboxContainer.setAttribute("style","background-image: url('../images/folder.png');background-repeat:no-repeat");
+                    checkboxContainer.setAttribute("style","background-image: url('./images/folder.png');background-repeat:no-repeat");
                 }
                 else
                 {
                     var formato=nome.split(".")[nome.split(".").length-1];
                     if(formato.toLowerCase()=="mp4")
                     {
-                        checkboxContainer.setAttribute("style","background-image: url('../images/video_player.png');background-repeat:no-repeat");
+                        checkboxContainer.setAttribute("style","background-image: url('./images/video_player.png');background-repeat:no-repeat");
                     }
                     else
                     {
@@ -1976,7 +1976,7 @@ function getPopupImpostazioni()
 
     var spanMostraImmaginiIngrandite=document.createElement("span");
     spanMostraImmaginiIngrandite.setAttribute("style","color:white");
-    spanMostraImmaginiIngrandite.innerHTML="<div>Visualizzazione galleria</div>";
+    spanMostraImmaginiIngrandite.innerHTML="<div style='overflow:hidden'>Visualizzazione galleria</div>";
     labelMostraImmaginiIngrandite.appendChild(spanMostraImmaginiIngrandite);
 
     cell1.appendChild(labelMostraImmaginiIngrandite);
