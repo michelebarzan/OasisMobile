@@ -9,7 +9,7 @@
 
     $error=true;
 
-    $q2="SELECT * FROM utenti";
+    $q2="SELECT * FROM utenti WHERE eliminato='false'";
     $r2=sqlsrv_query($conn,$q2);
     if($r2==FALSE)
     {

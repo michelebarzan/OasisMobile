@@ -9,7 +9,11 @@ async function getCartella()
     var nome=document.getElementById("hiddenNome").value;
     var path=document.getElementById("hiddenPath").value;
     var id_cartella=document.getElementById("hiddenId_cartella").value;
+    var tipo=document.getElementById("hiddenTipo").value;
+    var files=document.getElementById("hiddenFiles").value;
 
+    console.log(tipo);
+    console.log(files);
     console.log(nome);
     console.log(path);
     console.log(id_cartella);

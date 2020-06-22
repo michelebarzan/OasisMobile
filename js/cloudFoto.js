@@ -629,7 +629,7 @@ function getCheckboxes()
         var btnElimina=document.createElement("button");
         btnElimina.setAttribute("class","bottom-control-bar-button select-files-button");
         btnElimina.setAttribute("onclick","getPopupDeleteAllCheckedFiles()");
-        btnElimina.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        btnElimina.setAttribute("style","width:20%;align-items:center;justify-content:center");
         var div=document.createElement("div");
         var i=document.createElement("i");
         i.setAttribute("class","fal fa-trash");
@@ -645,7 +645,7 @@ function getCheckboxes()
         var btnScarica=document.createElement("button");
         btnScarica.setAttribute("class","bottom-control-bar-button select-files-button");
         btnScarica.setAttribute("onclick","downloadAllCheckedFiles()");
-        btnScarica.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        btnScarica.setAttribute("style","width:20%;align-items:center;justify-content:center");
         var div=document.createElement("div");
         var i=document.createElement("i");
         i.setAttribute("class","fal fa-cloud-download");
@@ -658,11 +658,27 @@ function getCheckboxes()
         btnScarica.appendChild(div);
         bottomControlBarCloudFoto.appendChild(btnScarica);
 
+        var btnCondividi=document.createElement("button");
+        btnCondividi.setAttribute("class","bottom-control-bar-button select-files-button");
+        btnCondividi.setAttribute("onclick","shareAllCheckedFiles()");
+        btnCondividi.setAttribute("style","width:20%;align-items:center;justify-content:center");
+        var div=document.createElement("div");
+        var i=document.createElement("i");
+        i.setAttribute("class","fal fa-share-alt");
+        div.appendChild(i);
+        btnCondividi.appendChild(div);
+        var div=document.createElement("div");
+        var span=document.createElement("span");
+        span.innerHTML="Condividi";
+        div.appendChild(span);
+        btnCondividi.appendChild(div);
+        bottomControlBarCloudFoto.appendChild(btnCondividi);
+
         var btnSelezionaTutti=document.createElement("button");
         btnSelezionaTutti.setAttribute("id","btnSelezionaTutti");
         btnSelezionaTutti.setAttribute("class","bottom-control-bar-button select-files-button");
         btnSelezionaTutti.setAttribute("onclick","selectAllCheckboxes(this)");
-        btnSelezionaTutti.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        btnSelezionaTutti.setAttribute("style","width:20%;align-items:center;justify-content:center");
         var div=document.createElement("div");
         var i=document.createElement("i");
         i.setAttribute("class","fal fa-square");
@@ -679,7 +695,7 @@ function getCheckboxes()
         var btnAnnulla=document.createElement("button");
         btnAnnulla.setAttribute("class","bottom-control-bar-button select-files-button");
         btnAnnulla.setAttribute("onclick","removeCheckboxes()");
-        btnAnnulla.setAttribute("style","width:25%;align-items:center;justify-content:center");
+        btnAnnulla.setAttribute("style","width:20%;align-items:center;justify-content:center");
         var div=document.createElement("div");
         var i=document.createElement("i");
         i.setAttribute("class","fal fa-undo");
@@ -754,6 +770,10 @@ function getCheckboxes()
             }
         }
     }
+}
+function shareAllCheckedFiles()
+{
+
 }
 function toggleCheckboxCloudFotoItem(number)
 {
@@ -968,8 +988,15 @@ function actionMenuCloudFoto(event,tipo,nome,descrizione,id,src,protocol,server,
 }
 function condividiFotoCartella(src,nome,tipo,protocol,server,path,id)
 {
+    var files=[];
     if(tipo=="cartella")
-        src = protocol+"/"+server+"/OasisMobile/shareCloudFoto.php?path="+path+"&nome="+nome+"&id_cartella="+id;
+    {
+        //files=
+    }
+    else
+        files=[path];
+
+    src = protocol+"/"+server+"/OasisMobile/shareCloudFoto.php?tipo="+tipo+"&path="+path+"&nome="+nome+"&id_cartella="+id+"&files="+files;
 
     var outerContainer=document.createElement("div");
     outerContainer.setAttribute("class","share-popup-outer-container");

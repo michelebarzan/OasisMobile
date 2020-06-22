@@ -2,6 +2,8 @@
     $path=$_REQUEST["path"];
     $nome=$_REQUEST["nome"];
     $id_cartella=$_REQUEST["id_cartella"];
+    $tipo=$_REQUEST["tipo"];
+    $files=$_REQUEST["files"];
 ?>
 <html lang="en">
 <head>
@@ -18,5 +20,7 @@
     <input type="hidden" id="hiddenNome" value="<?php echo $nome; ?>">
     <input type="hidden" id="hiddenPath" value="<?php echo $path; ?>">
     <input type="hidden" id="hiddenId_cartella" value="<?php echo $id_cartella; ?>">
+    <input type="hidden" id="hiddenTipo" value="<?php echo $tipo; ?>">
+    <input type="hidden" id="hiddenFiles" value="<?php echo $files; ?>">
 </body>
 </html>

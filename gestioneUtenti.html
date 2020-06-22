@@ -18,7 +18,7 @@
 </div>
 <div class="gestione-utenti-top-bar">
     <button onclick="toggleOrderIcon(this);"><i class="fal fa-sort-alpha-down"></i></button>
-    <input type="text" id="searcBarGestioneUtenti" placeholder="Cerca..." onkeyup="searchGestioneUtenti(this.value.toLowerCase())">
+    <input type="text" id="searcBarGestioneUtenti" placeholder="Cerca..." onfocus="this.value=''" onkeyup="searchGestioneUtenti(this.value.toLowerCase())">
     <select id="selectFiltroGestioneUtenti" onchange="getElencoUtenti()">
         <option value="">Tutti</option>
         <option value="false" selected>Attivi</option>

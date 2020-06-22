@@ -225,6 +225,9 @@ async function popupPermessiUtente(JSONutente)
 
     id_pagine=[];
 
+    var innerContainer=document.createElement("div");
+    innerContainer.setAttribute("class","popup-utenti-inner-container");
+
     var np=0;
     //console.log(permessi_pagine_applicazioni);
     permessi_pagine_applicazioni.forEach(function (applicazione)
@@ -233,24 +236,8 @@ async function popupPermessiUtente(JSONutente)
         row.setAttribute("class","popup-foto-ordini-row");
         row.setAttribute("style","width:100%;color:#ddd;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline;margin-top:10px");
         row.innerHTML=applicazione;
-
-        /*var labelCheckbox=document.createElement("label");
-        labelCheckbox.setAttribute("class","pure-material-checkbox");
-        labelCheckbox.setAttribute("style","margin-left:10px");
-
-        var inputCheckbox=document.createElement("input");
-        inputCheckbox.setAttribute("type","checkbox");
-        inputCheckbox.setAttribute("onchange","");
-        labelCheckbox.appendChild(inputCheckbox);
-
-        var spanCheckbox=document.createElement("span");
-        spanCheckbox.setAttribute("style","color:#ddd;font-size:12px");
-        spanCheckbox.innerHTML="<div></div>";
-        labelCheckbox.appendChild(spanCheckbox);
-
-        row.appendChild(labelCheckbox);*/
-
-        outerContainer.appendChild(row);
+       
+        innerContainer.appendChild(row);
 
         permessi_pagine.forEach(function (pagina)
         {
@@ -282,12 +269,14 @@ async function popupPermessiUtente(JSONutente)
 
                 row.appendChild(labelCheckbox);
 
-                outerContainer.appendChild(row);
+                innerContainer.appendChild(row);
 
                 id_pagine.push(pagina.id_pagina);
             }
         });
     });
+
+    outerContainer.appendChild(innerContainer);
 
     //console.log(np);
 
@@ -343,6 +332,19 @@ function confermaPermessiPagine(id_utente)
     }
     let JSONpermessi_pagine=JSON.stringify(permessi_pagine);
     Swal.close();
+
+    Swal.fire
+    ({
+        title: "Caricamento in corso...",
+        html: '<i style="color:white" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        showConfirmButton:false,
+        showCloseButton:false,
+        allowEscapeKey:false,
+        allowOutsideClick:false,
+        background:"transparent",
+        onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="white";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";document.getElementsByClassName("swal2-title")[0].style.fontWeight="bold";document.getElementsByClassName("swal2-close")[0].style.outline="none";}
+    });
+    
     $.post("confermaPermessiPagine.php",
     {
         id_utente,
