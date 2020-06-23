@@ -6,82 +6,41 @@ window.addEventListener("load", function(event)
 });
 async function getCartella()
 {
-    var nome=document.getElementById("hiddenNome").value;
-    var path=document.getElementById("hiddenPath").value;
-    var id_cartella=document.getElementById("hiddenId_cartella").value;
-    var tipo=document.getElementById("hiddenTipo").value;
-    var files=document.getElementById("hiddenFiles").value;
-
-    console.log(tipo);
     console.log(files);
-    console.log(nome);
-    console.log(path);
-    console.log(id_cartella);
 
     var outerContainer=document.createElement("div");
     outerContainer.setAttribute("class","share-cloud-foto-outer-container");
 
     var titleContainer=document.createElement("div");
     titleContainer.setAttribute("class","share-cloud-foto-title-container");
-    titleContainer.innerHTML=nome;
+    titleContainer.innerHTML="<a href='http://remote.oasisgroup.it/OasisMobile/index.html' style='color:rgb(48, 133, 214)'>Accedi all' applicazione</a>";
     outerContainer.appendChild(titleContainer);
 
     var innerContainer=document.createElement("div");
     innerContainer.setAttribute("class","share-cloud-foto-inner-container");
 
-    cartella_corrente=parseInt(id_cartella);
-
-    var cartella=await getNomeCartellaCloudFoto(id_cartella);
-    
-    var path=await getPath(id_cartella,cartella);
-
-    var cartelle=await getCartelle(id_cartella);
-    var files=await getFiles(id_cartella);
-
-    nomiCartelle=[];
-    cartelle.forEach(function(item)
+    files.forEach(function(item)
     {
-        nomiCartelle.push(item.cartella);
-    });
-
-    var array= cartelle.concat(files);
-    array.forEach(function(item)
-    {
-        item.dataOraString=item.dataOra.date;
-    });
-    array.sort( compare );
-
-    let i=0;
-    array.forEach(function(item)
-    {
-        if(item.tipo=="file")
+        if(item.formato.toLowerCase()=="mp4")
         {
-            var formato=item.nomeFile.split(".")[item.nomeFile.split(".").length-1];
-        
-            if(formato.toLowerCase()=="mp4")
-            {
-                var video=document.createElement("video");
-                var source=document.createElement("source");
-                source.setAttribute("src",location.protocol+"//"+item.server+"/"+item.path);
-                source.setAttribute("type","video/mp4");
-                video.appendChild(source);
-                innerContainer.appendChild(video);
-            }
-            else
-            {
-                var img=document.createElement("img");
-                img.setAttribute("src",location.protocol+"//"+item.server+"/"+item.path);
-                innerContainer.appendChild(img);
-            }
+            var video=document.createElement("video");
+            var source=document.createElement("source");
+            source.setAttribute("src",item.src);
+            source.setAttribute("type","video/mp4");
+            video.appendChild(source);
+            innerContainer.appendChild(video);
         }
-
-        i++;
+        else
+        {
+            var img=document.createElement("img");
+            img.setAttribute("src",item.src);
+            innerContainer.appendChild(img);
+        }
     });
 
     outerContainer.appendChild(innerContainer);
 
     document.body.appendChild(outerContainer);
-
 }
 function getNomeCartellaCloudFoto(id_cartella)
 {
