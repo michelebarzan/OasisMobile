@@ -10,6 +10,8 @@ var nomiCartelle=[];
 var cartella_corrente;
 var checkedFiles=[];
 var filesLenght;
+var cartella_corrente_popup_sposta;
+var popupSpostaHeight;
 
 var itemClassOuterContainer;
 var itemClassButton;
@@ -483,7 +485,7 @@ async function downloadAllCheckedFiles()
     ({
         title: "Caricamento in corso... ",
         background:"rgba(0,0,0,0.4)",
-        html: '<i style="color:white" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
         showConfirmButton:false,
         showCloseButton:false,
         allowEscapeKey:false,
@@ -791,22 +793,41 @@ function getCheckboxes()
 }
 async function moveAllCheckedFiles()
 {
+    Swal.fire
+    ({
+        title: "Caricamento in corso... ",
+        background:"rgba(0,0,0,0.4)",
+        html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        showConfirmButton:false,
+        showCloseButton:false,
+        allowEscapeKey:false,
+        allowOutsideClick:false,
+        onOpen : function()
+        {
+            document.getElementsByClassName("swal2-title")[0].style.color="white";
+            document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+            document.getElementsByClassName("swal2-container")[0].style.padding="0px";
+            document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+            document.getElementsByClassName("swal2-popup")[0].style.height="100%";
+        }
+    });
+
     var outerContainer=document.createElement("div");
     outerContainer.setAttribute("class","popup-cloud-foto-outer-container");
 
     var actionBar=document.createElement("div");
     actionBar.setAttribute("class","popup-expand-image-action-bar");
-    actionBar.setAttribute("style","padding:0px;margin-bottom:10px;height:auto;box-shadow:none");
+    actionBar.setAttribute("style","padding:0px;margin-bottom:5px;height:auto;box-shadow:none");
 
     var span=document.createElement("span");
-    span.innerHTML="Sposta in una cartella";
+    span.innerHTML="Scegli una cartella di destinazione ("+checkedFiles.length+" file)";
     actionBar.appendChild(span);
 
     var button=document.createElement("button");
-    button.setAttribute("style","font-size:17px;margin-right:10px");
+    button.setAttribute("style","font-size:18px;margin-right:10px");
     button.setAttribute("class","popup-expand-image-action-bar-share-button");
-    button.setAttribute("onclick","");
-    button.innerHTML='<i class="fal fa-folder-plus"></i>';
+    button.setAttribute("onclick","nuovaCartellaPopupSposta()");
+    button.innerHTML='<i class="fad fa-folder-plus"></i>';
     actionBar.appendChild(button);
 
     var button=document.createElement("button");
@@ -820,27 +841,77 @@ async function moveAllCheckedFiles()
 
     var row=document.createElement("div");
     row.setAttribute("class","popup-foto-ordini-row");
-    row.setAttribute("style","display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start");
+    row.setAttribute("style","display:flex;flex-direction:row;align-items:center:justify-content:flex-start;box-sizing:border-box;padding-top: 5px;padding-bottom: 5px;");
 
+    var button=document.createElement("button");
+    button.setAttribute("onclick","popupSpostaIndietro()");
+    button.setAttribute("style","width:25px;margin:0px;margin-right:5px;border:none;background-color:transparent;padding:0px;color:#ddd;outline:none;display:flex;align-items:center;justify-content:center;height:30px;font-size:21px;");
+    button.innerHTML='<i class="far fa-angle-left"></i>';
+    row.appendChild(button);
+
+    var input=document.createElement("input");
+    input.setAttribute("type","search");
+    input.setAttribute("placeholder","Cerca...");
+    input.setAttribute("id","inputSearchSposta");
+    input.setAttribute("onfocus","this.value=''");
+    row.appendChild(input);
+
+    outerContainer.appendChild(row);
+
+    var row=document.createElement("div");
+    row.setAttribute("class","popup-foto-ordini-row");
+    row.setAttribute("id","containerCartelleSposta");
+
+    //getContenutoCartellaSposta(cartella_corrente);
+
+    cartella_corrente_popup_sposta=cartella_corrente;
     var cartelle=await getCartelle(cartella_corrente);
     cartelle.forEach(function(cartella)
     {
         var cartellaOuterContainer=document.createElement("div");
-        cartellaOuterContainer.setAttribute("style","display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:100%");
+        cartellaOuterContainer.setAttribute("style","display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:100%;box-sizing:border-box;padding-top:5px;padding-bottom:5px");
+        cartellaOuterContainer.setAttribute("class","cartelleSpostaOuterContainer");
 
+        var radio=document.createElement("input");
+        radio.setAttribute("type","radio");
+        radio.setAttribute("value",cartella.id_cartella);
+        radio.setAttribute("class","radioCartelleSposta");
+        radio.setAttribute("name","radioCartelleSposta");
+        radio.setAttribute("onchange","document.getElementById('labelPopupSposta').innerHTML='Sposta in "+cartella.cartella+"'");
+        cartellaOuterContainer.appendChild(radio);
+
+        /*var checkmark=document.createElement("span");
+        checkmark.setAttribute("class","checkmarkCartelleSposta");
+        checkmark.setAttribute("onclick","this.previousSibling.click()");
+        cartellaOuterContainer.appendChild(checkmark);*/
+
+        var cartellaButton=document.createElement("button");
+        cartellaButton.setAttribute("style","border:none;margin:0px;padding:0px;background-color:transparent;outline:none;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;box-sizing:border-box;");
+        cartellaButton.setAttribute("onclick","getContenutoCartellaSposta("+cartella.id_cartella+")");
+        
         var i=document.createElement("i");
         i.setAttribute("class","fas fa-folder");
-        cartellaOuterContainer.appendChild(i);
+        i.setAttribute("style","font-size:21px;margin-right:10px;color:#fee799;font-size: 16px;text-shadow: 0px 2px 3px rgba(0,0,0,0.4), 0px 4px 7px rgba(0,0,0,0.1), 0px 9px 12px rgba(0,0,0,0.1);");
+        cartellaButton.appendChild(i);
 
         var span=document.createElement("span");
-        span.setAttribute("style","font-family:'Quicksand',sans-serif;font-size:12px;color:white;text-align:left");
+        span.setAttribute("style","font-family:'Quicksand',sans-serif;font-size:12px;color:#ddd;text-align:left;font-weight:normal");
         span.innerHTML=cartella.cartella;
-        cartellaOuterContainer.appendChild(span);
+        cartellaButton.appendChild(span);
+
+        cartellaOuterContainer.appendChild(cartellaButton);
 
         row.appendChild(cartellaOuterContainer);
     });
 
     outerContainer.appendChild(row);
+
+    var spostaButton=document.createElement("button");
+    spostaButton.setAttribute("class","popup-cloud-foto-button");
+    spostaButton.setAttribute("style","width:100%;margin-top:10px;margin-bottom:5px;overflow: hidden;");
+    spostaButton.setAttribute("onclick","spostaFile()");
+    spostaButton.innerHTML='<span id="labelPopupSposta">Sposta</span>';
+    outerContainer.appendChild(spostaButton);
 
     Swal.fire
     ({
@@ -850,11 +921,235 @@ async function moveAllCheckedFiles()
                 {
                     document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
                     document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                    //document.getElementById("swal2-content").style.marginBottom="-10px";
+                    popupSpostaHeight=document.getElementById("containerCartelleSposta").offsetHeight;
+                    document.getElementById("containerCartelleSposta").style.minHeight=popupSpostaHeight+"px";
+                    document.getElementById("containerCartelleSposta").style.maxHeight=popupSpostaHeight+"px";
                 },
         showConfirmButton:false,
         showCancelButton:false,
         html:outerContainer.outerHTML
     });
+}
+function nuovaCartellaPopupSposta()
+{
+    Swal.close();
+    getElencoContenutoCartella(cartella_corrente_popup_sposta);
+    var interval=setInterval(function()
+    {
+        if(document.getElementsByClassName("fa-spinner-container").length==0)
+        {
+            clearInterval(interval);
+            nuovaCarella();
+        }
+    }, 100);
+}
+async function spostaFile()
+{
+    var cartella_selezionata;
+    var radios=document.getElementsByClassName("radioCartelleSposta");
+    for (let index = 0; index < radios.length; index++)
+    {
+        const radio = radios[index];
+        if(radio.checked)
+            cartella_selezionata=radio.value;
+    }
+    if(cartella_selezionata!=null)
+    {
+        cartella_selezionata=parseInt(cartella_selezionata);
+
+        Swal.fire
+        ({
+            title: "Caricamento in corso... ",
+            background:"rgba(0,0,0,0.4)",
+            html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+            showConfirmButton:false,
+            showCloseButton:false,
+            allowEscapeKey:false,
+            allowOutsideClick:false,
+            onOpen : function()
+            {
+                document.getElementsByClassName("swal2-title")[0].style.color="white";
+                document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                document.getElementsByClassName("swal2-container")[0].style.padding="0px";
+                document.getElementsByClassName("swal2-popup")[0].style.padding="0px";
+                document.getElementsByClassName("swal2-popup")[0].style.height="100%";
+            }
+        });
+
+        
+        var id_cartella=cartella_corrente;
+        var cartella=await getNomeCartellaCloudFoto(id_cartella);
+        var path=await getPath(id_cartella,cartella);
+        var oldPathString="";
+        path.forEach(function(item)
+        {
+            if(item.cartella!=null)
+            oldPathString+=item.cartella+"/";
+        });
+
+        var id_cartella=cartella_selezionata;
+        var cartella=await getNomeCartellaCloudFoto(id_cartella);
+        var path=await getPath(id_cartella,cartella);
+        var newPathString="";
+        path.forEach(function(item)
+        {
+            if(item.cartella!=null)
+            newPathString+=item.cartella+"/";
+        });
+
+        var files=[];
+        for (let index = 0; index < checkedFiles.length; index++) 
+        {
+            const number = checkedFiles[index];
+            var cloudFotoItemOuterContainer=document.getElementById("cloudFotoItemOuterContainer"+number);
+            var tipo=cloudFotoItemOuterContainer.getAttribute("tipo");
+            var nome=cloudFotoItemOuterContainer.getAttribute("nome");
+            var server=cloudFotoItemOuterContainer.getAttribute("server");
+            var id_file_cartella=cloudFotoItemOuterContainer.getAttribute("id_file_cartella");
+
+            if(tipo=="file")
+            {
+                var file=
+                {
+                    nome,
+                    id_file:parseInt(id_file_cartella)
+                }
+                files.push(file);
+            }
+        }
+
+        console.log(files);
+        console.log(cartella_selezionata);
+        var JSONfiles=JSON.stringify(files);
+
+        $.post("spostaFileCloudFoto.php",
+        {
+            oldPathString,
+            newPathString,
+            cartella_selezionata,
+            JSONfiles
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                console.log(response);
+                if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                {
+                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                    console.log(response);
+                }
+                else
+                {
+                    Swal.fire
+                    ({
+                        icon:"success",
+                        width:"100%",
+                        title:checkedFiles.length+" file spostati",
+                        background:"#404040",
+                        onOpen : function()
+                                {
+                                    document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                                },
+                        showConfirmButton:false,
+                        showCloseButton:true,
+                        showCancelButton:false,
+                        timer: 1500
+                    }).then((result) => 
+                    {
+                        getElencoContenutoCartella(cartella_corrente);
+                    });
+                }
+            }
+            else
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(status);
+            }
+        });
+    }
+}
+async function popupSpostaIndietro()
+{
+    if(cartella_corrente_popup_sposta!=1)
+    {
+        var cartella=await getNomeCartellaCloudFoto(cartella_corrente_popup_sposta);
+        var path=await getPath(cartella_corrente_popup_sposta,cartella);
+
+        var pathCartelle=[];
+        var pathIdCartelle=[];
+        path.forEach(function(item)
+        {
+            pathCartelle.push(item.cartella);
+            pathIdCartelle.push(item.id_cartella);
+        });
+
+        var idCartellaBefore=pathIdCartelle.indexOf(cartella_corrente_popup_sposta);
+        if(idCartellaBefore>-1)
+        {
+            idCartellaBefore--;
+            getContenutoCartellaSposta(pathIdCartelle[idCartellaBefore]);
+        }
+    }
+}
+async function getContenutoCartellaSposta(id_cartella)
+{
+    document.getElementById('labelPopupSposta').innerHTML='Sposta';
+
+    var container=document.getElementById("containerCartelleSposta");
+    container.innerHTML="";
+    getFaSpinner(container,"containerCartelleSposta","Caricamento in corso...");
+
+    cartella_corrente_popup_sposta=id_cartella;
+    var cartelle=await getCartelle(id_cartella);
+    removeFaSpinner("containerCartelleSposta");
+    if(cartelle.length==0)
+    {
+        var span=document.createElement("span");
+        span.setAttribute("style","font-family:'Quicksand',sans-serif;font-size:12px;color:#ddd;margin-top:5px");
+        span.innerHTML="<u>Cartella vuota !</u>";
+        container.appendChild(span);
+    }
+
+    cartelle.forEach(function(cartella)
+    {
+        var cartellaOuterContainer=document.createElement("div");
+        cartellaOuterContainer.setAttribute("style","display:flex;flex-direction:row;align-items:center;justify-content:flex-start;width:100%;box-sizing:border-box;padding-top:5px;padding-bottom:5px");
+        cartellaOuterContainer.setAttribute("class","cartelleSpostaOuterContainer");
+
+        var radio=document.createElement("input");
+        radio.setAttribute("type","radio");
+        radio.setAttribute("value",cartella.id_cartella);
+        radio.setAttribute("class","radioCartelleSposta");
+        radio.setAttribute("name","radioCartelleSposta");
+        radio.setAttribute("onchange","document.getElementById('labelPopupSposta').innerHTML='Sposta in "+cartella.cartella+"'");
+        cartellaOuterContainer.appendChild(radio);
+
+        var checkmark=document.createElement("span");
+        checkmark.setAttribute("class","checkmarkCartelleSposta");
+        cartellaOuterContainer.appendChild(checkmark);
+
+        var cartellaButton=document.createElement("button");
+        cartellaButton.setAttribute("style","border:none;margin:0px;padding:0px;background-color:transparent;outline:none;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;box-sizing:border-box;");
+        cartellaButton.setAttribute("onclick","getContenutoCartellaSposta("+cartella.id_cartella+")");
+        
+        var i=document.createElement("i");
+        i.setAttribute("class","fas fa-folder");
+        i.setAttribute("style","font-size:21px;margin-right:10px;color:#fee799;font-size: 16px;text-shadow: 0px 2px 3px rgba(0,0,0,0.4), 0px 4px 7px rgba(0,0,0,0.1), 0px 9px 12px rgba(0,0,0,0.1);");
+        cartellaButton.appendChild(i);
+
+        var span=document.createElement("span");
+        span.setAttribute("style","font-family:'Quicksand',sans-serif;font-size:12px;color:#ddd;text-align:left;font-weight:normal");
+        span.innerHTML=cartella.cartella;
+        cartellaButton.appendChild(span);
+
+        cartellaOuterContainer.appendChild(cartellaButton);
+
+        container.appendChild(cartellaOuterContainer);
+    });
+
+    //container.style.height=popupSpostaHeight+"px";
 }
 async function shareAllCheckedFiles()
 {
@@ -862,7 +1157,7 @@ async function shareAllCheckedFiles()
     ({
         title: "Caricamento in corso... ",
         background:"rgba(0,0,0,0.4)",
-        html: '<i style="color:white" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
         showConfirmButton:false,
         showCloseButton:false,
         allowEscapeKey:false,
@@ -1770,7 +2065,7 @@ function downloadFoto(src)
     ({
         title: "Caricamento in corso... ",
         background:"rgba(0,0,0,0.4)",
-        html: '<i style="color:white" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
         showConfirmButton:false,
         showCloseButton:false,
         allowEscapeKey:false,
@@ -1805,7 +2100,7 @@ function downloadCartella(src,nome,protocol,server,path)
     ({
         title: "Caricamento in corso... ",
         background:"rgba(0,0,0,0.4)",
-        html: '<i style="color:white" class="fad fa-spinner-third fa-spin fa-2x"></i>',
+        html: '<i style="color:#ddd" class="fad fa-spinner-third fa-spin fa-2x"></i>',
         showConfirmButton:false,
         showCloseButton:false,
         allowEscapeKey:false,
@@ -2212,7 +2507,7 @@ function getPopupImpostazioni()
     labelMostraImmaginiIngrandite.appendChild(inputMostraImmaginiIngrandite);
 
     var spanMostraImmaginiIngrandite=document.createElement("span");
-    spanMostraImmaginiIngrandite.setAttribute("style","color:white");
+    spanMostraImmaginiIngrandite.setAttribute("style","color:#ddd");
     spanMostraImmaginiIngrandite.innerHTML="<div style=' white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>Visualizzazione galleria</div>";
     labelMostraImmaginiIngrandite.appendChild(spanMostraImmaginiIngrandite);
 
