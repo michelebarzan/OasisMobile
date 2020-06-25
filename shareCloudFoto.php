@@ -1,5 +1,5 @@
 <?php
-    $JSONfiles=$_REQUEST["JSONfiles"];
+    $id_share=$_REQUEST["id_share"];
 ?>
 <html lang="en">
 <head>
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <link href="libs/css/fontawesome/css/all.css" rel="stylesheet">
     <script>
-        var files=<?php echo $JSONfiles; ?>;
+        var id_share=<?php echo $id_share; ?>;
     </script>
 </head>
 <body></body>

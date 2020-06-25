@@ -18,7 +18,7 @@
             echo "ok";
         }
         else
-            die("error1");
+            die("error4");
     }
     if($tipo=="cartella")
     {
@@ -38,13 +38,13 @@
                     echo "ok";
                 }
                 else
-                    die("error");
+                    die("error1");
             }
             else
-                die("error");
+                die("error2".$query3);
         }
         else
-            die("error");
+            die("error3");
     }
 
     function deleteDir($dir) 

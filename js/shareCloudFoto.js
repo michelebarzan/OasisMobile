@@ -6,6 +6,8 @@ window.addEventListener("load", function(event)
 });
 async function getCartella()
 {
+    var files=[];
+    files=await getFilesShareCloudFoto(id_share);
     console.log(files);
 
     var outerContainer=document.createElement("div");
@@ -42,7 +44,43 @@ async function getCartella()
 
     document.body.appendChild(outerContainer);
 }
-function getNomeCartellaCloudFoto(id_cartella)
+function getFilesShareCloudFoto(id_share)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getFilesShareCloudFoto.php",
+        {
+            id_share
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+                {
+                    Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                    console.log(response);
+                    resolve([]);
+                }
+                else
+                {
+                    try {
+                        resolve(JSON.parse(response));
+                    } catch (error) {
+                        Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                        resolve([]);
+                    }
+                }
+            }
+            else
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                resolve([]);
+            }
+        });
+    });
+}
+/*function getNomeCartellaCloudFoto(id_cartella)
 {
     return new Promise(function (resolve, reject) 
     {
@@ -188,4 +226,4 @@ function compare( a, b )
         return 1;
     }
     return 0;
-}
+}*/

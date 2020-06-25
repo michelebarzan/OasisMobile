@@ -10,7 +10,8 @@
 
     $files=[];
 
-    $query2="SELECT * FROM dbo.files_cloud_foto WHERE cartella=$id_cartella";	
+    //$query2="SELECT DISTINCT * FROM dbo.files_cloud_foto WHERE cartella=$id_cartella";	
+    $query2="SELECT MAX(id_file) AS id_file,cartella,nomeFile,dataOra,utente,descrizione FROM dbo.files_cloud_foto WHERE cartella=$id_cartella GROUP BY cartella,nomeFile,dataOra,utente,descrizione ";	
     $result2=sqlsrv_query($conn,$query2);
     if($result2==TRUE)
     {
