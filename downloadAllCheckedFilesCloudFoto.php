@@ -17,6 +17,7 @@
             $paths.=' "C:\\xampp\\htdocs\\'.$fileToDownload["path"].$fileToDownload["nome"].'"';
     }
     
+	$output2 = exec('del "C:\\xampp\\htdocs\\OasisMobile\\files\\cloudFoto\\'.$cartella.'_'.$id_utente.'.rar" 2>&1');
     $output = exec('C:\\xampp\\htdocs\\OasisMobile\\files\\rar a "C:\\xampp\\htdocs\\OasisMobile\\files\\cloudFoto\\'.$cartella.'_'.$id_utente.'"'.$paths.' 2>&1');
 
     echo $output;
