@@ -1,0 +1,31 @@
+<div class="bottom-control-bar" style="background-color: #404040;height:50px">
+    <select class="bottom-control-bar-select" id="selectSettimanaSommarioProduzione" style="font-size:12px;color:#ddd;height:50px" onchange="getSommarioProduzioneCharts()"></select>
+    <select class="bottom-control-bar-select" id="selectStazioneSommarioProduzione" style="font-size:12px;color:#ddd;height:50px" onchange="getSommarioProduzioneCharts()">
+        <optgroup label="Punto punto">
+            <option value="PTO_PTO">Stazione: PTO_PTO</option>
+        </optgroup>
+        <optgroup label="Verniciatura">
+            <option value="CAB_ACR">Stazione: CAB_ACR</option>
+            <option value="CAB_LAC">Stazione: CAB_LAC</option>
+        </optgroup>
+        <optgroup label="Montaggio">
+            <option value="MNT_ACA">Stazione: MNT_ACA</option>
+            <option value="MNT_HOME">Stazione: MNT_HOME</option>
+            <option value="MNT_LUT">Stazione: MNT_LUT</option>
+            <option value="MNT_MAST">Stazione: MNT_MAST</option>
+        </optgroup>
+    </select>
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-filter"></i></div>
+        <div><span>Filtra</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="" style="width:33%;align-items:center;justify-content:center">
+        <div><i class="fal fa-sort-alpha-down-alt"></i></div>
+        <div><span>Ordina</span></div>
+    </button>-->
+    <!--<button class="bottom-control-bar-button" onclick="">
+        <div><i class="fal fa-cog"></i></div>
+        <div><span>Impostazioni</span></div>
+    </button>-->
+</div>
+<div id="containerSommarioProduzione"></div>

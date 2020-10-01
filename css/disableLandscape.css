@@ -1,0 +1,12 @@
+/*Rimuovere per abilitare landscape*/
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) 
+{
+    body 
+    {
+        display: none;
+    }
+    #alertOrientation
+    {
+        display: block;
+    }
+}

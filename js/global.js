@@ -342,3 +342,33 @@ const observer = new MutationObserver(callback);
 
 // Later, you can stop observing
 //observer.disconnect();
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+function getFirstObjByPropValue(array,prop,propValue)
+{
+    var return_item;
+    array.forEach(function(item)
+    {
+        if(item[prop]==propValue)
+        {
+            return_item= item;
+        }
+    });
+    return return_item;
+}
+function enableLandscape()
+{
+    if(document.getElementById("disableLandscapeLink")!=null)
+        document.getElementById("disableLandscapeLink").remove();
+}
+function disableLandscape()
+{
+    if(document.getElementById("disableLandscapeLink")==null)
+    {
+        var link=document.createElement("link");
+        link.setAttribute("rel","stylesheet");
+        link.setAttribute("id","disableLandscapeLink");
+        link.setAttribute("href","css/disableLandscape.css");
+
+        document.head.appendChild(link);
+    }
+}

@@ -502,6 +502,7 @@ function restoreDefaultMainSettings()
 }
 function gotopath(fileName)
 {
+    disableLandscape();
     removeSystemToast();
     $("#pageContainer").hide();
     unloadModules(pageInfo.fileName);
