@@ -1,0 +1,313 @@
+html
+{
+    margin:0px;
+}
+body
+{
+    margin: 0px;
+}
+.popup-presenze-outer-container
+{
+    margin:20px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width:calc(100% - 40px);
+    /*align-items: center;*/
+    justify-content: flex-start;
+}
+.popup-presenze-inner-container
+{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-height: 550px;
+    overflow-y: auto;
+}
+.popup-presenze-row
+{
+    display: flex;
+    width: auto;
+    box-sizing: border-box;
+}
+.popup-presenze-row img
+{
+    width: 100px;
+    height: 100px;
+    margin:5px;
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 4px;
+}
+.swal2-title
+{
+    color:#ddd;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Quicksand',sans-serif;
+}
+.swal2-popup
+{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#popup-presenze-select
+{
+    width:150px;
+    background-color: #4d4d4d;
+    border:none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    height: 30px;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    -webkit-appearance:none;
+}
+.popup-presenze-textarea,.popup-presenze-input
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    border:2px solid #4d4d4d;
+    background-color: #363636;
+    border-radius: 4px;
+    outline: none;
+    width:100%;
+    resize: none;
+    overflow: hidden;
+    -webkit-appearance:none;
+    box-sizing: border-box;
+    padding:5px;
+    font-weight: normal;
+}
+.popup-presenze-textarea
+{
+    height:60px;
+}
+.popup-presenze-button
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /*width:220px;*/
+    background-color: #4d4d4d;
+    border:none;
+    height: 30px;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+.popup-presenze-button span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    display: flex;
+    flex-direction: row;
+}
+.popup-presenze-button i
+{
+    color:#ddd;
+    margin-left: 10px;
+}
+.popup-presenze-button:active
+{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+#popupPresenzeConfirmButton
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    width:220px;
+    background-color: #4d4d4d;
+    border:none;
+    height: 40px;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+#popupPresenzeConfirmButton span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    letter-spacing: 2px;
+    display: flex;
+    flex-direction: row;
+}
+#popupPresenzeConfirmButton span div
+{
+    margin-left: 5px;
+}
+#popupPresenzeConfirmButton i
+{
+    color:#ddd;
+    margin-left: 10px;
+}
+#popupPresenzeConfirmButton:active
+{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.popup-presenze-delete-button
+{
+    height: 20px;
+    width: 20px;
+    color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-left: auto;
+    border:none;
+    background-color: transparent;
+    outline: none;
+}
+/*--------------------------------------------------------------------*/
+#containerRegistrazioneOre
+{
+    position: absolute;
+    top:50px;
+    bottom:50px;
+    overflow-y: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding:35px 20px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+.presenze-anno-title-container
+{
+    width: calc(100% - 15px);
+    margin-right: 5px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    min-height: 30px;
+    height: 30px;
+    border-top:1px solid red;
+}
+.presenze-anno-title-container span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 14px;
+    color:red;
+    font-weight: bold;
+}
+.presenze-mese-title-container
+{
+    width: calc(100% - 15px);
+    margin-right: 5px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    min-height: 30px;
+    height: 30px;
+}
+.presenze-mese-title-container span
+{
+    font-family: 'Quicksand',sans-serif;
+    font-size: 14px;
+    color:black;
+}
+.presenze-mese-container
+{
+    /*display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;*/
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-left: 5px;
+    /*height: 300px;
+    min-height: 300px;
+    max-height: 300px;*/
+}
+.presenze-giorno-space
+{    
+    margin:5px;
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+    display: block;
+    float:left;
+    background-color: transparent;
+    border-radius: 4px;
+}
+.presenze-giorno-container
+{
+    position: relative;
+    z-index: 1;
+    border:none;
+    outline: none;
+    margin:0px;
+    padding:0px;
+    margin:5px;
+    box-sizing: border-box;
+    background-color: #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.presenze-giorno-span
+{
+    z-index: 2;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+}
+.presenze-giorno-container div
+{
+    z-index: 98;
+    position: absolute;
+    top:-10px;
+    right:-10px;
+    height:20px;
+    width: 20px;
+    max-height:20px;
+    max-width: 20px;
+    min-height:20px;
+    min-width: 20px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.presenze-giorno-container div span
+{
+    z-index: 99;
+    color: white;
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+}

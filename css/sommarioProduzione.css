@@ -74,6 +74,9 @@ body
     margin:0px;
     margin-left: auto;
     font-size: 14px;
+	appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
 }
 .sommario-produzione-action-bar
 {
@@ -113,6 +116,9 @@ body
     border:1px solid gray;
     outline: none;
     color:black;
+	appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
 }
 .sommario-produzione-action-bar-button span
 {
