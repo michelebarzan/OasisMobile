@@ -1,0 +1,41 @@
+#containerScaricoMagazzino
+{
+    position: absolute;
+    top:50px;
+    bottom:50px;
+    overflow-y: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding:35px 20px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+#interactive{
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    bottom: 50px;
+}
+.popup-input{
+
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    border:2px solid #4d4d4d;
+    background-color: #363636;
+    border-radius: 4px;
+    outline: none;
+    width:100%;
+    resize: none;
+    overflow: hidden;
+    -webkit-appearance:none;
+    box-sizing: border-box;
+    padding:5px;
+    font-weight: normal;
+    
+}
