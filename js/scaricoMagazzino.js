@@ -415,10 +415,11 @@ function scanCode(type) {
     );
 };
 async function uscitaMerci(code) {
+    
     var input = document.getElementById("inputQuantita");
-	// var usr = "Quaia";
-	// var pwd = "Oasis2015";
-    const urlPreleva = 'https://192.168.6.54:3000/api/preleva'
+	 var usr = "Quaia";
+	 var pwd = "Oasis2015";
+    const urlPreleva = `https://192.168.69.75:38443/UscitaMerci`
 	var body = {
 		DocDate: new Date(),
 		rows: [
@@ -434,23 +435,28 @@ async function uscitaMerci(code) {
 		headers: {   
 			'Content-Type': 'application/json',
         	'Accept': 'application/json',
+            'Authorization': 'Basic ' + btoa(`${usr}:${pwd}`)
 	},
 		body: JSON.stringify(body),
 	});
+    console.log(response);
     return response;
+
 }
 async function controlloMerci(code) {
-
-    const urlControlla = 'https://192.168.6.54:3000/api/controlla';
+    var usr = "Quaia";
+    var pwd = "Oasis2015";
+    const urlControlla = `https://192.168.69.75:38443/Giacenze?itemCode=${code}`;
     console.log(code);
 	 const response = await fetch(urlControlla, {
-		method: "POST",
+		method: "GET",
         mode: "cors",
 		headers: {   
 			'Content-Type': 'application/json',
         	'Accept': 'application/json',
+            'Authorization': 'Basic ' + btoa(`${usr}:${pwd}`)
 	},
-    body: JSON.stringify({code})
+    // body: JSON.stringify({code})
 	})
     return response.json();
 
