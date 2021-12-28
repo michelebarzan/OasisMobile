@@ -1,0 +1,98 @@
+#containerScaricoMagazzino
+{
+    position: relative;
+    top:50px;
+    bottom:50px;
+    overflow-y: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding:35px 20px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+video {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+}
+.popup-input{
+
+    font-family: 'Quicksand',sans-serif;
+    font-size: 12px;
+    color:#ddd;
+    border:2px solid #4d4d4d;
+    background-color: #363636;
+    border-radius: 4px;
+    outline: none;
+    width:100%;
+    resize: none;
+    overflow: hidden;
+    -webkit-appearance:none;
+    box-sizing: border-box;
+    padding:5px;
+    font-weight: normal;
+
+}
+.popup-outer-container{
+    margin:20px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width:calc(100% - 40px);
+    /*align-items: center;*/
+    justify-content: flex-start;
+}
+
+.popup-row
+{
+    display: flex;
+    width: auto;
+    box-sizing: border-box;
+}
+.popup-main-button{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /*width:220px;*/
+    background-color: #4d4d4d;
+    border:none;
+    height: 30px;
+    outline: none;
+    margin-top: 10px;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+.popup-button-secondary{
+    border:none;
+    outline: none;
+    border-radius: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    -webkit-appearance:none;
+}
+.swal2-title
+{
+    color:#ddd;
+    font-size: 14px;
+    font-weight: normal;
+    font-family: 'Quicksand',sans-serif;
+}
