@@ -1,4 +1,8 @@
- body, html, #pageContainer
+html
+{
+    overflow: hidden;
+}
+body, html, #pageContainer
 {
     height: 100%;
     width: 100%;

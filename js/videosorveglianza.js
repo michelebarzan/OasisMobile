@@ -22,10 +22,13 @@ async function onloadvideosorveglianza()
         showCancelButton:false,
         onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.fontWeight="bold";document.getElementsByClassName("swal2-title")[0].style.color="white";document.getElementsByClassName("swal2-title")[0].style.fontSize="12px"}
     });
+	
+	location.href = "https://www.ispyconnect.com/app/";
+	//window.open("https://www.ispyconnect.com/app/","_blank");
 
-    var iframe = document.createElement("iframe");
+    /*var iframe = document.createElement("iframe");
     iframe.setAttribute("src","https://www.ispyconnect.com/app/");
     iframe.setAttribute("id","videosorveglianzaiFrame");
     iframe.setAttribute("onload","setTimeout(() => {Swal.close();document.getElementById('videosorveglianzaiFrame').style.display='block'}, 2000);");
-    document.getElementById("pageContainer").appendChild(iframe);
+    document.getElementById("pageContainer").appendChild(iframe);*/
 }
