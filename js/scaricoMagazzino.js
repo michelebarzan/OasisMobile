@@ -128,6 +128,7 @@ async function getPopupInserisci(code)
 {
     var title = document.getElementById("title");
     title.innerHTML ="";
+
     Swal.fire
     ({
         title: "Caricamento in corso...",
@@ -139,6 +140,7 @@ async function getPopupInserisci(code)
         background:"transparent",
         onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="white";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";document.getElementsByClassName("swal2-title")[0].style.fontWeight="bold";document.getElementsByClassName("swal2-close")[0].style.outline="none";}
     });
+
     var description = await getDataScaricoMagazzino(code);
 
     var outerContainer=document.createElement("div");
@@ -167,7 +169,6 @@ async function getPopupInserisci(code)
     row.innerHTML = description;
     outerContainer.appendChild(row);
 
-
     var row=document.createElement("div");
     row.setAttribute("class","popup-row");
     row.setAttribute("style","width:100%;color:#ddd;font-size: 12px;text-align:left;font-weight: normal;font-family: 'Quicksand',sans-serif;margin-bottom:5px;text-decoration:underline");
@@ -183,7 +184,6 @@ async function getPopupInserisci(code)
     input.setAttribute("value","0");
     input.setAttribute("placeholder", "Inserisci quantità...")
     row.appendChild(input);    
-
 
     var button = document.createElement("button");
     button.setAttribute("class","popup-button-secondary");
@@ -203,8 +203,6 @@ async function getPopupInserisci(code)
     button.setAttribute("class","popup-main-button");
     button.innerHTML='<span>Inserisci</span><i class="fal fa-save"></i>';
     outerContainer.appendChild(button);
-
-
 
     Swal.fire
     ({
@@ -230,9 +228,6 @@ async function getPopupInserisci(code)
         showConfirmButton:false,
         showCancelButton:false,
         html:outerContainer.outerHTML
-    }).then((result) => 
-    {
-        
     });
 }
 async function getPopupControlla(code)
@@ -414,33 +409,93 @@ function scanCode(type) {
 	}
     );
 };
-async function uscitaMerci(code) {
-    
+async function uscitaMerci(code)
+{
     var input = document.getElementById("inputQuantita");
-	 var usr = "Quaia";
-	 var pwd = "Oasis2015";
-    const urlPreleva = `https://192.168.69.75:38443/UscitaMerci`
-	var body = {
+
+    var username = "Quaia";
+    var password = "Oasis2015";
+
+    const url = `https://192.168.69.75:38443/UscitaMerci`;
+
+    var body =
+    {
 		DocDate: new Date(),
-		rows: [
-		  {
-			ItemCode: code,
-			Quantity: input.value
-		  }
+		rows:
+        [
+            {
+                ItemCode: code,
+                Quantity: input.value
+            }
 		]
-	  }
-	 const response = await fetch(urlPreleva, {
-		method: "POST",
-        mode: "cors",
-		headers: {   
-			'Content-Type': 'application/json',
-        	'Accept': 'application/json',
-            'Authorization': 'Basic ' + btoa(`${usr}:${pwd}`)
-	},
-		body: JSON.stringify(body),
-	});
-    console.log(response);
-    return response;
+	}
+
+    fetch
+    (
+        url,
+        {
+            method: "POST",
+            mode: "cors",
+            headers:
+            {   
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Basic ' + btoa(`${username}:${password}`)
+            },
+            body: JSON.stringify(body)
+        }
+    )
+    .then((response) => 
+    {
+        if(response.status == 200)
+        {
+            let timerInterval;
+            Swal.fire
+            ({
+                icon:"success",
+                title: "Materiale prelevato",
+                background:"#404040",
+                showCloseButton:true,
+                showConfirmButton:false,
+                timer: 2000,
+                timerProgressBar: true,
+                onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="white";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";document.getElementsByClassName("swal2-close")[0].style.outline="none";},
+                onClose: () => {clearInterval(timerInterval)}
+            }).then((result) =>
+            {
+                clearQuaggia();
+            });
+        }
+        else
+        {
+            response.json().then((data) => 
+            {
+                Swal.fire
+                ({
+                    icon:"error",
+                    title: "Errore SAP",
+                    text: data.Message,
+                    background:"#404040",
+                    showCloseButton:true,
+                    showConfirmButton:false,
+                    onOpen : function()
+                    {
+                        document.getElementsByClassName("swal2-title")[0].style.color="white";
+                        document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";
+                        document.getElementsByClassName("swal2-close")[0].style.outline="none";
+                        document.getElementsByClassName("swal2-content")[0].style.color="white";
+                        document.getElementsByClassName("swal2-content")[0].style.fontSize="12px";
+                    },
+                }).then((result) =>
+                {
+                    clearQuaggia()
+                });
+            });
+        }
+    });
+}
+function clearQuaggia()
+{
 
 }
 async function controlloMerci(code) {
