@@ -4,10 +4,9 @@
 
     $code=$_REQUEST['code'];
 
-    $itemName;
+    $itemName = "";
 
-    $q="SELECT ItemName FROM TEST_FE_Oasis_Live.dbo.OITM WHERE ItemCode = '$code'";
-
+    $q="SELECT ItemName FROM Oasis_Live.dbo.OITM WHERE ItemCode = '$code'";
     $r=sqlsrv_query($conn,$q);
     if($r==TRUE)
     {
@@ -15,10 +14,10 @@
         {
             $itemName=$row["ItemName"];
         }
-        
-        echo json_encode($itemName);
     }
     else
         die("error");
-
+        
+    echo json_encode($itemName);
+    
 ?>
