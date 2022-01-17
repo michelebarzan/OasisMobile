@@ -29,3 +29,22 @@ async function onloadscaricoMagazzino()
 
     Swal.close();
 }
+window.addEventListener("focus", function()
+{
+    Swal.fire
+    ({
+        width:"100%",
+        background:"transparent",
+        title:"Caricamento in corso...",
+        html:'<i class="fad fa-spinner-third fa-spin fa-2x" style="color:white"></i>',
+        allowOutsideClick:false,
+        showCloseButton:false,
+        showConfirmButton:false,
+        showCancelButton:false,
+        onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.fontWeight="normal";document.getElementsByClassName("swal2-title")[0].style.color="white";}
+    });
+    setTimeout(() => {
+        document.getElementById("main-nav-bar-home-button-icon").click();
+        Swal.close();
+    }, 500);
+});
